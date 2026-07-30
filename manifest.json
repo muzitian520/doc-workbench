@@ -3,7 +3,7 @@
   "short_name": "木子甜工作台",
   "description": "Hello Kitty 主题个人工作台",
   "start_url": "/doc-workbench/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "background_color": "#fff0f3",
   "theme_color": "#f8bbd0",
   "icons": [
