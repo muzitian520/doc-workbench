@@ -112,7 +112,7 @@
   /* ===== 主内容 ===== */
   .main {
     flex: 1; overflow-y: auto;
-    padding: 22px 20px 40px;
+    padding: 22px 20px 90px;
     position: relative;
     -webkit-overflow-scrolling: touch;
   }
@@ -2739,6 +2739,46 @@ function loadAIChat() {
 function saveAIChat(msgs) { localStorage.setItem(AI_CHAT_KEY, JSON.stringify(msgs.slice(-50))); }
 var aiChatMsgs = loadAIChat();
 
+
+// ===== 全局 iOS 兼容修复：将内联 onclick 转换为事件委托 =====
+(function iosClickFix() {
+  // 找到当前触发元素上最近的有 onclick 的祖先
+  function findOnclickTarget(el) {
+    while (el && el !== document.body && el !== document.documentElement) {
+      if (el.getAttribute && el.getAttribute('onclick')) return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  function runClick(e) {
+    var target = findOnclickTarget(e.target);
+    if (!target) return;
+    var code = target.getAttribute('onclick');
+    if (!code) return;
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      // 在当前函数作用域中执行，让 this 指向元素
+      var fn = new Function(code);
+      fn.call(target);
+    } catch(err) { console.error('onclick error', err); }
+  }
+
+  // 对 touchend 和 click 都监听，iOS 上 touchend 更可靠
+  document.addEventListener('touchend', function(e) { runClick(e); }, { passive: false });
+  document.addEventListener('click', function(e) { runClick(e); }, { passive: false });
+})();
+
+// ===== 修复 iOS 输入框：确保点击输入框能正常聚焦 =====
+(function iosInputFix() {
+  document.addEventListener('touchend', function(e) {
+    var el = e.target;
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.focus();
+    }
+  }, { passive: false });
+})();
 
 </script>
 </body>
