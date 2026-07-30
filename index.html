@@ -640,105 +640,6 @@
     color: #fff; border-color: transparent;
   }
 
-  /* ===== 全局 AI 对话助手 ===== */
-  .ai-chat-btn {
-    position: fixed; bottom: 20px; right: 20px;
-    width: 56px; height: 56px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
-    box-shadow: 0 6px 20px rgba(244,143,177,0.4);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; cursor: pointer; z-index: 100;
-    transition: transform 0.2s; border: 3px solid #fff;
-  }
-  .ai-chat-btn:active { transform: scale(0.9); }
-  .ai-chat-btn .badge {
-    position: absolute; top: -2px; right: -2px;
-    width: 12px; height: 12px; border-radius: 50%;
-    background: #f44336; border: 2px solid #fff;
-  }
-  .ai-chat-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.3);
-    z-index: 99; display: none;
-  }
-  .ai-chat-overlay.show { display: block; }
-  .ai-chat-panel {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    height: 75vh; background: #fff;
-    border-radius: 24px 24px 0 0;
-    box-shadow: 0 -8px 30px rgba(0,0,0,0.15);
-    z-index: 101; display: none; flex-direction: column;
-    animation: slideUp 0.3s ease;
-  }
-  .ai-chat-panel.show { display: flex; }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .ai-chat-header {
-    padding: 14px 18px; border-bottom: 1px solid rgba(248,187,208,0.15);
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-    border-radius: 24px 24px 0 0;
-  }
-  .ai-chat-header .title { font-size: 15px; font-weight: 700; color: var(--text-1); }
-  .ai-chat-header .close {
-    width: 30px; height: 30px; border-radius: 50%; border: none;
-    background: rgba(255,255,255,0.6); font-size: 16px; cursor: pointer; color: var(--text-2);
-  }
-  .ai-chat-messages {
-    flex: 1; overflow-y: auto; padding: 14px;
-    -webkit-overflow-scrolling: touch;
-  }
-  .ai-chat-messages::-webkit-scrollbar { width: 0; }
-  .chat-msg { margin-bottom: 12px; display: flex; }
-  .chat-msg.user { justify-content: flex-end; }
-  .chat-msg .bubble {
-    max-width: 80%; padding: 10px 14px; border-radius: 16px;
-    font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
-  }
-  .chat-msg.user .bubble {
-    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
-    color: #fff; border-bottom-right-radius: 4px;
-  }
-  .chat-msg.ai .bubble {
-    background: var(--bg); color: var(--text-1); border-bottom-left-radius: 4px;
-  }
-  .chat-msg.ai .avatar-ic {
-    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; margin-right: 8px;
-    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-    display: flex; align-items: center; justify-content: center; font-size: 16px;
-  }
-  .ai-chat-typing {
-    padding: 10px 14px; background: var(--bg); border-radius: 16px;
-    font-size: 13px; color: var(--text-3); display: inline-flex; gap: 4px;
-  }
-  .ai-chat-typing span {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--rose-3);
-    animation: typing 1.2s infinite;
-  }
-  .ai-chat-typing span:nth-child(2) { animation-delay: 0.2s; }
-  .ai-chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes typing { 0%,60%,100% { opacity: 0.3; } 30% { opacity: 1; } }
-  .ai-chat-input {
-    padding: 10px 12px; border-top: 1px solid rgba(248,187,208,0.15);
-    display: flex; gap: 8px; padding-bottom: max(10px, env(safe-area-inset-bottom));
-  }
-  .ai-chat-input input {
-    flex: 1; padding: 12px 16px; border: 1.5px solid rgba(248,187,208,0.3);
-    border-radius: 22px; font-size: 13px; outline: none; background: var(--bg);
-    font-family: inherit;
-  }
-  .ai-chat-input input:focus { border-color: var(--rose-3); }
-  .ai-chat-input button {
-    width: 44px; height: 44px; border-radius: 50%; border: none;
-    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
-    color: #fff; font-size: 18px; cursor: pointer; flex-shrink: 0;
-  }
-  .ai-quick-tags {
-    padding: 6px 12px; display: flex; gap: 6px; flex-wrap: wrap;
-  }
-  .ai-quick-tag {
-    padding: 5px 12px; border-radius: 16px; font-size: 11px;
-    background: var(--rose-1); color: var(--rose-deep); cursor: pointer;
-    white-space: nowrap;
-  }
 </style>
 </head>
 <body>
@@ -1273,28 +1174,24 @@
   </main>
 </div>
 
-<!-- AI 对话助手 -->
-<div class="ai-chat-btn" id="ai-chat-btn">
-  💬<span class="badge"></span>
+<!-- AI 助手 - 底部固定栏 -->
+<div id="ai-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;border-top:2px solid #f8bbd0;padding:6px 8px;padding-bottom:max(6px,env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;box-shadow:0 -4px 16px rgba(244,143,177,0.2);">
+  <button onclick="showQuickCmds()" style="width:36px;height:36px;border-radius:50%;border:none;background:#fce4ec;font-size:18px;flex-shrink:0;cursor:pointer;">⚡</button>
+  <input id="ai-input" type="text" placeholder="输入指令，AI帮你干活..." style="flex:1;padding:10px 12px;border:2px solid #f8bbd0;border-radius:20px;font-size:14px;outline:none;background:#fff0f3;font-family:inherit;min-width:0;">
+  <button onclick="startVoice()" style="width:36px;height:36px;border-radius:50%;border:none;background:#fce4ec;font-size:18px;flex-shrink:0;cursor:pointer;">🎤</button>
+  <button id="ai-go-btn" style="width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,#f8bbd0,#f48fb1);color:#fff;font-size:20px;flex-shrink:0;cursor:pointer;">➤</button>
 </div>
-<div class="ai-chat-overlay" id="ai-chat-overlay" onclick="toggleAIChat()"></div>
-<div class="ai-chat-panel" id="ai-chat-panel">
-  <div class="ai-chat-header">
-    <div class="title">🐱 木子甜 AI 助手</div>
-    <button class="close" id="ai-close-btn">✕</button>
+<!-- AI 回复弹窗 -->
+<div id="ai-result-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:198;" onclick="this.style.display='none';document.getElementById('ai-result').style.display='none';"></div>
+<div id="ai-result" style="display:none;position:fixed;bottom:70px;left:8px;right:8px;z-index:201;background:#fff;border-radius:20px;padding:16px;box-shadow:0 -6px 30px rgba(0,0,0,0.2);max-height:55vh;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <span style="font-weight:700;color:#5d4037;">🐱 AI 回复</span>
+    <div style="display:flex;gap:4px;">
+      <button onclick="showHistory()" style="border:none;background:#fce4ec;border-radius:12px;padding:4px 10px;font-size:11px;cursor:pointer;color:#ec407a;">📋 历史</button>
+      <button onclick="document.getElementById('ai-result').style.display='none';document.getElementById('ai-result-overlay').style.display='none';" style="border:none;background:none;font-size:20px;cursor:pointer;color:#bcaaa4;">✕</button>
+    </div>
   </div>
-  <div class="ai-chat-messages" id="ai-chat-messages"></div>
-  <div class="ai-quick-tags" id="ai-quick-tags">
-    <span class="ai-quick-tag" data-msg="帮我写一篇工作汇报">✍️ 写工作汇报</span>
-    <span class="ai-quick-tag" data-msg="推荐几部好看的电视剧">📺 推荐电视剧</span>
-    <span class="ai-quick-tag" data-msg="帮我写一段抖音文案">🎵 抖音文案</span>
-    <span class="ai-quick-tag" data-msg="理财建议">💰 理财建议</span>
-    <span class="ai-quick-tag" data-msg="旅游推荐">✈️ 旅游推荐</span>
-  </div>
-  <div class="ai-chat-input">
-    <input type="text" id="ai-chat-input" placeholder="跟我说点什么..." onkeypress="if(event.key==='Enter')sendAIMsg()">
-    <button id="ai-send-btn">➤</button>
-  </div>
+  <div id="ai-result-text" style="font-size:13px;line-height:1.8;color:#5d4037;white-space:pre-wrap;"></div>
 </div>
 
 <script>
@@ -1821,32 +1718,148 @@ renderSidebar();
 updateGreeting();
 setInterval(updateGreeting, 3600000);
 
-// AI 聊天按钮事件绑定（用 addEventListener 更可靠）
-document.getElementById('ai-chat-btn').addEventListener('click', toggleAIChat);
-document.getElementById('ai-chat-btn').addEventListener('touchstart', function(e) {
-  e.preventDefault();
-  toggleAIChat();
+// ===== AI 助手 - 底部输入栏 =====
+var aiChatMsgs = [];
+var AI_CHAT_KEY = 'ai_chat';
+
+function loadAIChat() {
+  var raw = localStorage.getItem(AI_CHAT_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [];
+}
+function saveAIChat(data) { localStorage.setItem(AI_CHAT_KEY, JSON.stringify(data)); }
+aiChatMsgs = loadAIChat();
+
+// 发送按钮事件
+document.getElementById('ai-go-btn').addEventListener('click', doAISend);
+document.getElementById('ai-go-btn').addEventListener('touchend', function(e) {
+  e.preventDefault(); doAISend();
 });
-// 发送按钮
-document.getElementById('ai-send-btn').addEventListener('click', sendAIMsg);
-document.getElementById('ai-send-btn').addEventListener('touchstart', function(e) {
-  e.preventDefault();
-  sendAIMsg();
+// 回车发送
+document.getElementById('ai-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); doAISend(); }
 });
-// 关闭按钮
-document.getElementById('ai-close-btn').addEventListener('click', toggleAIChat);
-document.getElementById('ai-close-btn').addEventListener('touchstart', function(e) {
-  e.preventDefault();
-  toggleAIChat();
-});
-// 快捷标签
-document.querySelectorAll('#ai-quick-tags .ai-quick-tag').forEach(function(tag) {
-  tag.addEventListener('click', function() { sendQuickMsg(this.getAttribute('data-msg')); });
-  tag.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    sendQuickMsg(this.getAttribute('data-msg'));
+
+function doAISend() {
+  var input = document.getElementById('ai-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.blur();
+  
+  // 显示加载
+  var overlay = document.getElementById('ai-result-overlay');
+  var result = document.getElementById('ai-result');
+  var textEl = document.getElementById('ai-result-text');
+  textEl.innerHTML = '🐱 <b>思考中...</b>';
+  overlay.style.display = 'block';
+  result.style.display = 'block';
+  
+  // 模拟AI生成
+  setTimeout(function() {
+    var resp = generateAIResponse(text);
+    textEl.innerHTML = resp;
+    aiChatMsgs.push({ role: 'user', text: text });
+    aiChatMsgs.push({ role: 'ai', text: resp });
+    saveAIChat(aiChatMsgs);
+  }, 600 + Math.random() * 800);
+}
+
+// 语音输入
+function startVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('你的浏览器不支持语音输入，请手动打字～');
+    return;
+  }
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var rec = new SpeechRecognition();
+  rec.lang = 'zh-CN';
+  rec.interimResults = false;
+  rec.onresult = function(e) {
+    var text = e.results[0][0].transcript;
+    document.getElementById('ai-input').value = text;
+  };
+  rec.onerror = function() { alert('语音识别失败，请手动输入～'); };
+  rec.start();
+}
+
+// 快捷指令
+var quickCmds = [
+  '✍️ 帮我写一篇工作汇报',
+  '📺 推荐几部好看的电视剧',
+  '🎵 帮我写一段抖音文案',
+  '💰 帮我分析理财',
+  '✈️ 推荐旅游目的地',
+  '📖 推荐几本好书'
+];
+function showQuickCmds() {
+  var overlay = document.getElementById('ai-result-overlay');
+  var result = document.getElementById('ai-result');
+  var textEl = document.getElementById('ai-result-text');
+  var html = '<div style="font-weight:700;margin-bottom:10px;">🐱 快捷指令（点击直接发送）</div>';
+  quickCmds.forEach(function(cmd) {
+    html += '<div style="padding:10px 14px;margin-bottom:6px;background:#fce4ec;border-radius:14px;cursor:pointer;font-size:13px;" onclick="quickSend(this.innerText)">' + cmd + '</div>';
   });
-});
+  textEl.innerHTML = html;
+  overlay.style.display = 'block';
+  result.style.display = 'block';
+}
+
+function quickSend(text) {
+  document.getElementById('ai-result').style.display = 'none';
+  document.getElementById('ai-result-overlay').style.display = 'none';
+  document.getElementById('ai-input').value = text;
+  doAISend();
+}
+
+// 历史记录
+function showHistory() {
+  var overlay = document.getElementById('ai-result-overlay');
+  var result = document.getElementById('ai-result');
+  var textEl = document.getElementById('ai-result-text');
+  if (aiChatMsgs.length === 0) {
+    textEl.innerHTML = '还没有对话记录，试试输入指令吧～';
+  } else {
+    var html = '<div style="font-weight:700;margin-bottom:10px;">🐱 对话历史</div>';
+    var recent = aiChatMsgs.slice(-10);
+    recent.forEach(function(m) {
+      var cls = m.role === 'user' ? 'background:#fce4ec;text-align:right;' : 'background:#f3e5f5;';
+      html += '<div style="padding:8px 12px;margin-bottom:4px;border-radius:12px;font-size:12px;' + cls + '">' + (m.role==='user'?'👤 ':'🐱 ') + m.text.substring(0,80) + '</div>';
+    });
+    textEl.innerHTML = html;
+  }
+  overlay.style.display = 'block';
+  result.style.display = 'block';
+}
+
+function generateAIResponse(text) {
+  var t = text.toLowerCase();
+  if (t.indexOf('汇报') >= 0 || t.indexOf('报告') >= 0) {
+    return '📝 <b>工作汇报模板</b>\n\n一、本期工作概况\n围绕工作目标，完成以下工作：\n\n二、主要成果\n1. \n2. \n3. \n\n三、存在问题\n1. \n2. \n\n四、下一步计划\n1. \n2. \n\n💡 去「✍️ 文稿写作」可保存编辑～';
+  }
+  if (t.indexOf('纪要') >= 0 || t.indexOf('会议') >= 0) {
+    return '📋 <b>会议纪要模板</b>\n\n会议主题：\n时间：\n地点：\n参会人员：\n\n一、会议内容\n1. \n2. \n\n二、决议事项\n1. \n2. \n\n三、下一步工作\n1. \n';
+  }
+  if (t.indexOf('文案') >= 0 || t.indexOf('抖音') >= 0) {
+    return '🎵 <b>抖音文案</b>\n\n✨ 生活嘛，就是一边崩溃一边治愈\n今天也是努力发光的一天呀～\n\n#日常 #治愈 #努力\n\n💡 去「🔥 抖音热点」查看更多灵感～';
+  }
+  if (t.indexOf('剧') >= 0 || t.indexOf('电视') >= 0 || t.indexOf('推荐') >= 0 && t.indexOf('书') < 0) {
+    return '📺 <b>推荐几部好剧</b>\n\n🔥 热播中：\n• 《庆余年2》- 古装权谋\n• 《玫瑰的故事》- 都市情感\n• 《墨雨云间》- 古装复仇\n\n⭐ 口碑佳作：\n• 《繁花》- 上海往事\n• 《狂飙》- 扫黑经典\n\n💡 去「📺 追剧」添加你的追剧清单～';
+  }
+  if (t.indexOf('理财') >= 0 || t.indexOf('消费') >= 0 || t.indexOf('省钱') >= 0 || t.indexOf('钱') >= 0) {
+    return '💰 <b>理财建议</b>\n\n1. 📊 50/30/20法则：\n   50%必要支出 | 30%想要 | 20%储蓄\n\n2. 🐷 先存后花，每月固定储蓄\n\n3. 📝 记录每笔开销，月底复盘\n\n4. 🚫 警惕"拿铁因子"（小额消费累积）\n\n💡 去「💰 理财」记账+AI分析～';
+  }
+  if (t.indexOf('旅游') >= 0 || t.indexOf('旅行') >= 0 || t.indexOf('去') >= 0 && t.indexOf('玩') >= 0) {
+    return '✈️ <b>旅游推荐</b>\n\n🏔️ 自然风光：张家界、九寨沟、桂林\n🏛️ 历史文化：西安、南京、洛阳\n🌊 海滨度假：三亚、厦门、青岛\n🍜 美食之旅：成都、重庆、长沙\n\n💡 去「✈️ 旅游」添加你的旅行计划～';
+  }
+  if (t.indexOf('书') >= 0 || t.indexOf('阅读') >= 0) {
+    return '📖 <b>好书推荐</b>\n\n📕 《活着》- 余华\n📗 《小王子》- 圣埃克苏佩里\n📘 《三体》- 刘慈欣\n📙 《人间值得》- 中村恒子\n\n💡 去「📖 阅读」添加你的书单～';
+  }
+  if (t.indexOf('养生') >= 0 || t.indexOf('健康') >= 0) {
+    return '🍵 <b>养生小贴士</b>\n\n💧 每天8杯水\n🧘 10分钟拉伸\n😴 保证7-8小时睡眠\n🍎 多吃蔬果少油腻\n🌞 每天晒15分钟太阳\n\n💡 去「🍵 养生」每日打卡～';
+  }
+  return '🐱 收到！你可以试试这些指令：\n\n✍️ "帮我写工作汇报"\n📺 "推荐好看的电视剧"\n🎵 "写一段抖音文案"\n💰 "帮我分析理财"\n✈️ "推荐旅游目的地"\n📖 "推荐几本好书"\n\n或者直接告诉我你想做什么～';
+}
 
 // ===== 追剧模块 =====
 var DRAMA_KEY = 'drama_data';
@@ -2304,7 +2317,7 @@ function importAll() {
     if (backup.home) { homeData = backup.home; saveHomeData(homeData); renderHomeData(); }
     if (backup.moneyManual) { saveMoneyManual(backup.moneyManual); }
     if (backup.moneyMode) { localStorage.setItem('money_mode', backup.moneyMode); }
-    if (backup.aiChat) { aiChatMsgs = backup.aiChat; saveAIChat(aiChatMsgs); renderAIChat(); }
+    if (backup.aiChat) { aiChatMsgs = backup.aiChat; saveAIChat(aiChatMsgs); }
     // 刷新界面
     renderSidebar();
     updateGreeting();
@@ -2711,128 +2724,6 @@ function loadAIChat() {
 function saveAIChat(msgs) { localStorage.setItem(AI_CHAT_KEY, JSON.stringify(msgs.slice(-50))); }
 var aiChatMsgs = loadAIChat();
 
-function toggleAIChat() {
-  var panel = document.getElementById('ai-chat-panel');
-  var overlay = document.getElementById('ai-chat-overlay');
-  var isShow = panel.classList.contains('show');
-  panel.classList.toggle('show');
-  overlay.classList.toggle('show');
-  if (!isShow) {
-    renderAIChat();
-    setTimeout(function() {
-      var input = document.getElementById('ai-chat-input');
-      if (input) input.focus();
-    }, 300);
-  }
-}
-
-function renderAIChat() {
-  var container = document.getElementById('ai-chat-messages');
-  if (!container) return;
-  container.innerHTML = '';
-  if (aiChatMsgs.length === 0) {
-    container.innerHTML = '<div class="chat-msg ai"><div class="avatar-ic">🐱</div><div class="bubble">嗨～我是木子甜 AI 助手！🐱\n\n我可以帮你：\n✍️ 写文稿（汇报、纪要、文案）\n📺 推荐电视剧\n💰 理财建议\n✈️ 旅游推荐\n🎵 抖音热点\n\n试试跟我说点什么吧～</div></div>';
-    return;
-  }
-  aiChatMsgs.forEach(function(msg) {
-    var div = document.createElement('div');
-    div.className = 'chat-msg ' + msg.role;
-    if (msg.role === 'ai') {
-      div.innerHTML = '<div class="avatar-ic">🐱</div><div class="bubble">' + escapeHtml(msg.text) + '</div>';
-    } else {
-      div.innerHTML = '<div class="bubble">' + escapeHtml(msg.text) + '</div>';
-    }
-    container.appendChild(div);
-  });
-  container.scrollTop = container.scrollHeight;
-}
-
-function escapeHtml(text) {
-  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function sendAIMsg() {
-  var input = document.getElementById('ai-chat-input');
-  var text = input.value.trim();
-  if (!text) return;
-  aiChatMsgs.push({ role: 'user', text: text });
-  saveAIChat(aiChatMsgs);
-  input.value = '';
-  renderAIChat();
-  // typing indicator
-  var container = document.getElementById('ai-chat-messages');
-  var typingDiv = document.createElement('div');
-  typingDiv.className = 'chat-msg ai';
-  typingDiv.id = 'typing-indicator';
-  typingDiv.innerHTML = '<div class="avatar-ic">🐱</div><div class="ai-chat-typing"><span></span><span></span><span></span></div>';
-  container.appendChild(typingDiv);
-  container.scrollTop = container.scrollHeight;
-  // generate response
-  setTimeout(function() {
-    var typing = document.getElementById('typing-indicator');
-    if (typing) typing.remove();
-    var response = generateAIResponse(text);
-    aiChatMsgs.push({ role: 'ai', text: response });
-    saveAIChat(aiChatMsgs);
-    renderAIChat();
-  }, 800 + Math.random() * 600);
-}
-
-function sendQuickMsg(text) {
-  var input = document.getElementById('ai-chat-input');
-  input.value = text;
-  sendAIMsg();
-}
-
-function generateAIResponse(text) {
-  var t = text.toLowerCase();
-  // 写稿类
-  if (t.indexOf('写') >= 0 || t.indexOf('稿') >= 0 || t.indexOf('汇报') >= 0 || t.indexOf('纪要') >= 0 || t.indexOf('演讲') >= 0 || t.indexOf('通知') >= 0 || t.indexOf('文案') >= 0 || t.indexOf('文章') >= 0 || t.indexOf('报告') >= 0) {
-    if (t.indexOf('汇报') >= 0 || t.indexOf('报告') >= 0) {
-      return '📝 好的，这是一份工作汇报模板：\n\n【工作汇报】\n\n一、本期工作概况\n（填写时间段）以来，围绕工作目标，主要完成以下工作：\n\n二、主要工作完成情况\n1. \n2. \n3. \n\n三、存在问题与不足\n1. \n2. \n\n四、下一步计划\n1. \n2. \n3. \n\n💡 提示：你可以去「✍️ 文稿写作」页面，选择「工作汇报」模板，直接编辑保存哟～';
-    }
-    if (t.indexOf('纪要') >= 0) {
-      return '📝 会议纪要模板：\n\n【会议纪要】\n时间：\n地点：\n参会人员：\n主持人：\n\n一、会议议题\n1. \n2. \n\n二、讨论情况\n\n三、决议事项\n1. \n2. \n\n四、下一步落实\n\n💡 去「文稿写作」页面可以编辑保存～';
-    }
-    if (t.indexOf('文案') >= 0 || t.indexOf('抖音') >= 0) {
-      return '🎵 抖音文案灵感：\n\n1. \"今天也是元气满满的一天，你努力的样子真好看✨\"\n2. \"生活不只有眼前的苟且，还有诗和远方🌿\"\n3. \"做个温柔的人，眼里有光，心中有爱💕\"\n4. \"你笑起来真好看，像春天的花一样🌸\"\n\n💡 去「抖音热点」页面可以看最新热搜话题～';
-    }
-    return '✍️ 好的！请去「✍️ 文稿写作」页面，在AI助手里输入具体需求，我会帮你生成完整内容。你也可以选择快捷模板：工作汇报、会议纪要、演讲稿、通知公告、活动策划、微信文案～';
-  }
-  // 电视剧推荐
-  if (t.indexOf('电视') >= 0 || t.indexOf('剧') >= 0 || t.indexOf('追剧') >= 0 || t.indexOf('看') >= 0) {
-    return '📺 最近热门电视剧推荐：\n\n1. 《苍兰诀》- 东方幻想爱情，超甜！💕\n2. 《长相思》- 古装神话，虐恋情深\n3. 《偷偷藏不住》- 青春暗恋，甜到心里\n4. 《莲花楼》- 武侠悬疑，精彩反转\n5. 《繁花》- 王家卫导演，上海风情\n\n💡 去「📺 追剧」页面添加你正在追的剧吧～';
-  }
-  // 理财
-  if (t.indexOf('理财') >= 0 || t.indexOf('钱') >= 0 || t.indexOf('收入') >= 0 || t.indexOf('支出') >= 0 || t.indexOf('存') >= 0 || t.indexOf('投资') >= 0) {
-    return '💰 理财小建议：\n\n1. 记账：每天记录收支，了解消费习惯\n2. 预算：月支出控制在收入的70%以内\n3. 储蓄：先存后花，建议储蓄率20%以上\n4. 投资：小额定投基金，长期持有\n5. 应急：留3-6个月生活费做应急金\n\n💡 去「💰 理财」页面记账，然后点「AI分析」看消费报告～';
-  }
-  // 旅游
-  if (t.indexOf('旅游') >= 0 || t.indexOf('旅行') >= 0 || t.indexOf('去哪') >= 0 || t.indexOf('景点') >= 0) {
-    return '✈️ 旅游推荐：\n\n🌸 周边游：西安大唐不夜城、华山、壶口瀑布\n🏝️ 小众地：青海茶卡盐湖、甘肃张掖丹霞\n🏖️ 海边：三亚、厦门、北海涠洲岛\n🏔️ 避暑：云南大理、贵州荔波\n\n💡 去「✈️ 旅游」页面添加你想去的城市～';
-  }
-  // 健康/养生
-  if (t.indexOf('养生') >= 0 || t.indexOf('健康') >= 0 || t.indexOf('运动') >= 0 || t.indexOf('减肥') >= 0 || t.indexOf('睡眠') >= 0) {
-    return '🍵 养生小贴士：\n\n1. 每天喝8杯水，皮肤水嫩嫩💧\n2. 睡前10分钟拉伸，改善睡眠🧘\n3. 23点前入睡，养肝美容😴\n4. 下午一杯花茶，心情美美哒🌸\n5. 每周运动3次，每次30分钟\n\n💡 去「🍵 养生」页面打卡今日健康习惯～';
-  }
-  // 英语
-  if (t.indexOf('英语') >= 0 || t.indexOf('单词') >= 0 || t.indexOf('学习') >= 0) {
-    return '📖 英语学习建议：\n\n1. 每天背20个单词，坚持打卡\n2. 看美剧跟读，练口语和听力\n3. 用英语写日记，哪怕只有几句\n4. 推荐APP：百词斩、流利说\n\n今日单词：\n• serendipity - 意外的幸运\n• euphoria - 极度愉快\n• nostalgia - 怀旧\n\n💡 坚持就是胜利！加油～💪';
-  }
-  // 读书
-  if (t.indexOf('读书') >= 0 || t.indexOf('阅读') >= 0 || t.indexOf('书') >= 0) {
-    return '📚 推荐书单：\n\n1. 《小王子》- 献给大人的童话⭐\n2. 《活着》- 生命的力量与韧性\n3. 《三体》- 中国科幻巅峰\n4. 《人间值得》- 治愈系人生哲学\n5. 《被讨厌的勇气》- 阿德勒心理学\n\n💡 去「📖 阅读」页面添加你在读的书～';
-  }
-  // 抖音
-  if (t.indexOf('抖音') >= 0 || t.indexOf('热点') >= 0 || t.indexOf('热搜') >= 0) {
-    return '🎵 去「🔥 抖音热点」页面，点击「今日热榜」按钮，可以查看最新热门话题！\n\n点击任意话题可以复制，方便你跟热点创作内容～';
-  }
-  // 默认
-  return '🐱 收到啦！我 currently 可以帮你：\n\n✍️ 写文稿（汇报/纪要/文案/演讲稿）\n📺 推荐电视剧\n💰 理财建议\n✈️ 旅游推荐\n🍵 养生建议\n📖 推荐书单\n🎵 抖音热点\n\n试试上面的快捷标签，或者直接告诉我你想做什么～';
-}
-
-// init AI chat render
-renderAIChat();
 
 </script>
 </body>
