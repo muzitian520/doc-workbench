@@ -59,15 +59,16 @@
   .sidebar::-webkit-scrollbar { width: 0; }
 
   .avatar {
-    width: 52px; height: 52px;
+    width: 56px; height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
+    background: linear-gradient(135deg, #fff5f7, #fce4ec);
     display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
     margin-bottom: 22px;
     box-shadow: 0 6px 18px rgba(244, 143, 177, 0.35);
-    border: 3px solid var(--white);
+    border: 3px solid #f8bbd0;
+    overflow: hidden;
   }
+  .avatar svg { width: 46px; height: 46px; }
 
   .nav-item {
     width: 74px; padding: 10px 4px;
@@ -108,8 +109,9 @@
   /* ===== 主内容 ===== */
   .main {
     flex: 1; overflow-y: auto;
-    padding: 22px 20px 32px;
+    padding: 22px 20px 40px;
     position: relative;
+    -webkit-overflow-scrolling: touch;
   }
   .main::-webkit-scrollbar { width: 0; }
 
@@ -295,8 +297,9 @@
 
   /* 页面切换 */
   .page { display: none; }
-  .page.active { display: block; animation: fadeIn 0.35s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .page.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .page.active > *:last-child { margin-bottom: 30px; }
 
   .page-header { margin-bottom: 18px; }
   .ph-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
@@ -377,8 +380,18 @@
     background: var(--bg); border-radius: 16px;
     padding: 10px 12px;
   }
-  .nav-edit-row .nav-edit-emoji { font-size: 20px; width: 36px; text-align: center; flex-shrink: 0; }
-  .nav-edit-row .nav-edit-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-1); }
+  .nav-edit-row .nav-edit-emoji {
+    font-size: 20px; width: 36px; text-align: center; flex-shrink: 0;
+    cursor: pointer; padding: 4px;
+    border-radius: 8px; transition: background 0.2s;
+  }
+  .nav-edit-row .nav-edit-emoji:hover { background: rgba(244,143,177,0.12); }
+  .nav-edit-row .nav-edit-name {
+    flex: 1; font-size: 13px; font-weight: 600; color: var(--text-1);
+    cursor: pointer; padding: 4px 8px;
+    border-radius: 8px; transition: background 0.2s;
+  }
+  .nav-edit-row .nav-edit-name:hover { background: rgba(244,143,177,0.12); }
   .nav-edit-row .nav-edit-btn {
     width: 32px; height: 32px; border-radius: 50%; border: none;
     display: flex; align-items: center; justify-content: center;
@@ -401,7 +414,36 @@
 <div class="app">
   <!-- 左侧导航 -->
   <aside class="sidebar">
-    <div class="avatar">🎀</div>
+    <div class="avatar">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Hello Kitty 猫头 -->
+        <ellipse cx="50" cy="55" rx="42" ry="38" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>
+        <!-- 左耳 -->
+        <ellipse cx="22" cy="24" rx="16" ry="20" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>
+        <ellipse cx="22" cy="26" rx="8" ry="11" fill="#fce4ec"/>
+        <!-- 右耳 -->
+        <ellipse cx="78" cy="24" rx="16" ry="20" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>
+        <ellipse cx="78" cy="26" rx="8" ry="11" fill="#fce4ec"/>
+        <!-- 蝴蝶结 -->
+        <ellipse cx="38" cy="34" rx="9" ry="7" fill="#ec407a"/>
+        <ellipse cx="62" cy="34" rx="9" ry="7" fill="#ec407a"/>
+        <circle cx="50" cy="35" r="4" fill="#f48fb1"/>
+        <!-- 眼睛 -->
+        <ellipse cx="38" cy="52" rx="4" ry="5" fill="#333"/>
+        <ellipse cx="62" cy="52" rx="4" ry="5" fill="#333"/>
+        <circle cx="39" cy="50" r="1.2" fill="#fff"/>
+        <circle cx="63" cy="50" r="1.2" fill="#fff"/>
+        <!-- 鼻子 -->
+        <ellipse cx="50" cy="60" rx="4" ry="3" fill="#f8bbd0"/>
+        <!-- 胡须 -->
+        <line x1="28" y1="56" x2="42" y2="58" stroke="#ddd" stroke-width="1"/>
+        <line x1="28" y1="61" x2="42" y2="61" stroke="#ddd" stroke-width="1"/>
+        <line x1="28" y1="66" x2="42" y2="64" stroke="#ddd" stroke-width="1"/>
+        <line x1="72" y1="56" x2="58" y2="58" stroke="#ddd" stroke-width="1"/>
+        <line x1="72" y1="61" x2="58" y2="61" stroke="#ddd" stroke-width="1"/>
+        <line x1="72" y1="66" x2="58" y2="64" stroke="#ddd" stroke-width="1"/>
+      </svg>
+    </div>
     <div class="nav-item active" data-page="home">
       <div class="ic">🏠</div><div class="tx">首页</div>
     </div>
@@ -854,6 +896,65 @@
       </div>
     </div>
 
+    <!-- ========= 追剧 ========= -->
+    <div class="page" id="page-drama">
+      <div class="page-header">
+        <div class="ph-title">📺 追剧日历</div>
+        <div class="ph-desc">记录每一部心动的剧集 🎬</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card today">
+          <div class="ic-wrap">🎬</div>
+          <div class="num">8<span class="unit">部</span></div>
+          <div class="lbl">正在追</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="ic-wrap">⭐</div>
+          <div class="num">23<span class="unit">部</span></div>
+          <div class="lbl">已看完</div>
+        </div>
+        <div class="stat-card done">
+          <div class="ic-wrap">📝</div>
+          <div class="num">5<span class="unit">部</span></div>
+          <div class="lbl">想追清单</div>
+        </div>
+      </div>
+      <div class="func-list">
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--rose-1);">📺</div>
+          <div class="func-info">
+            <div class="func-title">正在追：暂未添加</div>
+            <div class="func-desc">点击添加你正在追的剧集</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--lavender);">🎬</div>
+          <div class="func-info">
+            <div class="func-title">追剧日历</div>
+            <div class="func-desc">标记每周更新的追剧时间表</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--peach);">🍿</div>
+          <div class="func-info">
+            <div class="func-title">已看记录</div>
+            <div class="func-desc">记录看过的每一部好剧</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--mint);">💬</div>
+          <div class="func-info">
+            <div class="func-title">追剧笔记</div>
+            <div class="func-desc">记录观后感和精彩台词</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+      </div>
+    </div>
+
     <!-- ========= 设置 ========= -->
     <div class="page" id="page-settings">
       <div class="page-header">
@@ -899,6 +1000,7 @@
           <button class="btn btn-ghost" style="width:100%;" onclick="resetSettings()">🔄 恢复默认设置</button>
         </div>
       </div>
+      <div style="height:40px;"></div>
     </div>
 
   </main>
@@ -914,16 +1016,17 @@ var BIRTH_LUNAR_DAY = 1;
 var SETTINGS_KEY = 'girl_workbench_settings';
 var NAV_KEY = 'girl_workbench_nav';
 
-// ===== 默认导航项 =====
+// ===== 默认导航项（Hello Kitty 可爱风）=====
 var DEFAULT_NAV = [
-  { id:'home', emoji:'🏠', name:'首页' },
-  { id:'money', emoji:'💰', name:'理财' },
-  { id:'douyin', emoji:'🔥', name:'抖音热点' },
-  { id:'travel', emoji:'✈️', name:'旅游' },
-  { id:'health', emoji:'🍵', name:'养生' },
-  { id:'english', emoji:'📖', name:'英语' },
-  { id:'reading', emoji:'📚', name:'读书' },
-  { id:'writing', emoji:'✍️', name:'文稿写作' },
+  { id:'home', emoji:'🐱', name:'首页' },
+  { id:'money', emoji:'💗', name:'理财' },
+  { id:'douyin', emoji:'🎵', name:'抖音热点' },
+  { id:'writing', emoji:'✏️', name:'文稿写作' },
+  { id:'travel', emoji:'🎀', name:'旅游' },
+  { id:'drama', emoji:'📺', name:'追剧' },
+  { id:'reading', emoji:'📖', name:'阅读' },
+  { id:'health', emoji:'🍓', name:'养生' },
+  { id:'english', emoji:'🌸', name:'英语' },
   { id:'settings', emoji:'⚙️', name:'设置' }
 ];
 
@@ -991,7 +1094,7 @@ function renderSidebar() {
   });
 }
 
-// ===== 导航编辑器渲染 =====
+// ===== 导航编辑器渲染（支持点击编辑）=====
 function renderNavEditor() {
   var list = document.getElementById('nav-editor-list');
   if (!list) return;
@@ -1001,13 +1104,33 @@ function renderNavEditor() {
     var row = document.createElement('div');
     row.className = 'nav-edit-row';
 
-    var emoji = document.createElement('span');
-    emoji.className = 'nav-edit-emoji';
-    emoji.textContent = item.emoji;
+    // 可点击编辑的 emoji
+    var emojiSpan = document.createElement('span');
+    emojiSpan.className = 'nav-edit-emoji';
+    emojiSpan.textContent = item.emoji;
+    emojiSpan.title = '点击修改图标';
+    emojiSpan.onclick = function(e) {
+      e.stopPropagation();
+      var newEmoji = prompt('请输入新图标（emoji）：', item.emoji);
+      if (newEmoji && newEmoji.trim()) {
+        navItems[idx].emoji = newEmoji.trim();
+        renderNavEditor();
+      }
+    };
 
-    var name = document.createElement('span');
-    name.className = 'nav-edit-name';
-    name.textContent = item.name;
+    // 可点击编辑的名称
+    var nameSpan = document.createElement('span');
+    nameSpan.className = 'nav-edit-name';
+    nameSpan.textContent = item.name;
+    nameSpan.title = '点击修改名称';
+    nameSpan.onclick = function(e) {
+      e.stopPropagation();
+      var newName = prompt('请输入新名称：', item.name);
+      if (newName && newName.trim()) {
+        navItems[idx].name = newName.trim();
+        renderNavEditor();
+      }
+    };
 
     var upBtn = document.createElement('button');
     upBtn.className = 'nav-edit-btn up';
@@ -1050,8 +1173,8 @@ function renderNavEditor() {
       }
     };
 
-    row.appendChild(emoji);
-    row.appendChild(name);
+    row.appendChild(emojiSpan);
+    row.appendChild(nameSpan);
     row.appendChild(upBtn);
     row.appendChild(downBtn);
     row.appendChild(delBtn);
