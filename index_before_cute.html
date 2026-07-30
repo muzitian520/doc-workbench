@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>文稿接单工作台</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="文稿接单">
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon.png">
+<link rel="icon" sizes="512x512" href="icon.png">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;文稿接单工作台&quot;,&quot;short_name&quot;:&quot;文稿接单&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#f5f9f3&quot;,&quot;theme_color&quot;:&quot;#9dc88d&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;icon.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;}]}">
+<style>
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: local('PingFang SC'), local('Microsoft YaHei'), local('sans-serif');
+  }
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('PingFang SC'), local('Microsoft YaHei'), local('sans-serif');
+  }
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('PingFang SC'), local('Microsoft YaHei'), local('sans-serif');
+  }
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: local('PingFang SC'), local('Microsoft YaHei'), local('sans-serif');
+  }
+  @font-face {
+    font-family: 'Noto Sans SC';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('PingFang SC'), local('Microsoft YaHei'), local('sans-serif');
+  }
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #f5f9f3;
+    --matcha-1: #b7d7a8;
+    --matcha-2: #9dc88d;
+    --matcha-3: #8bbf7a;
+    --matcha-deep: #6ea85c;
+    --matcha-dark: #4e8a3e;
+    --matcha-light: #d9ead3;
+    --matcha-pale: #e8f3e2;
+    --cream: #fdf8f0;
+    --rose: #f5e8e0;
+    --apricot: #fef3e8;
+    --pearl: #f7faf5;
+    --text-1: #2d3a28;
+    --text-2: #5a6b52;
+    --text-3: #8a9a82;
+    --card: #ffffff;
+    --card-border: rgba(183, 215, 168, 0.35);
+    --shadow: 0 8px 28px rgba(110, 168, 92, 0.08);
+    --shadow-soft: 0 4px 16px rgba(110, 168, 92, 0.05);
+  }
+
+  html, body {
+    height: 100%;
+    font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    color: var(--text-1);
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  .app { display: flex; height: 100vh; width: 100vw; }
+
+  /* ===== 左侧导航 ===== */
+  .sidebar {
+    width: 96px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f0f7ec 50%, #e8f3e2 100%);
+    border-right: 1px solid rgba(183, 215, 168, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 0 16px;
+    overflow-y: auto;
+    z-index: 10;
+  }
+  .sidebar::-webkit-scrollbar { width: 0; }
+
+  .logo {
+    width: 46px; height: 46px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--matcha-2), var(--matcha-deep));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 22px; font-weight: 700;
+    margin-bottom: 26px;
+    box-shadow: 0 6px 18px rgba(110, 168, 92, 0.3);
+  }
+
+  .nav-item {
+    width: 80px; padding: 11px 6px;
+    border-radius: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    cursor: pointer; margin-bottom: 5px;
+    transition: all 0.25s ease;
+    color: var(--text-2);
+    position: relative;
+  }
+  .nav-item .ic {
+    width: 34px; height: 34px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    background: rgba(255,255,255,0.7);
+    transition: all 0.25s ease;
+  }
+  .nav-item .tx { font-size: 11px; font-weight: 500; text-align: center; line-height: 1.3; }
+  .nav-item:hover { background: rgba(157, 200, 141, 0.14); color: var(--matcha-dark); }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(157,200,141,0.22), rgba(183,215,168,0.22));
+    color: var(--matcha-dark);
+  }
+  .nav-item.active .ic {
+    background: linear-gradient(135deg, var(--matcha-2), var(--matcha-deep));
+    color: white;
+    box-shadow: 0 4px 14px rgba(110, 168, 92, 0.35);
+  }
+  .nav-item.active::before {
+    content: ''; position: absolute; left: -12px; top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 26px;
+    background: linear-gradient(180deg, var(--matcha-1), var(--matcha-deep));
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ===== 主内容 ===== */
+  .main {
+    flex: 1; overflow-y: auto;
+    padding: 22px 22px 32px;
+    position: relative;
+  }
+  .main::-webkit-scrollbar { width: 0; }
+
+  /* 顶部横幅 */
+  .banner {
+    background: linear-gradient(135deg, #b7d7a8 0%, #9dc88d 50%, #7db868 100%);
+    border-radius: 26px;
+    padding: 26px 28px;
+    color: white;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 32px rgba(110, 168, 92, 0.22);
+  }
+  .banner::before {
+    content: ''; position: absolute;
+    top: -70px; right: -50px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .banner::after {
+    content: ''; position: absolute;
+    bottom: -60px; right: 80px;
+    width: 130px; height: 130px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .banner-weather {
+    position: absolute; top: 24px; right: 26px;
+    text-align: right; z-index: 2;
+  }
+  .banner-weather .wt { font-size: 30px; font-weight: 200; line-height: 1; }
+  .banner-weather .wd { font-size: 11px; opacity: 0.92; margin-top: 3px; }
+  .banner-date {
+    font-size: 12px; opacity: 0.92;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 8px; position: relative; z-index: 2;
+  }
+  .banner-greet {
+    font-size: 24px; font-weight: 600;
+    letter-spacing: 0.5px; margin-bottom: 6px;
+    position: relative; z-index: 2;
+  }
+  .banner-sub {
+    font-size: 13px; opacity: 0.94; line-height: 1.5;
+    position: relative; z-index: 2;
+  }
+
+  /* 标题 */
+  .section-title {
+    font-size: 15px; font-weight: 600;
+    color: var(--text-1);
+    margin: 8px 4px 12px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .section-title .bar {
+    width: 4px; height: 15px;
+    background: linear-gradient(180deg, var(--matcha-1), var(--matcha-deep));
+    border-radius: 2px;
+  }
+  .section-title .more {
+    margin-left: auto; font-size: 12px; font-weight: 400;
+    color: var(--text-3); cursor: pointer;
+  }
+
+  /* 统计卡 */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 16px 10px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+  }
+  .stat-card .ic-wrap {
+    width: 40px; height: 40px;
+    border-radius: 13px;
+    margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+  }
+  .stat-card.today .ic-wrap { background: var(--matcha-pale); }
+  .stat-card.pending .ic-wrap { background: var(--apricot); }
+  .stat-card.done .ic-wrap { background: var(--pearl); }
+  .stat-card .num {
+    font-size: 25px; font-weight: 700;
+    color: var(--text-1); line-height: 1; margin-bottom: 4px;
+  }
+  .stat-card .num .unit { font-size: 12px; font-weight: 500; color: var(--text-3); margin-left: 2px; }
+  .stat-card .lbl { font-size: 11px; color: var(--text-2); }
+  .stat-card .trend { font-size: 10px; margin-top: 6px; color: var(--matcha-deep); font-weight: 500; }
+
+  /* 进度卡 */
+  .progress-card {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .progress-top { display: flex; align-items: center; gap: 18px; margin-bottom: 16px; }
+  .ring { width: 92px; height: 92px; flex-shrink: 0; position: relative; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .ring .pct { font-size: 23px; font-weight: 700; line-height: 1; }
+  .ring .pct-lbl { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+  .progress-info { flex: 1; }
+  .pi-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .pi-desc { font-size: 12px; color: var(--text-3); line-height: 1.5; margin-bottom: 10px; }
+  .pbr { margin-bottom: 9px; }
+  .pbr:last-child { margin-bottom: 0; }
+  .pbr-top { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; }
+  .pbr-top .name { color: var(--text-2); }
+  .pbr-top .val { color: var(--text-1); font-weight: 600; }
+  .pbr-track { height: 6px; background: rgba(183, 215, 168, 0.25); border-radius: 3px; overflow: hidden; }
+  .pbr-fill { height: 100%; border-radius: 3px; }
+
+  /* 快捷入口 */
+  .quick-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 12px; margin-bottom: 18px;
+  }
+  .quick-card {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .quick-card:hover { transform: translateY(-2px); }
+  .qc-ic {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 21px; flex-shrink: 0;
+  }
+  .qc-title { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 2px; }
+  .qc-desc { font-size: 10px; color: var(--text-3); }
+
+  /* 待办卡 */
+  .todo-card {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .todo-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(183, 215, 168, 0.2);
+  }
+  .todo-item:last-child { border-bottom: none; }
+  .todo-check {
+    width: 22px; height: 22px;
+    border-radius: 7px;
+    border: 1.5px solid var(--matcha-2);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 13px;
+  }
+  .todo-check.checked {
+    background: linear-gradient(135deg, var(--matcha-2), var(--matcha-deep));
+    border-color: var(--matcha-deep);
+  }
+  .tc-title { font-size: 13px; font-weight: 500; color: var(--text-1); margin-bottom: 2px; }
+  .tc-meta { font-size: 11px; color: var(--text-3); display: flex; gap: 10px; }
+  .todo-tag { padding: 3px 9px; border-radius: 8px; font-size: 10px; font-weight: 500; }
+  .tag-urgent { background: var(--rose); color: #c4725a; }
+  .tag-normal { background: var(--matcha-pale); color: var(--matcha-dark); }
+  .tag-soon { background: var(--apricot); color: #b8804a; }
+
+  /* 页面切换 */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-header { margin-bottom: 20px; }
+  .ph-title { font-size: 21px; font-weight: 700; margin-bottom: 4px; }
+  .ph-desc { font-size: 13px; color: var(--text-3); }
+
+  /* 业务列表 */
+  .biz-list { display: flex; flex-direction: column; gap: 12px; }
+  .biz-item {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+    display: flex; gap: 14px; align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .biz-item:hover { transform: translateX(2px); }
+  .bi-ic {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 23px; flex-shrink: 0;
+  }
+  .bi-info { flex: 1; }
+  .bi-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .bi-desc { font-size: 11px; color: var(--text-3); line-height: 1.4; }
+  .bi-go { color: var(--matcha-deep); font-size: 18px; }
+
+  /* 表单 */
+  .form-card {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .form-group { margin-bottom: 16px; }
+  .form-group:last-child { margin-bottom: 0; }
+  .form-label { font-size: 12px; color: var(--text-2); margin-bottom: 6px; display: block; font-weight: 500; }
+  .form-input, .form-textarea, .form-select {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid rgba(183, 215, 168, 0.35);
+    border-radius: 12px;
+    background: rgba(247, 250, 245, 0.8);
+    font-size: 13px; color: var(--text-1);
+    font-family: inherit; outline: none;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--matcha-2); }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px 24px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, var(--matcha-2), var(--matcha-deep));
+    color: white; font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(110, 168, 92, 0.3);
+    font-family: inherit; transition: transform 0.2s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-ghost {
+    background: rgba(247, 250, 245, 0.9); color: var(--matcha-dark);
+    border: 1px solid rgba(183, 215, 168, 0.4); box-shadow: none;
+  }
+
+  /* 台账 */
+  .ledger-table {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 1.4fr 0.9fr 0.7fr 0.7fr;
+    padding: 13px 16px; font-size: 12px;
+    align-items: center;
+    border-bottom: 1px solid rgba(183, 215, 168, 0.2);
+  }
+  .ledger-row.head {
+    background: rgba(183, 215, 168, 0.22);
+    font-weight: 600; color: var(--matcha-dark); font-size: 11px;
+  }
+  .ledger-row:last-child { border-bottom: none; }
+  .lr-title { color: var(--text-1); font-weight: 500; }
+  .lr-type { color: var(--text-2); }
+  .lr-amount { color: var(--matcha-dark); font-weight: 600; }
+  .status-pill { padding: 3px 9px; border-radius: 8px; font-size: 10px; font-weight: 500; display: inline-block; }
+  .st-doing { background: var(--apricot); color: #b8804a; }
+  .st-done { background: var(--matcha-pale); color: var(--matcha-dark); }
+  .st-wait { background: var(--rose); color: #c4725a; }
+
+  .summary-row {
+    display: flex; gap: 12px; margin-bottom: 16px;
+  }
+  .summary-box {
+    flex: 1; background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 14px;
+    box-shadow: var(--shadow-soft); text-align: center;
+  }
+  .summary-box .sb-num { font-size: 20px; font-weight: 700; }
+  .summary-box .sb-lbl { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+
+  /* 简易表格制作页 */
+  .table-tool {
+    background: var(--card);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .mini-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .mini-table th, .mini-table td {
+    border: 1px solid rgba(183, 215, 168, 0.25);
+    padding: 8px 10px; text-align: center;
+  }
+  .mini-table th {
+    background: rgba(183, 215, 168, 0.22);
+    color: var(--matcha-dark); font-weight: 600;
+  }
+  .mini-table td { color: var(--text-2); }
+
+  @media (max-width: 380px) {
+    .sidebar { width: 80px; }
+    .nav-item { width: 68px; }
+    .main { padding: 18px 16px 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 左侧导航 -->
+  <aside class="sidebar">
+    <div class="logo">✎</div>
+    <div class="nav-item active" data-page="home">
+      <div class="ic">⌂</div><div class="tx">首页</div>
+    </div>
+    <div class="nav-item" data-page="write">
+      <div class="ic">✎</div><div class="tx">文稿撰写</div>
+    </div>
+    <div class="nav-item" data-page="rewrite">
+      <div class="ic">✦</div><div class="tx">润色改写</div>
+    </div>
+    <div class="nav-item" data-page="table">
+      <div class="ic">▦</div><div class="tx">表格制作</div>
+    </div>
+    <div class="nav-item" data-page="ledger">
+      <div class="ic">❍</div><div class="tx">订单台账</div>
+    </div>
+    <div class="nav-item" data-page="todo">
+      <div class="ic">☑</div><div class="tx">待办清单</div>
+    </div>
+    <div class="nav-item" data-page="settings">
+      <div class="ic">⚙</div><div class="tx">设置</div>
+    </div>
+  </aside>
+
+  <!-- 主内容 -->
+  <main class="main">
+
+    <!-- ========= 首页 ========= -->
+    <div class="page active" id="page-home">
+      <div class="banner">
+        <div class="banner-weather">
+          <div class="wt">26°</div>
+          <div class="wd">晴 · 微风</div>
+        </div>
+        <div class="banner-date">📅 2025年7月30日 · 周三</div>
+        <div class="banner-greet">下午好，小禾 👋</div>
+        <div class="banner-sub">今天有 3 份文稿待处理，加油呀～</div>
+      </div>
+
+      <div class="section-title"><span class="bar"></span>数据概览</div>
+      <div class="stats-grid">
+        <div class="stat-card today">
+          <div class="ic-wrap">📥</div>
+          <div class="num">5<span class="unit">单</span></div>
+          <div class="lbl">今日接单</div>
+          <div class="trend">↑ 较昨日 +2</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="ic-wrap">⏳</div>
+          <div class="num">8<span class="unit">单</span></div>
+          <div class="lbl">待处理</div>
+          <div class="trend">2 单今日截止</div>
+        </div>
+        <div class="stat-card done">
+          <div class="ic-wrap">✓</div>
+          <div class="num">42<span class="unit">单</span></div>
+          <div class="lbl">已完成</div>
+          <div class="trend">本月累计</div>
+        </div>
+      </div>
+
+      <div class="section-title"><span class="bar"></span>本周进度</div>
+      <div class="progress-card">
+        <div class="progress-top">
+          <div class="ring">
+            <svg width="92" height="92">
+              <circle cx="46" cy="46" r="40" fill="none" stroke="rgba(183,215,168,0.25)" stroke-width="7"/>
+              <circle cx="46" cy="46" r="40" fill="none" stroke="url(#g1)" stroke-width="7" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="78"/>
+              <defs>
+                <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#b7d7a8"/>
+                  <stop offset="100%" stop-color="#6ea85c"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="center">
+              <div class="pct" style="background:linear-gradient(135deg,#9dc88d,#4e8a3e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">69%</div>
+              <div class="pct-lbl">完成率</div>
+            </div>
+          </div>
+          <div class="progress-info">
+            <div class="pi-title">本周目标完成情况</div>
+            <div class="pi-desc">已完成 9 / 13 单，继续保持节奏～</div>
+            <div class="pbr">
+              <div class="pbr-top"><span class="name">工作总结</span><span class="val">4/5</span></div>
+              <div class="pbr-track"><div class="pbr-fill" style="width:80%;background:linear-gradient(90deg,#b7d7a8,#8bbf7a);"></div></div>
+            </div>
+            <div class="pbr">
+              <div class="pbr-top"><span class="name">演讲稿</span><span class="val">3/4</span></div>
+              <div class="pbr-track"><div class="pbr-fill" style="width:75%;background:linear-gradient(90deg,#c5ddb8,#9dc88d);"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="pbr">
+          <div class="pbr-top"><span class="name">述职报告</span><span class="val">2/4</span></div>
+          <div class="pbr-track"><div class="pbr-fill" style="width:50%;background:linear-gradient(90deg,#d9ead3,#b7d7a8);"></div></div>
+        </div>
+      </div>
+
+      <div class="section-title"><span class="bar"></span>快捷入口</div>
+      <div class="quick-grid">
+        <div class="quick-card" data-go="write">
+          <div class="qc-ic" style="background:var(--matcha-pale);">📝</div>
+          <div><div class="qc-title">新建文稿</div><div class="qc-desc">总结/演讲/述职</div></div>
+        </div>
+        <div class="quick-card" data-go="rewrite">
+          <div class="qc-ic" style="background:var(--rose);">✨</div>
+          <div><div class="qc-title">文案润色</div><div class="qc-desc">智能改写优化</div></div>
+        </div>
+        <div class="quick-card" data-go="table">
+          <div class="qc-ic" style="background:var(--pearl);">📊</div>
+          <div><div class="qc-title">制作表格</div><div class="qc-desc">排版清晰美观</div></div>
+        </div>
+        <div class="quick-card" data-go="ledger">
+          <div class="qc-ic" style="background:var(--cream);">📒</div>
+          <div><div class="qc-title">订单台账</div><div class="qc-desc">收支一目了然</div></div>
+        </div>
+      </div>
+
+      <div class="section-title">
+        <span class="bar"></span>今日待办
+        <span class="more" data-go="todo">查看全部 ›</span>
+      </div>
+      <div class="todo-card">
+        <div class="todo-item">
+          <div class="todo-check checked">✓</div>
+          <div style="flex:1">
+            <div class="tc-title">张经理 · Q3部门工作总结</div>
+            <div class="tc-meta"><span>📅 今日 18:00</span><span>💰 ¥280</span></div>
+          </div>
+          <span class="todo-tag tag-normal">进行中</span>
+        </div>
+        <div class="todo-item">
+          <div class="todo-check"></div>
+          <div style="flex:1">
+            <div class="tc-title">李总 · 年会演讲稿润色</div>
+            <div class="tc-meta"><span>📅 今日 20:00</span><span>💰 ¥150</span></div>
+          </div>
+          <span class="todo-tag tag-urgent">紧急</span>
+        </div>
+        <div class="todo-item">
+          <div class="todo-check"></div>
+          <div style="flex:1">
+            <div class="tc-title">王姐 · 述职报告数据表格</div>
+            <div class="tc-meta"><span>📅 明日 10:00</span><span>💰 ¥120</span></div>
+          </div>
+          <span class="todo-tag tag-soon">待开始</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= 文稿撰写 ========= -->
+    <div class="page" id="page-write">
+      <div class="page-header">
+        <div class="ph-title">文稿撰写</div>
+        <div class="ph-desc">工作总结 · 演讲稿 · 述职报告</div>
+      </div>
+      <div class="biz-list">
+        <div class="biz-item">
+          <div class="bi-ic" style="background:var(--matcha-pale);">📋</div>
+          <div class="bi-info">
+            <div class="bi-title">工作总结</div>
+            <div class="bi-desc">按周期梳理工作成果与反思</div>
+          </div>
+          <span class="bi-go">›</span>
+        </div>
+        <div class="biz-item">
+          <div class="bi-ic" style="background:var(--pearl);">🎤</div>
+          <div class="bi-info">
+            <div class="bi-title">演讲稿</div>
+            <div class="bi-desc">年会/会议/活动主题演讲撰写</div>
+          </div>
+          <span class="bi-go">›</span>
+        </div>
+        <div class="biz-item">
+          <div class="bi-ic" style="background:var(--rose);">📈</div>
+          <div class="bi-info">
+            <div class="bi-title">述职报告</div>
+            <div class="bi-desc">岗位述职与绩效汇报材料</div>
+          </div>
+          <span class="bi-go">›</span>
+        </div>
+      </div>
+
+      <div style="height:18px;"></div>
+      <div class="section-title"><span class="bar"></span>新建文稿</div>
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">文稿类型</label>
+          <select class="form-select">
+            <option>工作总结</option>
+            <option>演讲稿</option>
+            <option>述职报告</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">标题</label>
+          <input class="form-input" placeholder="请输入文稿标题">
+        </div>
+        <div class="form-group">
+          <label class="form-label">需求说明</label>
+          <textarea class="form-textarea" placeholder="描述客户要求、字数、风格等..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">截止时间</label>
+          <input class="form-input" type="datetime-local">
+        </div>
+        <button class="btn">提交订单</button>
+      </div>
+    </div>
+
+    <!-- ========= 润色改写 ========= -->
+    <div class="page" id="page-rewrite">
+      <div class="page-header">
+        <div class="ph-title">文案润色改写</div>
+        <div class="ph-desc">智能优化文字表达，让文案更出彩</div>
+      </div>
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">原文内容</label>
+          <textarea class="form-textarea" style="min-height:120px;" placeholder="粘贴需要润色的文案..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">润色风格</label>
+          <select class="form-select">
+            <option>商务正式</option>
+            <option>活泼生动</option>
+            <option>简约精炼</option>
+            <option>文艺抒情</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn">开始润色</button>
+          <button class="btn btn-ghost">重置</button>
+        </div>
+      </div>
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">润色结果</label>
+          <textarea class="form-textarea" style="min-height:100px;" placeholder="润色后的文案将显示在这里..." readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= 表格制作 ========= -->
+    <div class="page" id="page-table">
+      <div class="page-header">
+        <div class="ph-title">简易表格制作</div>
+        <div class="ph-desc">快速生成规范美观的数据表格</div>
+      </div>
+      <div class="quick-grid">
+        <div class="quick-card">
+          <div class="qc-ic" style="background:var(--matcha-pale);">📊</div>
+          <div><div class="qc-title">数据统计表</div><div class="qc-desc">业绩/考勤/库存</div></div>
+        </div>
+        <div class="quick-card">
+          <div class="qc-ic" style="background:var(--pearl);">📅</div>
+          <div><div class="qc-title">排班计划表</div><div class="qc-desc">值班/日程安排</div></div>
+        </div>
+        <div class="quick-card">
+          <div class="qc-ic" style="background:var(--cream);">💰</div>
+          <div><div class="qc-title">财务收支表</div><div class="qc-desc">收入支出明细</div></div>
+        </div>
+        <div class="quick-card">
+          <div class="qc-ic" style="background:var(--rose);">📝</div>
+          <div><div class="qc-title">自定义表格</div><div class="qc-desc">自由设计列项</div></div>
+        </div>
+      </div>
+      <div class="section-title"><span class="bar"></span>预览示例</div>
+      <div class="table-tool">
+        <table class="mini-table">
+          <thead>
+            <tr><th>月份</th><th>接单数</th><th>收入</th><th>完成率</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>5月</td><td>28</td><td>¥6,200</td><td>96%</td></tr>
+            <tr><td>6月</td><td>35</td><td>¥7,800</td><td>98%</td></tr>
+            <tr><td>7月</td><td>42</td><td>¥9,400</td><td>95%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn" style="width:100%;">导出表格</button>
+    </div>
+
+    <!-- ========= 订单台账 ========= -->
+    <div class="page" id="page-ledger">
+      <div class="page-header">
+        <div class="ph-title">订单台账</div>
+        <div class="ph-desc">所有接单记录与收支明细</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-box">
+          <div class="sb-num" style="color:var(--matcha-dark);">55</div>
+          <div class="sb-lbl">总订单</div>
+        </div>
+        <div class="summary-box">
+          <div class="sb-num" style="color:var(--matcha-deep);">¥23.4k</div>
+          <div class="sb-lbl">总收入</div>
+        </div>
+        <div class="summary-box">
+          <div class="sb-num" style="color:var(--matcha-dark);">76%</div>
+          <div class="sb-lbl">完成率</div>
+        </div>
+      </div>
+      <div class="ledger-table">
+        <div class="ledger-row head">
+          <div>订单标题</div><div>类型</div><div>金额</div><div>状态</div>
+        </div>
+        <div class="ledger-row">
+          <div class="lr-title">Q3部门总结</div>
+          <div class="lr-type">工作总结</div>
+          <div class="lr-amount">¥280</div>
+          <div><span class="status-pill st-doing">进行中</span></div>
+        </div>
+        <div class="ledger-row">
+          <div class="lr-title">年会演讲稿</div>
+          <div class="lr-type">演讲稿</div>
+          <div class="lr-amount">¥150</div>
+          <div><span class="status-pill st-wait">待处理</span></div>
+        </div>
+        <div class="ledger-row">
+          <div class="lr-title">述职数据表</div>
+          <div class="lr-type">表格</div>
+          <div class="lr-amount">¥120</div>
+          <div><span class="status-pill st-done">已完成</span></div>
+        </div>
+        <div class="ledger-row">
+          <div class="lr-title">半年度总结报告</div>
+          <div class="lr-type">工作总结</div>
+          <div class="lr-amount">¥350</div>
+          <div><span class="status-pill st-done">已完成</span></div>
+        </div>
+        <div class="ledger-row">
+          <div class="lr-title">公司品牌文案润色</div>
+          <div class="lr-type">润色</div>
+          <div class="lr-amount">¥200</div>
+          <div><span class="status-pill st-doing">进行中</span></div>
+        </div>
+        <div class="ledger-row">
+          <div class="lr-title">月会主持演讲稿</div>
+          <div class="lr-type">演讲稿</div>
+          <div class="lr-amount">¥180</div>
+          <div><span class="status-pill st-wait">待处理</span></div>
+        </div>
+      </div>
+      <button class="btn" style="width:100%;margin-top:12px;" onclick="addLedger()">+ 新增订单</button>
+    </div>
+
+    <!-- ========= 待办清单 ========= -->
+    <div class="page" id="page-todo">
+      <div class="page-header">
+        <div class="ph-title">待办清单</div>
+        <div class="ph-desc">有序管理每个订单节点</div>
+      </div>
+      <div class="todo-card" style="margin-bottom:14px;">
+        <div class="todo-item">
+          <div class="todo-check checked">✓</div>
+          <div style="flex:1">
+            <div class="tc-title">张经理 · Q3部门工作总结</div>
+            <div class="tc-meta"><span>📅 今日 18:00</span><span>💰 ¥280</span></div>
+          </div>
+          <span class="todo-tag tag-normal">进行中</span>
+        </div>
+        <div class="todo-item">
+          <div class="todo-check"></div>
+          <div style="flex:1">
+            <div class="tc-title">李总 · 年会演讲稿润色</div>
+            <div class="tc-meta"><span>📅 今日 20:00</span><span>💰 ¥150</span></div>
+          </div>
+          <span class="todo-tag tag-urgent">紧急</span>
+        </div>
+        <div class="todo-item">
+          <div class="todo-check"></div>
+          <div style="flex:1">
+            <div class="tc-title">王姐 · 述职报告数据表格</div>
+            <div class="tc-meta"><span>📅 明日 10:00</span><span>💰 ¥120</span></div>
+          </div>
+          <span class="todo-tag tag-soon">待开始</span>
+        </div>
+        <div class="todo-item">
+          <div class="todo-check checked">✓</div>
+          <div style="flex:1">
+            <div class="tc-title">赵主任 · 半年工作总结</div>
+            <div class="tc-meta"><span>📅 已完成</span><span>💰 ¥350</span></div>
+          </div>
+          <span class="todo-tag tag-normal">已完成</span>
+        </div>
+        <div class="todo-item">
+          <div class="todo-check"></div>
+          <div style="flex:1">
+            <div class="tc-title">陈老师 · 教师节演讲稿</div>
+            <div class="tc-meta"><span>📅 周五 14:00</span><span>💰 ¥200</span></div>
+          </div>
+          <span class="todo-tag tag-soon">待开始</span>
+        </div>
+      </div>
+      <button class="btn" style="width:100%;" onclick="addTodo()">+ 新增待办</button>
+    </div>
+
+    <!-- ========= 设置 ========= -->
+    <div class="page" id="page-settings">
+      <div class="page-header">
+        <div class="ph-title">个人设置</div>
+        <div class="ph-desc">修改你的工作台信息</div>
+      </div>
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">你的名字</label>
+          <input class="form-input" id="set-name" placeholder="输入你的名字" value="">
+        </div>
+        <div class="form-group">
+          <label class="form-label">工作台标题</label>
+          <input class="form-input" id="set-title" placeholder="例如：我的接单工作台" value="文稿接单工作台">
+        </div>
+        <div class="form-group">
+          <label class="form-label">今日接单数</label>
+          <input class="form-input" id="set-today" type="number" placeholder="0" value="5">
+        </div>
+        <button class="btn" style="width:100%;" onclick="saveSettings()">保存设置</button>
+      </div>
+      <div style="height:12px;"></div>
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">数据导出</label>
+          <button class="btn btn-ghost" style="width:100%;" onclick="exportData()">导出全部数据到剪贴板</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">数据导入</label>
+          <textarea class="form-textarea" id="import-data" style="min-height:60px;" placeholder="粘贴之前导出的数据..."></textarea>
+          <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="importData()">导入数据</button>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-ghost" style="width:100%;color:#c4725a;border-color:#c4725a;" onclick="resetAll()">重置所有数据</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ===== 数据管理 =====
+var STORAGE_KEY = 'doc_workbench_data';
+
+function loadData() {
+  var raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    try { return JSON.parse(raw); } catch(e) {}
+  }
+  return null;
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function getDefaultData() {
+  return {
+    name: '小禾',
+    title: '文稿接单工作台',
+    stats: { today: 5, pending: 8, done: 42 },
+    todos: [
+      { id: 1, title: '张经理 · Q3部门工作总结', deadline: '今日 18:00', price: '¥280', status: 'doing', checked: false },
+      { id: 2, title: '李总 · 年会演讲稿润色', deadline: '今日 20:00', price: '¥150', status: 'urgent', checked: false },
+      { id: 3, title: '王姐 · 述职报告数据表格', deadline: '明日 10:00', price: '¥120', status: 'soon', checked: false },
+      { id: 4, title: '赵主任 · 半年工作总结', deadline: '已完成', price: '¥350', status: 'doing', checked: true },
+      { id: 5, title: '陈老师 · 教师节演讲稿', deadline: '周五 14:00', price: '¥200', status: 'soon', checked: false }
+    ],
+    ledger: [
+      { id: 1, title: 'Q3部门总结', type: '工作总结', amount: '¥280', status: 'doing' },
+      { id: 2, title: '年会演讲稿', type: '演讲稿', amount: '¥150', status: 'wait' },
+      { id: 3, title: '述职数据表', type: '表格', amount: '¥120', status: 'done' },
+      { id: 4, title: '半年度总结报告', type: '工作总结', amount: '¥350', status: 'done' },
+      { id: 5, title: '公司品牌文案润色', type: '润色', amount: '¥200', status: 'doing' },
+      { id: 6, title: '月会主持演讲稿', type: '演讲稿', amount: '¥180', status: 'wait' }
+    ],
+    nextId: 7
+  };
+}
+
+var appData = loadData() || getDefaultData();
+
+// 应用名称和标题
+function applySettings() {
+  document.title = appData.title || '文稿接单工作台';
+  var bannerGreet = document.querySelector('.banner-greet');
+  if (bannerGreet) {
+    var hour = new Date().getHours();
+    var prefix = hour < 12 ? '上午好' : (hour < 18 ? '下午好' : '晚上好');
+    bannerGreet.textContent = prefix + '，' + (appData.name || '小禾') + ' 👋';
+  }
+  var logoEl = document.querySelector('.logo');
+  if (logoEl && appData.name) {
+    logoEl.textContent = appData.name.charAt(0);
+  }
+}
+
+// ===== 渲染函数 =====
+
+function renderStats() {
+  var s = appData.stats;
+  document.querySelector('#page-home .stat-card.today .num').innerHTML = s.today + '<span class="unit">单</span>';
+  document.querySelector('#page-home .stat-card.pending .num').innerHTML = s.pending + '<span class="unit">单</span>';
+  document.querySelector('#page-home .stat-card.done .num').innerHTML = s.done + '<span class="unit">单</span>';
+}
+
+function renderTodos() {
+  var todos = appData.todos;
+  var doneCount = todos.filter(function(t) { return t.checked; }).length;
+  var total = todos.length;
+  var pct = total > 0 ? Math.round(doneCount / total * 100) : 0;
+
+  // 更新进度环
+  var offset = 251 - (251 * pct / 100);
+  document.querySelector('#page-home .ring circle:last-child').setAttribute('stroke-dashoffset', offset);
+  document.querySelector('#page-home .ring .pct').textContent = pct + '%';
+
+  // 首页待办预览 (只显示前3条)
+  renderTodoList('#page-home .todo-card', todos.slice(0, 3));
+
+  // 待办清单页 (全部)
+  renderTodoList('#page-todo .todo-card', todos);
+}
+
+function renderTodoList(selector, list) {
+  var container = document.querySelector(selector);
+  if (!container) return;
+  container.innerHTML = '';
+  list.forEach(function(t, idx) {
+    var tagClass = t.status === 'urgent' ? 'tag-urgent' : (t.status === 'soon' ? 'tag-soon' : 'tag-normal');
+    var tagText = t.checked ? '已完成' : (t.status === 'urgent' ? '紧急' : (t.status === 'soon' ? '待开始' : '进行中'));
+    container.innerHTML +=
+      '<div class="todo-item" data-id="' + t.id + '">' +
+        '<div class="todo-check' + (t.checked ? ' checked' : '') + '" onclick="toggleTodo(' + t.id + ')">' + (t.checked ? '✓' : '') + '</div>' +
+        '<div style="flex:1">' +
+          '<div class="tc-title" style="' + (t.checked ? 'text-decoration:line-through;opacity:0.5' : '') + '">' + t.title + '</div>' +
+          '<div class="tc-meta"><span>📅 ' + t.deadline + '</span><span>💰 ' + t.price + '</span></div>' +
+        '</div>' +
+        '<span class="todo-tag ' + tagClass + '">' + tagText + '</span>' +
+        '<span style="cursor:pointer;color:var(--text-3);font-size:14px;margin-left:2px;" onclick="deleteTodo(' + t.id + ')">✕</span>' +
+      '</div>';
+  });
+}
+
+function renderLedger() {
+  var container = document.querySelector('#page-ledger .ledger-table');
+  if (!container) return;
+
+  // 更新汇总
+  var totalAmount = 0;
+  appData.ledger.forEach(function(l) {
+    totalAmount += parseFloat(l.amount.replace('¥','')) || 0;
+  });
+  var doneCount = appData.ledger.filter(function(l) { return l.status === 'done'; }).length;
+  var totalOrders = appData.ledger.length;
+  var doneRate = totalOrders > 0 ? Math.round(doneCount / totalOrders * 100) : 0;
+
+  document.querySelector('#page-ledger .summary-box:nth-child(1) .sb-num').textContent = totalOrders;
+  document.querySelector('#page-ledger .summary-box:nth-child(2) .sb-num').textContent = '¥' + (totalAmount / 1000).toFixed(1) + 'k';
+  document.querySelector('#page-ledger .summary-box:nth-child(3) .sb-num').textContent = doneRate + '%';
+
+  // 保留表头，重建内容行
+  var head = container.querySelector('.ledger-row.head');
+  container.innerHTML = '';
+  container.appendChild(head);
+  appData.ledger.forEach(function(l) {
+    var stClass = l.status === 'doing' ? 'st-doing' : (l.status === 'wait' ? 'st-wait' : 'st-done');
+    var stText = l.status === 'doing' ? '进行中' : (l.status === 'wait' ? '待处理' : '已完成');
+    container.innerHTML +=
+      '<div class="ledger-row">' +
+        '<div class="lr-title" contenteditable="true" onblur="updateLedgerField(' + l.id + ',\'title\',this.textContent)">' + l.title + '</div>' +
+        '<div class="lr-type" contenteditable="true" onblur="updateLedgerField(' + l.id + ',\'type\',this.textContent)">' + l.type + '</div>' +
+        '<div class="lr-amount" contenteditable="true" onblur="updateLedgerField(' + l.id + ',\'amount\',this.textContent)">' + l.amount + '</div>' +
+        '<div>' +
+          '<select onchange="updateLedgerField(' + l.id + ',\'status\',this.value)" style="font-size:10px;padding:2px 6px;border-radius:8px;border:1px solid var(--matcha-2);background:white;">' +
+            '<option value="doing"' + (l.status==='doing'?' selected':'') + '>进行中</option>' +
+            '<option value="wait"' + (l.status==='wait'?' selected':'') + '>待处理</option>' +
+            '<option value="done"' + (l.status==='done'?' selected':'') + '>已完成</option>' +
+          '</select>' +
+          '<span style="cursor:pointer;color:var(--text-3);margin-left:8px;font-size:13px;" onclick="deleteLedger(' + l.id + ')">✕</span>' +
+        '</div>' +
+      '</div>';
+  });
+}
+
+// ===== 操作函数 =====
+
+function toggleTodo(id) {
+  var t = appData.todos.find(function(x) { return x.id === id; });
+  if (t) {
+    t.checked = !t.checked;
+    saveData(appData);
+    renderTodos();
+    updateStatsFromTodos();
+    renderStats();
+  }
+}
+
+function deleteTodo(id) {
+  if (confirm('确定删除这条待办吗？')) {
+    appData.todos = appData.todos.filter(function(x) { return x.id !== id; });
+    saveData(appData);
+    renderTodos();
+    updateStatsFromTodos();
+    renderStats();
+  }
+}
+
+function addTodo() {
+  var title = prompt('请输入待办标题：');
+  if (!title || !title.trim()) return;
+  var deadline = prompt('截止时间（如：周五 14:00）：', '明日 10:00');
+  var price = prompt('金额（如：¥200）：', '¥150');
+  appData.todos.push({
+    id: appData.nextId++,
+    title: title.trim(),
+    deadline: deadline || '待定',
+    price: price || '¥0',
+    status: 'soon',
+    checked: false
+  });
+  saveData(appData);
+  renderTodos();
+  updateStatsFromTodos();
+  renderStats();
+}
+
+function updateStatsFromTodos() {
+  var pending = appData.todos.filter(function(t) { return !t.checked; }).length;
+  var done = appData.todos.filter(function(t) { return t.checked; }).length;
+  appData.stats.pending = pending;
+  appData.stats.done = done;
+}
+
+function updateLedgerField(id, field, value) {
+  var l = appData.ledger.find(function(x) { return x.id === id; });
+  if (l) {
+    l[field] = value;
+    saveData(appData);
+    renderLedger();
+  }
+}
+
+function deleteLedger(id) {
+  if (confirm('确定删除这条订单记录吗？')) {
+    appData.ledger = appData.ledger.filter(function(x) { return x.id !== id; });
+    saveData(appData);
+    renderLedger();
+  }
+}
+
+function addLedger() {
+  var title = prompt('订单标题：');
+  if (!title || !title.trim()) return;
+  var type = prompt('类型（工作总结/演讲稿/述职报告/润色/表格）：', '工作总结');
+  var amount = prompt('金额（如：¥200）：', '¥200');
+  appData.ledger.push({
+    id: appData.nextId++,
+    title: title.trim(),
+    type: type || '其他',
+    amount: amount || '¥0',
+    status: 'doing'
+  });
+  saveData(appData);
+  renderLedger();
+}
+
+// ===== 设置相关 =====
+
+function loadSettings() {
+  var s = appData;
+  var nameEl = document.getElementById('set-name');
+  var titleEl = document.getElementById('set-title');
+  var todayEl = document.getElementById('set-today');
+  if (nameEl) nameEl.value = s.name || '';
+  if (titleEl) titleEl.value = s.title || '文稿接单工作台';
+  if (todayEl) todayEl.value = s.stats.today;
+}
+
+function saveSettings() {
+  var name = document.getElementById('set-name').value.trim();
+  var title = document.getElementById('set-title').value.trim();
+  var today = parseInt(document.getElementById('set-today').value) || 0;
+
+  if (!name) { alert('请输入你的名字！'); return; }
+
+  appData.name = name;
+  appData.title = title || '文稿接单工作台';
+  appData.stats.today = today;
+  saveData(appData);
+  applySettings();
+  renderStats();
+  alert('✅ 设置已保存！');
+}
+
+function exportData() {
+  var json = JSON.stringify(appData, null, 2);
+  navigator.clipboard.writeText(json).then(function() {
+    alert('✅ 数据已复制到剪贴板！可以粘贴到备忘录保存。');
+  }).catch(function() {
+    // 降级方案
+    var ta = document.createElement('textarea');
+    ta.value = json;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ 数据已复制！');
+  });
+}
+
+function importData() {
+  var raw = document.getElementById('import-data').value.trim();
+  if (!raw) { alert('请先粘贴数据！'); return; }
+  try {
+    var data = JSON.parse(raw);
+    if (!data.todos || !data.ledger) { alert('数据格式不正确！'); return; }
+    if (confirm('导入将覆盖当前所有数据，确定吗？')) {
+      appData = data;
+      saveData(appData);
+      applySettings();
+      renderTodos();
+      renderStats();
+      alert('✅ 导入成功！');
+    }
+  } catch(e) {
+    alert('❌ 数据格式错误，请检查！');
+  }
+}
+
+function resetAll() {
+  if (confirm('⚠️ 确定要重置所有数据吗？包括待办、台账、设置。\n\n此操作不可恢复！')) {
+    appData = getDefaultData();
+    saveData(appData);
+    applySettings();
+    renderTodos();
+    renderStats();
+    if (document.getElementById('set-name')) loadSettings();
+    alert('✅ 已重置！');
+  }
+}
+
+// ===== 初始化 =====
+
+// 导航切换
+document.querySelectorAll('.nav-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    this.classList.add('active');
+    var page = this.getAttribute('data-page');
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('page-' + page).classList.add('active');
+    // 切换到各页面时刷新
+    if (page === 'ledger') renderLedger();
+    if (page === 'todo') renderTodos();
+    if (page === 'settings') loadSettings();
+  });
+});
+
+// 快捷入口跳转
+document.querySelectorAll('.quick-card[data-go], .section-title .more[data-go]').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var go = this.getAttribute('data-go');
+    var targetNav = document.querySelector('.nav-item[data-page="' + go + '"]');
+    if (targetNav) targetNav.click();
+  });
+});
+
+// 新增待办按钮
+var addTodoBtn = document.querySelector('#page-todo .btn');
+if (addTodoBtn) {
+  addTodoBtn.addEventListener('click', addTodo);
+}
+
+// 台账新增按钮
+var addLedgerBtn = document.querySelector('#page-ledger .btn');
+if (addLedgerBtn) {
+  addLedgerBtn.addEventListener('click', addLedger);
+}
+
+// 首页底部待办卡中的勾选
+applySettings();
+renderTodos();
+renderStats();
+
+console.log('✅ 文稿接单工作台已就绪');
+console.log('📦 数据存储在浏览器 localStorage');
+console.log('⚙ 左侧导航底部「设置」可修改个人信息');
+</script>
+</body>
+</html>
