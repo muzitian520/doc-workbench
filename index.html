@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>小甜工作台 · 软萌少女风</title>
+<title>小甜工作台 · Hello Kitty</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="小甜工作台">
-<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png?v=3">
+<link rel="icon" type="image/png" sizes="192x192" href="icon.png?v=3">
+<link rel="icon" type="image/png" sizes="512x512" href="icon.png?v=3">
+<link rel="manifest" href="manifest.json">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -1043,10 +1046,9 @@ var DEFAULT_NAV = [
   { id:'settings', color:'#607d8b', name:'设置' }
 ];
 
-// Hello Kitty 迷你猫头 SVG（38x38，参数：蝴蝶结颜色）
-function kittyIconSVG(bowColor) {
-  return '<svg viewBox="0 0 100 100" width="34" height="34" xmlns="http://www.w3.org/2000/svg">' +
-    '<ellipse cx="50" cy="55" rx="42" ry="38" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
+// Hello Kitty 猫头基础模板
+function kittyBase(bowColor) {
+  return '<ellipse cx="50" cy="55" rx="42" ry="38" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
     '<ellipse cx="22" cy="24" rx="16" ry="20" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
     '<ellipse cx="22" cy="26" rx="8" ry="11" fill="#fce4ec"/>' +
     '<ellipse cx="78" cy="24" rx="16" ry="20" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
@@ -1054,17 +1056,97 @@ function kittyIconSVG(bowColor) {
     '<ellipse cx="38" cy="34" rx="9" ry="7" fill="' + bowColor + '"/>' +
     '<ellipse cx="62" cy="34" rx="9" ry="7" fill="' + bowColor + '"/>' +
     '<circle cx="50" cy="35" r="4" fill="' + bowColor + '" opacity="0.7"/>' +
-    '<ellipse cx="38" cy="52" rx="4" ry="5" fill="#333"/>' +
-    '<ellipse cx="62" cy="52" rx="4" ry="5" fill="#333"/>' +
-    '<circle cx="39" cy="50" r="1.2" fill="#fff"/>' +
-    '<circle cx="63" cy="50" r="1.2" fill="#fff"/>' +
     '<ellipse cx="50" cy="60" rx="4" ry="3" fill="#f8bbd0"/>' +
     '<line x1="28" y1="56" x2="42" y2="58" stroke="#eee" stroke-width="1"/>' +
     '<line x1="28" y1="61" x2="42" y2="61" stroke="#eee" stroke-width="1"/>' +
     '<line x1="28" y1="66" x2="42" y2="64" stroke="#eee" stroke-width="1"/>' +
     '<line x1="72" y1="56" x2="58" y2="58" stroke="#eee" stroke-width="1"/>' +
     '<line x1="72" y1="61" x2="58" y2="61" stroke="#eee" stroke-width="1"/>' +
-    '<line x1="72" y1="66" x2="58" y2="64" stroke="#eee" stroke-width="1"/>' +
+    '<line x1="72" y1="66" x2="58" y2="64" stroke="#eee" stroke-width="1"/>';
+}
+
+// 不同风格的眼睛
+var EYE_STYLES = {
+  normal: '<ellipse cx="38" cy="52" rx="4" ry="5" fill="#333"/><ellipse cx="62" cy="52" rx="4" ry="5" fill="#333"/><circle cx="39" cy="50" r="1.2" fill="#fff"/><circle cx="63" cy="50" r="1.2" fill="#fff"/>',
+  heart: '<text x="36" y="56" font-size="14" fill="#ec407a">♥</text><text x="54" y="56" font-size="14" fill="#ec407a">♥</text>',
+  star: '<text x="32" y="56" font-size="16" fill="#ff9800">★</text><text x="52" y="56" font-size="16" fill="#ff9800">★</text>',
+  wink: '<ellipse cx="38" cy="52" rx="4" ry="5" fill="#333"/><circle cx="39" cy="50" r="1.2" fill="#fff"/><text x="57" y="57" font-size="14" fill="#333">︶</text>',
+  glasses: '<ellipse cx="38" cy="52" rx="5" ry="4" fill="none" stroke="#333" stroke-width="2"/><ellipse cx="62" cy="52" rx="5" ry="4" fill="none" stroke="#333" stroke-width="2"/><line x1="43" y1="52" x2="57" y2="52" stroke="#333" stroke-width="1.5"/><circle cx="38" cy="52" r="1.5" fill="#333"/><circle cx="62" cy="52" r="1.5" fill="#333"/>',
+  sleepy: '<text x="32" y="56" font-size="12" fill="#333">∪</text><text x="56" y="56" font-size="12" fill="#333">∪</text>',
+  sparkle: '<text x="34" y="56" font-size="12" fill="#333">✦</text><text x="54" y="56" font-size="12" fill="#333">✦</text>',
+  round: '<circle cx="38" cy="52" r="5" fill="#333"/><circle cx="62" cy="52" r="5" fill="#333"/><circle cx="39" cy="50" r="1.5" fill="#fff"/><circle cx="63" cy="50" r="1.5" fill="#fff"/>',
+  cool: '<ellipse cx="38" cy="52" rx="5" ry="3" fill="#333"/><ellipse cx="62" cy="52" rx="5" ry="3" fill="#333"/>',
+  happy: '<text x="34" y="58" font-size="16" fill="#333">⌒</text><text x="50" y="58" font-size="16" fill="#333">⌒</text>'
+};
+
+// 嘴巴风格
+var MOUTH_STYLES = {
+  smile: '',
+  open: '<ellipse cx="50" cy="66" rx="5" ry="4" fill="#f48fb1"/>',
+  cat: '<text x="42" y="66" font-size="10" fill="#f48fb1">ω</text>',
+  kiss: '<text x="42" y="64" font-size="12" fill="#ec407a">💋</text>',
+  tongue: '<ellipse cx="50" cy="65" rx="4" ry="3" fill="#f48fb1"/><ellipse cx="50" cy="67" rx="2.5" ry="2.5" fill="#ec407a"/>'
+};
+
+// 装饰（头上小物件）
+var DECO_STYLES = {
+  none: '',
+  bow_big: '<ellipse cx="35" cy="30" rx="12" ry="9" fill="#ec407a"/><ellipse cx="65" cy="30" rx="12" ry="9" fill="#ec407a"/><circle cx="50" cy="32" r="5" fill="#f48fb1"/>',
+  hat: '<rect x="28" y="14" width="44" height="8" rx="4" fill="#f48fb1"/><rect x="35" y="2" width="30" height="14" rx="6" fill="#f48fb1"/>',
+  crown: '<polygon points="32,28 38,12 44,22 50,8 56,22 62,12 68,28" fill="#ffd700" stroke="#ff9800" stroke-width="1"/>',
+  flower: '<circle cx="50" cy="22" r="6" fill="#fff"/><circle cx="44" cy="18" r="4" fill="#ff69b4"/><circle cx="56" cy="18" r="4" fill="#ff69b4"/><circle cx="44" cy="26" r="4" fill="#ff69b4"/><circle cx="56" cy="26" r="4" fill="#ff69b4"/><circle cx="50" cy="22" r="3" fill="#ffeb3b"/>',
+  headphones: '<rect x="14" y="24" width="8" height="16" rx="4" fill="#333"/><rect x="78" y="24" width="8" height="16" rx="4" fill="#333"/><path d="M18 28 Q50 14 82 28" fill="none" stroke="#333" stroke-width="3"/>',
+  leaf: '<ellipse cx="50" cy="14" rx="8" ry="12" fill="#4caf50" transform="rotate(15,50,14)"/><line x1="50" y1="4" x2="50" y2="26" stroke="#388e3c" stroke-width="1.5"/>'
+};
+
+// 根据 id 返回不同造型的 Kitty
+function kittyIconSVG(bowColor, styleId) {
+  var eye = EYE_STYLES.normal;
+  var mouth = MOUTH_STYLES.smile;
+  var deco = DECO_STYLES.none;
+  var extra = '';
+
+  switch(styleId) {
+    case 'home':
+      eye = EYE_STYLES.happy; mouth = MOUTH_STYLES.cat; deco = DECO_STYLES.bow_big;
+      break;
+    case 'money':
+      eye = EYE_STYLES.star; mouth = MOUTH_STYLES.open; deco = DECO_STYLES.crown;
+      break;
+    case 'douyin':
+      eye = EYE_STYLES.sparkle; mouth = MOUTH_STYLES.tongue; deco = DECO_STYLES.headphones;
+      break;
+    case 'writing':
+      eye = EYE_STYLES.glasses; mouth = MOUTH_STYLES.smile;
+      extra = '<text x="40" y="84" font-size="10" fill="#333" text-anchor="middle">✏️</text>';
+      break;
+    case 'travel':
+      eye = EYE_STYLES.round; mouth = MOUTH_STYLES.open; deco = DECO_STYLES.hat;
+      break;
+    case 'drama':
+      eye = EYE_STYLES.heart; mouth = MOUTH_STYLES.kiss;
+      extra = '<text x="75" y="20" font-size="16">🍿</text>';
+      break;
+    case 'reading':
+      eye = EYE_STYLES.glasses; mouth = MOUTH_STYLES.cat; deco = DECO_STYLES.none;
+      extra = '<text x="15" y="74" font-size="14">📖</text>';
+      break;
+    case 'health':
+      eye = EYE_STYLES.sleepy; mouth = MOUTH_STYLES.smile; deco = DECO_STYLES.leaf;
+      break;
+    case 'english':
+      eye = EYE_STYLES.wink; mouth = MOUTH_STYLES.open; deco = DECO_STYLES.flower;
+      break;
+    case 'settings':
+      eye = EYE_STYLES.cool; mouth = MOUTH_STYLES.smile;
+      extra = '<text x="78" y="75" font-size="14">⚙️</text>';
+      break;
+    default:
+      eye = EYE_STYLES.normal; mouth = MOUTH_STYLES.smile;
+  }
+
+  return '<svg viewBox="0 0 100 100" width="34" height="34" xmlns="http://www.w3.org/2000/svg">' +
+    kittyBase(bowColor) + eye + mouth + deco + extra +
     '</svg>';
 }
 
@@ -1120,9 +1202,9 @@ function renderSidebar() {
     if (item.id === activePage || (!activePage && idx === 0)) {
       div.classList.add('active');
     }
-    // 用 SVG Kitty 猫头，蝴蝶结颜色用 item.color，没有则默认粉色
+    // 用 SVG Kitty 猫头，蝴蝶结颜色用 item.color，造型用 item.id
     var bow = item.color || '#ec407a';
-    div.innerHTML = '<div class="ic">' + kittyIconSVG(bow) + '</div><div class="tx">' + item.name + '</div>';
+    div.innerHTML = '<div class="ic">' + kittyIconSVG(bow, item.id) + '</div><div class="tx">' + item.name + '</div>';
     div.addEventListener('click', function() {
       document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
       this.classList.add('active');
