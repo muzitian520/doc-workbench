@@ -12,24 +12,24 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   :root {
-    --bg: #f9f7f4;
+    --bg: #fff0f3;
     --white: #ffffff;
-    --milk: #fefdfb;
-    --sky-1: #d4e8f7;
-    --sky-2: #b8d8f0;
-    --sky-3: #a0cce8;
-    --sky-deep: #7db4d6;
-    --pink-1: #fbe8ec;
-    --pink-2: #f8d4db;
-    --peach: #fef0e6;
-    --mint: #e0f2e9;
-    --lavender: #ece4f5;
-    --butter: #fff8e7;
-    --text-1: #4a5568;
-    --text-2: #718096;
-    --text-3: #a0aec0;
-    --shadow: 0 8px 30px rgba(180, 200, 220, 0.15);
-    --shadow-soft: 0 4px 16px rgba(180, 200, 220, 0.10);
+    --milk: #fff5f7;
+    --rose-1: #fce4ec;
+    --rose-2: #f8bbd0;
+    --rose-3: #f48fb1;
+    --rose-deep: #ec407a;
+    --pink-1: #fce4ec;
+    --pink-2: #f8bbd0;
+    --peach: #fff0e6;
+    --mint: #e8f5e9;
+    --lavender: #f3e5f5;
+    --butter: #fffde7;
+    --text-1: #5d4037;
+    --text-2: #8d6e63;
+    --text-3: #bcaaa4;
+    --shadow: 0 8px 30px rgba(244, 143, 177, 0.15);
+    --shadow-soft: 0 4px 16px rgba(244, 143, 177, 0.10);
   }
 
   html, body {
@@ -47,8 +47,8 @@
   .sidebar {
     width: 88px;
     flex-shrink: 0;
-    background: linear-gradient(180deg, #fefdfb 0%, #f5f1ed 50%, #eef3f9 100%);
-    border-right: 1px solid rgba(180, 216, 240, 0.18);
+    background: linear-gradient(180deg, #fff5f7 0%, #fce4ec 50%, #f8bbd0 100%);
+    border-right: 1px solid rgba(248, 187, 208, 0.18);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,11 +61,11 @@
   .avatar {
     width: 52px; height: 52px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--pink-2), var(--sky-2));
+    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
     display: flex; align-items: center; justify-content: center;
     font-size: 26px;
     margin-bottom: 22px;
-    box-shadow: 0 6px 18px rgba(180, 216, 240, 0.35);
+    box-shadow: 0 6px 18px rgba(244, 143, 177, 0.35);
     border: 3px solid var(--white);
   }
 
@@ -87,21 +87,21 @@
     transition: all 0.3s ease;
   }
   .nav-item .tx { font-size: 10px; font-weight: 500; text-align: center; }
-  .nav-item:hover { color: var(--sky-deep); }
+  .nav-item:hover { color: var(--rose-deep); }
   .nav-item.active {
-    background: rgba(212, 232, 247, 0.35);
-    color: var(--sky-deep);
+    background: rgba(252, 228, 236, 0.35);
+    color: var(--rose-deep);
     font-weight: 600;
   }
   .nav-item.active .ic {
-    background: linear-gradient(135deg, var(--sky-2), var(--sky-3));
-    box-shadow: 0 5px 14px rgba(160, 204, 232, 0.4);
+    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
+    box-shadow: 0 5px 14px rgba(244, 143, 177, 0.4);
   }
   .nav-item.active::before {
     content: ''; position: absolute; left: -10px; top: 50%;
     transform: translateY(-50%);
     width: 4px; height: 22px;
-    background: linear-gradient(180deg, var(--sky-1), var(--sky-3));
+    background: linear-gradient(180deg, var(--rose-1), var(--rose-3));
     border-radius: 0 4px 4px 0;
   }
 
@@ -115,7 +115,7 @@
 
   /* 顶部日期问候卡 */
   .banner {
-    background: linear-gradient(135deg, #e8f0f9 0%, #d4e8f7 50%, #f0e4ec 100%);
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
     border-radius: 28px;
     padding: 24px 24px;
     color: var(--text-1);
@@ -125,12 +125,12 @@
     box-shadow: var(--shadow);
   }
   .banner::before {
-    content: '🌸';
+    content: '🎀';
     position: absolute; top: -10px; right: 20px;
     font-size: 50px; opacity: 0.25; z-index: 1;
   }
   .banner::after {
-    content: '☁️';
+    content: '💖';
     position: absolute; top: 40px; right: 80px;
     font-size: 30px; opacity: 0.2; z-index: 1;
   }
@@ -147,7 +147,7 @@
   }
   .section-title .bar {
     width: 5px; height: 14px;
-    background: linear-gradient(180deg, var(--sky-2), var(--pink-2));
+    background: linear-gradient(180deg, var(--rose-2), var(--rose-3));
     border-radius: 3px;
   }
 
@@ -158,7 +158,7 @@
   }
   .stat-card {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.15);
+    border: 1px solid rgba(248, 187, 208, 0.15);
     border-radius: 24px;
     padding: 14px 8px;
     box-shadow: var(--shadow-soft);
@@ -181,7 +181,7 @@
   /* 天气卡 */
   .weather-card {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.15);
+    border: 1px solid rgba(248, 187, 208, 0.15);
     border-radius: 26px;
     padding: 18px;
     margin-bottom: 16px;
@@ -200,7 +200,7 @@
   }
   .weather-main .wt {
     font-size: 48px; font-weight: 200; line-height: 1;
-    color: var(--sky-deep);
+    color: var(--rose-deep);
   }
   .weather-main .wd { font-size: 13px; color: var(--text-2); margin-top: 2px; }
   .weather-main .loc { font-size: 11px; color: var(--text-3); margin-top: 4px; }
@@ -214,7 +214,7 @@
   /* 进度卡 */
   .progress-card {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.15);
+    border: 1px solid rgba(248, 187, 208, 0.15);
     border-radius: 26px;
     padding: 18px;
     margin-bottom: 16px;
@@ -224,7 +224,7 @@
   .ring { width: 80px; height: 80px; flex-shrink: 0; position: relative; }
   .ring svg { transform: rotate(-90deg); }
   .ring .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .ring .pct { font-size: 20px; font-weight: 800; color: var(--sky-deep); line-height: 1; }
+  .ring .pct { font-size: 20px; font-weight: 800; color: var(--rose-deep); line-height: 1; }
   .ring .pct-lbl { font-size: 9px; color: var(--text-3); margin-top: 1px; }
   .progress-info { flex: 1; }
   .pi-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
@@ -233,13 +233,13 @@
   .pbr-top { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
   .pbr-top .name { color: var(--text-2); }
   .pbr-top .val { color: var(--text-1); font-weight: 700; }
-  .pbr-track { height: 6px; background: rgba(180, 216, 240, 0.2); border-radius: 3px; overflow: hidden; }
+  .pbr-track { height: 6px; background: rgba(248, 187, 208, 0.2); border-radius: 3px; overflow: hidden; }
   .pbr-fill { height: 100%; border-radius: 3px; }
 
   /* 穿搭卡 */
   .outfit-card {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.15);
+    border: 1px solid rgba(248, 187, 208, 0.15);
     border-radius: 26px;
     padding: 16px;
     margin-bottom: 16px;
@@ -263,14 +263,14 @@
     font-size: 10px; font-weight: 500;
   }
   .otag.pink { background: var(--pink-1); color: #c9788a; }
-  .otag.sky { background: var(--sky-1); color: var(--sky-deep); }
+  .otag.sky { background: var(--rose-1); color: var(--rose-deep); }
   .otag.mint { background: var(--mint); color: #6bab8a; }
   .otag.butter { background: var(--butter); color: #c9984a; }
 
   /* 提醒卡 */
   .remind-card {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.15);
+    border: 1px solid rgba(248, 187, 208, 0.15);
     border-radius: 26px;
     padding: 16px;
     margin-bottom: 16px;
@@ -279,7 +279,7 @@
   .remind-item {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 0;
-    border-bottom: 1px dashed rgba(180, 216, 240, 0.2);
+    border-bottom: 1px dashed rgba(248, 187, 208, 0.2);
   }
   .remind-item:last-child { border-bottom: none; }
   .remind-dot {
@@ -288,7 +288,7 @@
     flex-shrink: 0;
   }
   .remind-dot.pink { background: var(--pink-2); }
-  .remind-dot.sky { background: var(--sky-2); }
+  .remind-dot.sky { background: var(--rose-2); }
   .remind-dot.mint { background: #b8dcc8; }
   .remind-dot.butter { background: #f0d898; }
   .remind-text { font-size: 12px; color: var(--text-2); }
@@ -306,7 +306,7 @@
   .func-list { display: flex; flex-direction: column; gap: 10px; }
   .func-item {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.12);
+    border: 1px solid rgba(248, 187, 208, 0.12);
     border-radius: 22px;
     padding: 15px;
     box-shadow: var(--shadow-soft);
@@ -324,7 +324,7 @@
   .func-info { flex: 1; }
   .func-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
   .func-desc { font-size: 11px; color: var(--text-3); line-height: 1.4; }
-  .func-go { color: var(--sky-deep); font-size: 18px; }
+  .func-go { color: var(--rose-deep); font-size: 18px; }
 
   .empty-note {
     text-align: center; padding: 50px 20px;
@@ -336,7 +336,7 @@
   /* 设置表单 */
   .form-card {
     background: var(--white);
-    border: 1px solid rgba(180, 216, 240, 0.15);
+    border: 1px solid rgba(248, 187, 208, 0.15);
     border-radius: 26px;
     padding: 18px;
     box-shadow: var(--shadow);
@@ -347,29 +347,48 @@
   .form-label { font-size: 12px; color: var(--text-2); margin-bottom: 6px; display: block; font-weight: 600; }
   .form-input {
     width: 100%; padding: 12px 14px;
-    border: 1.5px solid rgba(180, 216, 240, 0.3);
+    border: 1.5px solid rgba(248, 187, 208, 0.3);
     border-radius: 16px;
     background: var(--bg);
     font-size: 13px; color: var(--text-1);
     font-family: inherit; outline: none;
     transition: all 0.2s;
   }
-  .form-input:focus { border-color: var(--sky-3); background: var(--white); }
+  .form-input:focus { border-color: var(--rose-3); background: var(--white); }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     padding: 12px 24px; border: none; border-radius: 18px;
-    background: linear-gradient(135deg, var(--sky-2), var(--sky-3));
+    background: linear-gradient(135deg, var(--rose-2), var(--rose-3));
     color: white; font-size: 13px; font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(160, 204, 232, 0.35);
+    box-shadow: 0 6px 16px rgba(244, 143, 177, 0.35);
     font-family: inherit; transition: transform 0.2s;
   }
   .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: scale(0.96); }
   .btn-ghost {
-    background: var(--bg); color: var(--sky-deep);
-    border: 1.5px solid rgba(180, 216, 240, 0.25); box-shadow: none;
+    background: var(--bg); color: var(--rose-deep);
+    border: 1.5px solid rgba(244, 143, 177, 0.25); box-shadow: none;
   }
+
+  /* 侧边栏管理 */
+  .nav-edit-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border-radius: 16px;
+    padding: 10px 12px;
+  }
+  .nav-edit-row .nav-edit-emoji { font-size: 20px; width: 36px; text-align: center; flex-shrink: 0; }
+  .nav-edit-row .nav-edit-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-1); }
+  .nav-edit-row .nav-edit-btn {
+    width: 32px; height: 32px; border-radius: 50%; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 14px; flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .nav-edit-btn.up { background: var(--mint); color: #4caf50; }
+  .nav-edit-btn.down { background: var(--lavender); color: #9c27b0; }
+  .nav-edit-btn.del { background: var(--rose-1); color: var(--rose-deep); }
+  .nav-edit-btn:active { transform: scale(0.88); }
 
   @media (max-width: 380px) {
     .sidebar { width: 76px; }
@@ -403,6 +422,9 @@
     </div>
     <div class="nav-item" data-page="reading">
       <div class="ic">📚</div><div class="tx">读书</div>
+    </div>
+    <div class="nav-item" data-page="writing">
+      <div class="ic">✍️</div><div class="tx">文稿写作</div>
     </div>
     <div class="nav-item" data-page="settings">
       <div class="ic">⚙️</div><div class="tx">设置</div>
@@ -474,12 +496,12 @@
         <div class="progress-top">
           <div class="ring">
             <svg width="80" height="80">
-              <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(180,216,240,0.22)" stroke-width="6"/>
+              <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(248,187,208,0.22)" stroke-width="6"/>
               <circle cx="40" cy="40" r="34" fill="none" stroke="url(#g1)" stroke-width="6" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="66"/>
               <defs>
                 <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#d4e8f7"/>
-                  <stop offset="100%" stop-color="#b8d8f0"/>
+                  <stop offset="0%" stop-color="#fce4ec"/>
+                  <stop offset="100%" stop-color="#f8bbd0"/>
                 </linearGradient>
               </defs>
             </svg>
@@ -493,7 +515,7 @@
             <div class="pi-desc">已读 3 / 5 本书，继续加油哟～</div>
             <div class="pbr">
               <div class="pbr-top"><span class="name">英语学习</span><span class="val">12/15 天</span></div>
-              <div class="pbr-track"><div class="pbr-fill" style="width:80%;background:linear-gradient(90deg,#d4e8f7,#b8d8f0);"></div></div>
+              <div class="pbr-track"><div class="pbr-fill" style="width:80%;background:linear-gradient(90deg,#fce4ec,#f8bbd0);"></div></div>
             </div>
             <div class="pbr">
               <div class="pbr-top"><span class="name">读书打卡</span><span class="val">18/30 天</span></div>
@@ -591,7 +613,7 @@
           <span class="func-go">›</span>
         </div>
         <div class="func-item">
-          <div class="func-ic" style="background:var(--sky-1);">🎵</div>
+          <div class="func-ic" style="background:var(--rose-1);">🎵</div>
           <div class="func-info">
             <div class="func-title">热门音乐</div>
             <div class="func-desc">最新最火的BGM合集</div>
@@ -688,7 +710,7 @@
           <span class="func-go">›</span>
         </div>
         <div class="func-item">
-          <div class="func-ic" style="background:var(--sky-1);">📗</div>
+          <div class="func-ic" style="background:var(--rose-1);">📗</div>
           <div class="func-info">
             <div class="func-title">本月书单</div>
             <div class="func-desc">已读完 3 本，目标 5 本</div>
@@ -739,7 +761,7 @@
           <span class="func-go">›</span>
         </div>
         <div class="func-item">
-          <div class="func-ic" style="background:var(--sky-1);">📍</div>
+          <div class="func-ic" style="background:var(--rose-1);">📍</div>
           <div class="func-info">
             <div class="func-title">打卡记录</div>
             <div class="func-desc">记录去过的每一个地方</div>
@@ -759,6 +781,73 @@
           <div class="func-info">
             <div class="func-title">美食攻略</div>
             <div class="func-desc">各地必吃美食收藏夹</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= 文稿写作 ========= -->
+    <div class="page" id="page-writing">
+      <div class="page-header">
+        <div class="ph-title">✍️ 文稿写作</div>
+        <div class="ph-desc">高效写稿，灵感不断 📄</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card today">
+          <div class="ic-wrap">📝</div>
+          <div class="num">12<span class="unit">篇</span></div>
+          <div class="lbl">本月完成</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="ic-wrap">⏳</div>
+          <div class="num">3<span class="unit">篇</span></div>
+          <div class="lbl">进行中</div>
+        </div>
+        <div class="stat-card done">
+          <div class="ic-wrap">⭐</div>
+          <div class="num">4.8<span class="unit">分</span></div>
+          <div class="lbl">客户好评</div>
+        </div>
+      </div>
+      <div class="func-list">
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--rose-1);">📋</div>
+          <div class="func-info">
+            <div class="func-title">公文写作</div>
+            <div class="func-desc">通知、报告、总结、汇报材料</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--lavender);">📊</div>
+          <div class="func-info">
+            <div class="func-title">PPT/演示文稿</div>
+            <div class="func-desc">精美幻灯片制作与排版</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--peach);">✉️</div>
+          <div class="func-info">
+            <div class="func-title">商务函件</div>
+            <div class="func-desc">邮件、邀请函、感谢信等</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--mint);">🎤</div>
+          <div class="func-info">
+            <div class="func-title">演讲稿/发言稿</div>
+            <div class="func-desc">会议发言、致辞、演讲</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--butter);">📰</div>
+          <div class="func-info">
+            <div class="func-title">新媒体文案</div>
+            <div class="func-desc">公众号、小红书、抖音文案</div>
           </div>
           <span class="func-go">›</span>
         </div>
@@ -787,6 +876,24 @@
         <button class="btn" style="width:100%;" onclick="saveSettings()">💾 保存设置</button>
       </div>
       <div style="height:12px;"></div>
+
+      <!-- 自定义任务栏管理 -->
+      <div class="form-card">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label class="form-label">📋 侧边栏管理 <span style="font-weight:400;font-size:11px;color:var(--text-3);">（添加/删除/排序）</span></label>
+        </div>
+        <div id="nav-editor-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <input class="form-input" id="new-nav-name" placeholder="名称（如：追剧）" style="flex:1;">
+          <input class="form-input" id="new-nav-emoji" placeholder="图标" style="width:60px;text-align:center;" maxlength="2">
+          <button class="btn" style="padding:12px 16px;flex-shrink:0;" onclick="addNavItem()">➕ 添加</button>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="btn btn-ghost" style="flex:1;" onclick="saveNavItems()">💾 保存任务栏</button>
+          <button class="btn btn-ghost" style="flex:1;" onclick="resetNavItems()">🔄 恢复默认</button>
+        </div>
+      </div>
+      <div style="height:12px;"></div>
       <div class="form-card">
         <div class="form-group">
           <button class="btn btn-ghost" style="width:100%;" onclick="resetSettings()">🔄 恢复默认设置</button>
@@ -799,14 +906,28 @@
 
 <script>
 // ===== 农历转公历（简化版，1996农历四月初一 ≈ 1996-05-17）=====
-// 用户生日：农历1996年四月初一
 var BIRTH_LUNAR_YEAR = 1996;
 var BIRTH_LUNAR_MONTH = 4;
 var BIRTH_LUNAR_DAY = 1;
 
-// ===== 用户设置存储 =====
+// ===== 存储键 =====
 var SETTINGS_KEY = 'girl_workbench_settings';
+var NAV_KEY = 'girl_workbench_nav';
 
+// ===== 默认导航项 =====
+var DEFAULT_NAV = [
+  { id:'home', emoji:'🏠', name:'首页' },
+  { id:'money', emoji:'💰', name:'理财' },
+  { id:'douyin', emoji:'🔥', name:'抖音热点' },
+  { id:'travel', emoji:'✈️', name:'旅游' },
+  { id:'health', emoji:'🍵', name:'养生' },
+  { id:'english', emoji:'📖', name:'英语' },
+  { id:'reading', emoji:'📚', name:'读书' },
+  { id:'writing', emoji:'✍️', name:'文稿写作' },
+  { id:'settings', emoji:'⚙️', name:'设置' }
+];
+
+// ===== 用户设置 =====
 function loadSettings() {
   var raw = localStorage.getItem(SETTINGS_KEY);
   if (raw) { try { return JSON.parse(raw); } catch(e) {} }
@@ -819,117 +940,180 @@ function saveSettingsData(data) {
 
 var userSettings = loadSettings();
 
-// 1996-2100 农历四月（闰四月则取第一个四月）对应的公历日期
-// 使用近似算法：农历四月初一通常在公历5月中旬
-function getLunarBirthdaySolar(year) {
-  // 简化：农历四月初一 ≈ 公历 5月17日（1996年）附近
-  // 每年偏移量不同，这里用查表法覆盖常见年份
-  var table = {
-    1996: [5,17], 1997: [5,6], 1998: [4,26], 1999: [5,14], 2000: [5,3],
-    2001: [5,22], 2002: [5,11], 2003: [4,30], 2004: [5,19], 2005: [5,8],
-    2006: [5,27], 2007: [5,17], 2008: [5,5], 2009: [5,24], 2010: [5,13],
-    2011: [5,2], 2012: [5,20], 2013: [5,9], 2014: [4,28], 2015: [5,17],
-    2016: [5,6], 2017: [5,25], 2018: [5,15], 2019: [5,4], 2020: [5,22],
-    2021: [5,12], 2022: [5,1], 2023: [5,19], 2024: [5,8], 2025: [5,28],
-    2026: [5,17], 2027: [5,6], 2028: [5,24], 2029: [5,13], 2030: [5,3]
-  };
-  if (table[year]) return new Date(year, table[year][0] - 1, table[year][1]);
-  // 默认取5月17日
-  return new Date(year, 4, 17);
+// ===== 导航数据 =====
+function loadNavItems() {
+  var raw = localStorage.getItem(NAV_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return JSON.parse(JSON.stringify(DEFAULT_NAV));
 }
 
-function getAge(birthYear) {
-  var today = new Date();
-  var birth = getLunarBirthdaySolar(birthYear);
-  var age = today.getFullYear() - birthYear;
-  if (today < birth) age--;
-  return age;
+function saveNavData(items) {
+  localStorage.setItem(NAV_KEY, JSON.stringify(items));
 }
 
-function daysUntil(birthDate) {
-  var today = new Date();
-  today.setHours(0,0,0,0);
-  birthDate.setHours(0,0,0,0);
-  // 今年的生日
-  var thisYear = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-  if (today > thisYear) {
-    // 已经过了，算明年的
-    thisYear = new Date(today.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
-  }
-  var diff = Math.ceil((thisYear - today) / (1000 * 60 * 60 * 24));
-  return diff;
-}
+var navItems = loadNavItems();
 
-function updateGreeting() {
-  var now = new Date();
-  var year = now.getFullYear();
-  var hour = now.getHours();
-  var month = now.getMonth() + 1;
-  var day = now.getDate();
+// ===== 渲染侧边栏 =====
+function renderSidebar() {
+  var sidebar = document.querySelector('.sidebar');
+  // 清空（保留 avatar）
+  var avatar = sidebar.querySelector('.avatar');
+  sidebar.innerHTML = '';
+  sidebar.appendChild(avatar);
 
-  // 周几
-  var weekdays = ['日','一','二','三','四','五','六'];
-  var wd = weekdays[now.getDay()];
-
-  // 问候语
-  var prefix = '';
-  if (hour < 6) prefix = '夜深了';
-  else if (hour < 9) prefix = '早上好呀';
-  else if (hour < 12) prefix = '上午好呀';
-  else if (hour < 14) prefix = '中午好呀';
-  else if (hour < 18) prefix = '下午好呀';
-  else if (hour < 22) prefix = '晚上好呀';
-  else prefix = '晚安啦';
-
-  // 日期
-  document.getElementById('banner-date').textContent = '🌸 ' + year + '年' + month + '月' + day + '日 · 周' + wd;
-  document.getElementById('banner-greet').textContent = prefix + '，' + userSettings.name + ' 🌷';
-  document.getElementById('weather-loc').textContent = '📍 ' + userSettings.location;
-
-  // 生日检测
-  var birthday = getLunarBirthdaySolar(year);
-  var birthMonth = birthday.getMonth() + 1;
-  var birthDay = birthday.getDate();
-  var age = getAge(BIRTH_LUNAR_YEAR);
-  var birthdayAlert = document.getElementById('birthday-alert');
-
-  // 倒计时
-  var diff = daysUntil(new Date(year, birthMonth - 1, birthDay));
-
-  // 检查是否今天是生日
-  if (month === birthMonth && day === birthDay) {
-    birthdayAlert.innerHTML = '<div style="background:rgba(255,255,255,0.35);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;">🎂 今天是你的生日！' + age + '岁啦～生日快乐！愿每一天都闪闪发光 ✨🌸</div>';
-    document.getElementById('banner-sub').textContent = '今天是特别的日子，好好宠爱自己哟～ 🎂🎀✨';
-  } else if (diff <= 7) {
-    birthdayAlert.innerHTML = '<div style="background:rgba(255,255,255,0.25);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:600;">🎀 距离你的生日还有 <b>' + diff + '</b> 天！(' + month + '月' + day + '日 → ' + birthMonth + '月' + birthDay + '日) 期待一下～ 🎂</div>';
-    document.getElementById('banner-sub').textContent = '生日倒计时 ' + diff + ' 天，开始准备惊喜吧～ 🎁✨';
-  } else if (diff <= 30) {
-    birthdayAlert.innerHTML = '<div style="background:rgba(255,255,255,0.2);border-radius:14px;padding:8px 14px;font-size:12px;font-weight:500;">🌸 距离生日还有 ' + diff + ' 天（农历四月初一 · ' + birthMonth + '月' + birthDay + '日）</div>';
-    document.getElementById('banner-sub').textContent = '今天也要元气满满哦～ ☁️✨';
-  } else {
-    birthdayAlert.innerHTML = '';
-    document.getElementById('banner-sub').textContent = '今天也要元气满满哦～ ☁️✨';
-  }
-}
-
-// 页面加载时更新
-updateGreeting();
-
-// 每小时刷新一次（跨越问候时段）
-setInterval(updateGreeting, 3600000);
-
-// ===== 导航切换 =====
-document.querySelectorAll('.nav-item').forEach(function(item) {
-  item.addEventListener('click', function() {
-    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
-    this.classList.add('active');
-    var page = this.getAttribute('data-page');
-    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('page-' + page).classList.add('active');
-    // 切换到设置页时加载当前设置
-    if (page === 'settings') loadSettingsToForm();
+  var activePage = '';
+  var currentActive = sidebar.querySelector('.nav-item.active');
+  // 找到当前活跃的页面
+  document.querySelectorAll('.nav-item').forEach(function(n) {
+    if (n.classList.contains('active')) activePage = n.getAttribute('data-page');
   });
-});
+
+  navItems.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'nav-item';
+    div.setAttribute('data-page', item.id);
+    if (item.id === activePage || (!activePage && idx === 0)) {
+      div.classList.add('active');
+    }
+    div.innerHTML = '<div class="ic">' + item.emoji + '</div><div class="tx">' + item.name + '</div>';
+    div.addEventListener('click', function() {
+      document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+      this.classList.add('active');
+      var page = this.getAttribute('data-page');
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      var targetPage = document.getElementById('page-' + page);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+      if (page === 'settings') loadSettingsToForm();
+    });
+    sidebar.appendChild(div);
+  });
+}
+
+// ===== 导航编辑器渲染 =====
+function renderNavEditor() {
+  var list = document.getElementById('nav-editor-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  navItems.forEach(function(item, idx) {
+    var row = document.createElement('div');
+    row.className = 'nav-edit-row';
+
+    var emoji = document.createElement('span');
+    emoji.className = 'nav-edit-emoji';
+    emoji.textContent = item.emoji;
+
+    var name = document.createElement('span');
+    name.className = 'nav-edit-name';
+    name.textContent = item.name;
+
+    var upBtn = document.createElement('button');
+    upBtn.className = 'nav-edit-btn up';
+    upBtn.textContent = '⬆';
+    upBtn.title = '上移';
+    upBtn.onclick = function() {
+      if (idx > 0) {
+        var tmp = navItems[idx];
+        navItems[idx] = navItems[idx - 1];
+        navItems[idx - 1] = tmp;
+        renderNavEditor();
+      }
+    };
+
+    var downBtn = document.createElement('button');
+    downBtn.className = 'nav-edit-btn down';
+    downBtn.textContent = '⬇';
+    downBtn.title = '下移';
+    downBtn.onclick = function() {
+      if (idx < navItems.length - 1) {
+        var tmp = navItems[idx];
+        navItems[idx] = navItems[idx + 1];
+        navItems[idx + 1] = tmp;
+        renderNavEditor();
+      }
+    };
+
+    var delBtn = document.createElement('button');
+    delBtn.className = 'nav-edit-btn del';
+    delBtn.textContent = '✕';
+    delBtn.title = '删除';
+    delBtn.onclick = function() {
+      if (navItems.length <= 2) {
+        alert('至少保留 2 个导航项哟～');
+        return;
+      }
+      if (confirm('确定删除「' + item.name + '」吗？')) {
+        navItems.splice(idx, 1);
+        renderNavEditor();
+      }
+    };
+
+    row.appendChild(emoji);
+    row.appendChild(name);
+    row.appendChild(upBtn);
+    row.appendChild(downBtn);
+    row.appendChild(delBtn);
+    list.appendChild(row);
+  });
+}
+
+function addNavItem() {
+  var nameInput = document.getElementById('new-nav-name');
+  var emojiInput = document.getElementById('new-nav-emoji');
+  var name = nameInput.value.trim();
+  var emoji = emojiInput.value.trim();
+
+  if (!name) { alert('请输入名称哟～'); return; }
+  if (!emoji) { emoji = '📌'; }
+
+  // 生成唯一 id
+  var id = 'custom_' + Date.now();
+  navItems.push({ id: id, emoji: emoji, name: name });
+
+  // 确保对应页面存在（如果不存在则创建空页面）
+  ensurePageExists(id, emoji, name);
+
+  nameInput.value = '';
+  emojiInput.value = '';
+  renderNavEditor();
+}
+
+function ensurePageExists(id, emoji, name) {
+  var existing = document.getElementById('page-' + id);
+  if (existing) return;
+
+  var main = document.querySelector('.main');
+  var page = document.createElement('div');
+  page.className = 'page';
+  page.id = 'page-' + id;
+  page.innerHTML = '<div class="page-header">' +
+    '<div class="ph-title">' + emoji + ' ' + name + '</div>' +
+    '<div class="ph-desc">自定义模块 · 自由发挥 ✨</div>' +
+    '</div>' +
+    '<div class="empty-note">' +
+    '<span class="big">' + emoji + '</span>' +
+    '这是你的「' + name + '」模块<br>可以在这里自由记录内容哟～' +
+    '</div>';
+  main.appendChild(page);
+}
+
+function saveNavItems() {
+  saveNavData(navItems);
+  renderSidebar();
+  alert('✅ 任务栏已保存！');
+}
+
+function resetNavItems() {
+  if (confirm('确定恢复默认任务栏吗？这会删除所有自定义项目。')) {
+    navItems = JSON.parse(JSON.stringify(DEFAULT_NAV));
+    saveNavData(navItems);
+    renderSidebar();
+    renderNavEditor();
+    alert('✅ 已恢复默认任务栏！');
+  }
+}
 
 // ===== 设置功能 =====
 function loadSettingsToForm() {
@@ -939,6 +1123,8 @@ function loadSettingsToForm() {
   if (nameEl) nameEl.value = userSettings.name;
   if (locEl) locEl.value = userSettings.location;
   if (bdayEl) bdayEl.value = userSettings.birthday;
+  // 渲染导航编辑器
+  renderNavEditor();
 }
 
 function saveSettings() {
@@ -965,6 +1151,90 @@ function resetSettings() {
     alert('✅ 已恢复默认！');
   }
 }
+
+// 1996-2100 农历四月（闰四月则取第一个四月）对应的公历日期
+function getLunarBirthdaySolar(year) {
+  var table = {
+    1996: [5,17], 1997: [5,6], 1998: [4,26], 1999: [5,14], 2000: [5,3],
+    2001: [5,22], 2002: [5,11], 2003: [4,30], 2004: [5,19], 2005: [5,8],
+    2006: [5,27], 2007: [5,17], 2008: [5,5], 2009: [5,24], 2010: [5,13],
+    2011: [5,2], 2012: [5,20], 2013: [5,9], 2014: [4,28], 2015: [5,17],
+    2016: [5,6], 2017: [5,25], 2018: [5,15], 2019: [5,4], 2020: [5,22],
+    2021: [5,12], 2022: [5,1], 2023: [5,19], 2024: [5,8], 2025: [5,28],
+    2026: [5,17], 2027: [5,6], 2028: [5,24], 2029: [5,13], 2030: [5,3]
+  };
+  if (table[year]) return new Date(year, table[year][0] - 1, table[year][1]);
+  return new Date(year, 4, 17);
+}
+
+function getAge(birthYear) {
+  var today = new Date();
+  var birth = getLunarBirthdaySolar(birthYear);
+  var age = today.getFullYear() - birthYear;
+  if (today < birth) age--;
+  return age;
+}
+
+function daysUntil(birthDate) {
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  birthDate.setHours(0,0,0,0);
+  var thisYear = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+  if (today > thisYear) {
+    thisYear = new Date(today.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
+  }
+  return Math.ceil((thisYear - today) / (1000 * 60 * 60 * 24));
+}
+
+function updateGreeting() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var hour = now.getHours();
+  var month = now.getMonth() + 1;
+  var day = now.getDate();
+
+  var weekdays = ['日','一','二','三','四','五','六'];
+  var wd = weekdays[now.getDay()];
+
+  var prefix = '';
+  if (hour < 6) prefix = '夜深了';
+  else if (hour < 9) prefix = '早上好呀';
+  else if (hour < 12) prefix = '上午好呀';
+  else if (hour < 14) prefix = '中午好呀';
+  else if (hour < 18) prefix = '下午好呀';
+  else if (hour < 22) prefix = '晚上好呀';
+  else prefix = '晚安啦';
+
+  document.getElementById('banner-date').textContent = '🎀 ' + year + '年' + month + '月' + day + '日 · 周' + wd;
+  document.getElementById('banner-greet').textContent = prefix + '，' + userSettings.name + ' 💖';
+  document.getElementById('weather-loc').textContent = '📍 ' + userSettings.location;
+
+  var birthday = getLunarBirthdaySolar(year);
+  var birthMonth = birthday.getMonth() + 1;
+  var birthDay = birthday.getDate();
+  var age = getAge(BIRTH_LUNAR_YEAR);
+  var birthdayAlert = document.getElementById('birthday-alert');
+  var diff = daysUntil(new Date(year, birthMonth - 1, birthDay));
+
+  if (month === birthMonth && day === birthDay) {
+    birthdayAlert.innerHTML = '<div style="background:rgba(255,255,255,0.35);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;">🎂 今天是你的生日！' + age + '岁啦～生日快乐！愿每一天都闪闪发光 ✨🎀</div>';
+    document.getElementById('banner-sub').textContent = '今天是特别的日子，好好宠爱自己哟～ 🎂💖✨';
+  } else if (diff <= 7) {
+    birthdayAlert.innerHTML = '<div style="background:rgba(255,255,255,0.25);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:600;">🎀 距离你的生日还有 <b>' + diff + '</b> 天！(' + month + '月' + day + '日 → ' + birthMonth + '月' + birthDay + '日) 期待一下～ 🎂</div>';
+    document.getElementById('banner-sub').textContent = '生日倒计时 ' + diff + ' 天，开始准备惊喜吧～ 🎁✨';
+  } else if (diff <= 30) {
+    birthdayAlert.innerHTML = '<div style="background:rgba(255,255,255,0.2);border-radius:14px;padding:8px 14px;font-size:12px;font-weight:500;">🌸 距离生日还有 ' + diff + ' 天（农历四月初一 · ' + birthMonth + '月' + birthDay + '日）</div>';
+    document.getElementById('banner-sub').textContent = '今天也要元气满满哦～ 💖✨';
+  } else {
+    birthdayAlert.innerHTML = '';
+    document.getElementById('banner-sub').textContent = '今天也要元气满满哦～ 💖✨';
+  }
+}
+
+// ===== 初始化 =====
+renderSidebar();
+updateGreeting();
+setInterval(updateGreeting, 3600000);
 </script>
 </body>
 </html>
