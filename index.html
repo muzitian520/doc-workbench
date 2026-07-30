@@ -1274,26 +1274,26 @@
 </div>
 
 <!-- AI 对话助手 -->
-<div class="ai-chat-btn" onclick="toggleAIChat()">
+<div class="ai-chat-btn" id="ai-chat-btn">
   💬<span class="badge"></span>
 </div>
 <div class="ai-chat-overlay" id="ai-chat-overlay" onclick="toggleAIChat()"></div>
 <div class="ai-chat-panel" id="ai-chat-panel">
   <div class="ai-chat-header">
     <div class="title">🐱 木子甜 AI 助手</div>
-    <button class="close" onclick="toggleAIChat()">✕</button>
+    <button class="close" id="ai-close-btn">✕</button>
   </div>
   <div class="ai-chat-messages" id="ai-chat-messages"></div>
-  <div class="ai-quick-tags">
-    <span class="ai-quick-tag" onclick="sendQuickMsg('帮我写一篇工作汇报')">✍️ 写工作汇报</span>
-    <span class="ai-quick-tag" onclick="sendQuickMsg('推荐几部好看的电视剧')">📺 推荐电视剧</span>
-    <span class="ai-quick-tag" onclick="sendQuickMsg('帮我写一段抖音文案')">🎵 抖音文案</span>
-    <span class="ai-quick-tag" onclick="sendQuickMsg('理财建议')">💰 理财建议</span>
-    <span class="ai-quick-tag" onclick="sendQuickMsg('旅游推荐')">✈️ 旅游推荐</span>
+  <div class="ai-quick-tags" id="ai-quick-tags">
+    <span class="ai-quick-tag" data-msg="帮我写一篇工作汇报">✍️ 写工作汇报</span>
+    <span class="ai-quick-tag" data-msg="推荐几部好看的电视剧">📺 推荐电视剧</span>
+    <span class="ai-quick-tag" data-msg="帮我写一段抖音文案">🎵 抖音文案</span>
+    <span class="ai-quick-tag" data-msg="理财建议">💰 理财建议</span>
+    <span class="ai-quick-tag" data-msg="旅游推荐">✈️ 旅游推荐</span>
   </div>
   <div class="ai-chat-input">
     <input type="text" id="ai-chat-input" placeholder="跟我说点什么..." onkeypress="if(event.key==='Enter')sendAIMsg()">
-    <button onclick="sendAIMsg()">➤</button>
+    <button id="ai-send-btn">➤</button>
   </div>
 </div>
 
@@ -1820,6 +1820,33 @@ function updateGreeting() {
 renderSidebar();
 updateGreeting();
 setInterval(updateGreeting, 3600000);
+
+// AI 聊天按钮事件绑定（用 addEventListener 更可靠）
+document.getElementById('ai-chat-btn').addEventListener('click', toggleAIChat);
+document.getElementById('ai-chat-btn').addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  toggleAIChat();
+});
+// 发送按钮
+document.getElementById('ai-send-btn').addEventListener('click', sendAIMsg);
+document.getElementById('ai-send-btn').addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  sendAIMsg();
+});
+// 关闭按钮
+document.getElementById('ai-close-btn').addEventListener('click', toggleAIChat);
+document.getElementById('ai-close-btn').addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  toggleAIChat();
+});
+// 快捷标签
+document.querySelectorAll('#ai-quick-tags .ai-quick-tag').forEach(function(tag) {
+  tag.addEventListener('click', function() { sendQuickMsg(this.getAttribute('data-msg')); });
+  tag.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    sendQuickMsg(this.getAttribute('data-msg'));
+  });
+});
 
 // ===== 追剧模块 =====
 var DRAMA_KEY = 'drama_data';
