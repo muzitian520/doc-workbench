@@ -531,6 +531,84 @@
   }
   .habit-check.done { background: var(--rose-3); border-color: var(--rose-3); color: #fff; }
 
+  /* AI 助手 */
+  .ai-section {
+    background: linear-gradient(135deg, var(--rose-1), var(--lavender));
+    border-radius: 18px; padding: 14px; margin-bottom: 12px;
+  }
+  .ai-input-row {
+    display: flex; gap: 8px; margin-bottom: 10px;
+  }
+  .ai-input-row input { flex: 1; }
+  .ai-input-row .btn { padding: 12px 16px; flex-shrink: 0; }
+  .ai-loading {
+    display: none; text-align: center; padding: 20px;
+    color: var(--rose-deep); font-size: 13px;
+  }
+  .ai-loading.show { display: block; }
+  .ai-loading .spinner {
+    display: inline-block; width: 24px; height: 24px;
+    border: 3px solid var(--rose-1); border-top-color: var(--rose-deep);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+    margin-bottom: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ai-result {
+    display: none; background: var(--white); border-radius: 14px;
+    padding: 14px; margin-top: 10px; font-size: 13px; line-height: 1.8;
+    color: var(--text-1); white-space: pre-wrap; max-height: 300px;
+    overflow-y: auto;
+  }
+  .ai-result.show { display: block; }
+  .ai-result-actions { margin-top: 10px; display: flex; gap: 8px; }
+
+  /* 模板卡片 */
+  .template-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px;
+  }
+  .template-card {
+    background: var(--white); border: 1px solid rgba(248,187,208,0.2);
+    border-radius: 14px; padding: 12px; text-align: center; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .template-card:active { transform: scale(0.96); }
+  .template-card .tpl-ic { font-size: 22px; margin-bottom: 4px; }
+  .template-card .tpl-name { font-size: 11px; font-weight: 600; color: var(--text-1); }
+
+  /* 热搜列表 */
+  .hot-search-row {
+    display: flex; gap: 8px; margin-bottom: 12px;
+  }
+  .hot-search-row input { flex: 1; }
+  .hot-search-row .btn { padding: 12px 16px; flex-shrink: 0; }
+  .hot-list { display: flex; flex-direction: column; gap: 6px; }
+  .hot-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white); border: 1px solid rgba(248,187,208,0.12);
+    border-radius: 14px; padding: 10px 14px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .hot-item:active { transform: scale(0.98); }
+  .hot-rank {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: #fff;
+  }
+  .hot-rank.r1 { background: #f44336; }
+  .hot-rank.r2 { background: #ff9800; }
+  .hot-rank.r3 { background: #ffc107; }
+  .hot-rank.r4 { background: var(--rose-3); }
+  .hot-title { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-1); }
+  .hot-heat { font-size: 11px; color: var(--text-3); flex-shrink: 0; }
+
+  /* AI分析结果 */
+  .ai-analysis {
+    background: linear-gradient(135deg, var(--mint), var(--butter));
+    border-radius: 14px; padding: 14px; margin-top: 10px;
+    font-size: 12px; line-height: 1.8; color: var(--text-1); display: none;
+  }
+  .ai-analysis.show { display: block; }
+
   @media (max-width: 380px) {
     .sidebar { width: 76px; }
     .nav-item { width: 64px; }
@@ -772,6 +850,8 @@
           <button class="btn" onclick="addMoney()" style="padding:12px 16px;flex-shrink:0;">➕</button>
         </div>
         <div id="money-list"></div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:10px;" onclick="analyzeMoney()">🤖 AI 分析我的消费</button>
+        <div class="ai-analysis" id="money-analysis"></div>
       </div>
     </div>
 
@@ -781,30 +861,17 @@
         <div class="ph-title">🔥 抖音热点追踪</div>
         <div class="ph-desc">紧跟热点，灵感不落后</div>
       </div>
-      <div class="func-list">
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--pink-1);">🎬</div>
-          <div class="func-info">
-            <div class="func-title">今日热榜</div>
-            <div class="func-desc">实时抖音热搜榜单追踪</div>
-          </div>
-          <span class="func-go">›</span>
+      <div class="form-card">
+        <div class="hot-search-row">
+          <input class="form-input" id="hot-search-input" placeholder="搜索热点关键词..." onkeypress="if(event.key==='Enter')searchHot()">
+          <button class="btn" onclick="searchHot()">🔍 搜索</button>
         </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--rose-1);">🎵</div>
-          <div class="func-info">
-            <div class="func-title">热门音乐</div>
-            <div class="func-desc">最新最火的BGM合集</div>
-          </div>
-          <span class="func-go">›</span>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button class="btn btn-ghost" style="flex:1;" onclick="loadDouyinHot()">🔥 今日热榜</button>
+          <button class="btn btn-ghost" style="flex:1;" onclick="loadDouyinMusic()">🎵 热门音乐</button>
         </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--mint);">✨</div>
-          <div class="func-info">
-            <div class="func-title">爆款文案</div>
-            <div class="func-desc">热门视频文案灵感库</div>
-          </div>
-          <span class="func-go">›</span>
+        <div class="hot-list" id="hot-list">
+          <div class="crud-empty" style="padding:30px;">点击上方按钮获取最新热点 🔥</div>
         </div>
       </div>
     </div>
@@ -938,7 +1005,29 @@
         </div>
       </div>
       <div class="form-card">
-        <textarea class="writing-textarea" id="writing-textarea" placeholder="在这里写点什么吧..."></textarea>
+        <!-- AI 助手 -->
+        <div class="ai-section">
+          <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:8px;">🤖 AI 写作助手</div>
+          <div class="ai-input-row">
+            <input class="form-input" id="ai-prompt" placeholder="告诉我你想写什么... 如：写一篇乡村振兴工作汇报" onkeypress="if(event.key==='Enter')aiGenerate()">
+            <button class="btn" onclick="aiGenerate()">✨ 生成</button>
+          </div>
+          <div class="ai-loading" id="ai-loading">
+            <div class="spinner"></div><br>AI 正在生成中...
+          </div>
+          <div class="ai-result" id="ai-result"></div>
+        </div>
+        <!-- 模板快捷选择 -->
+        <div style="font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px;">📋 快捷模板</div>
+        <div class="template-grid">
+          <div class="template-card" onclick="useTemplate('report')"><div class="tpl-ic">📊</div><div class="tpl-name">工作汇报</div></div>
+          <div class="template-card" onclick="useTemplate('meeting')"><div class="tpl-ic">📝</div><div class="tpl-name">会议纪要</div></div>
+          <div class="template-card" onclick="useTemplate('speech')"><div class="tpl-ic">🎤</div><div class="tpl-name">演讲稿</div></div>
+          <div class="template-card" onclick="useTemplate('notice')"><div class="tpl-ic">📢</div><div class="tpl-name">通知公告</div></div>
+          <div class="template-card" onclick="useTemplate('plan')"><div class="tpl-ic">🎯</div><div class="tpl-name">活动策划</div></div>
+          <div class="template-card" onclick="useTemplate('wechat')"><div class="tpl-ic">💬</div><div class="tpl-name">微信文案</div></div>
+        </div>
+        <textarea class="writing-textarea" id="writing-textarea" placeholder="在这里写点什么，或用上方AI助手/模板快速生成..."></textarea>
         <button class="btn" style="width:100%;" onclick="saveWriting()">💾 保存文稿</button>
       </div>
       <div style="height:12px;"></div>
@@ -2037,6 +2126,259 @@ function importAll() {
     alert('❌ 备份代码解析失败，请确保完整复制。');
   }
 }
+// ===== AI 写作助手 =====
+var TEMPLATES = {
+  report: '【工作汇报】\n\n一、本期工作概况\n（在此填写时间段）以来，本人围绕xxx工作目标，主要完成了以下工作：\n\n二、主要工作完成情况\n1. \n2. \n3. \n\n三、存在的问题与不足\n1. \n2. \n\n四、下一步工作计划\n1. \n2. \n3. \n\n五、总结\n',
+  meeting: '【会议纪要】\n\n会议时间：\n会议地点：\n参会人员：\n主持人：\n记录人：\n\n一、会议议题\n\n二、讨论内容\n\n三、会议决议\n1. \n2. \n\n四、下一步工作安排\n1. 责任人：  完成时间：\n2. 责任人：  完成时间：\n',
+  speech: '【演讲稿】\n\n尊敬的各位领导、各位同事：\n\n大家好！\n\n今天我很荣幸能站在这里，与大家分享关于xxx的主题。\n\n首先，让我们来思考一个问题：\n\n（正文内容）\n\n第一点：\n\n第二点：\n\n第三点：\n\n最后，我想说：\n\n谢谢大家！\n',
+  notice: '【通知公告】\n\n关于xxx的通知\n\n各部门/全体员工：\n\n  根据xxx安排，现将xxx事项通知如下：\n\n一、\n\n二、\n\n三、\n\n请各部门/全体人员按照以上要求执行。\n\n特此通知。\n\n  xxx单位/部门\n  xxxx年xx月xx日\n',
+  plan: '【活动策划方案】\n\n一、活动名称：\n\n二、活动目的：\n\n三、活动时间：\n\n四、活动地点：\n\n五、参与人员：\n\n六、活动流程：\n1. \n2. \n3. \n\n七、物资准备：\n\n八、预算：\n\n九、注意事项：\n',
+  wechat: '【微信推文文案】\n\n标题：🔥\n\n（开头引入，制造好奇心）\n\n你有没有遇到过这样的情况？\n\n（正文内容，分段简短）\n\n✅ 要点一：\n\n✅ 要点二：\n\n✅ 要点三：\n\n（结尾互动）\n你觉得呢？评论区告诉我～\n\n#话题标签\n'
+};
+
+function useTemplate(type) {
+  var ta = document.getElementById('writing-textarea');
+  if (ta) {
+    ta.value = TEMPLATES[type] || '';
+    ta.focus();
+    ta.scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function aiGenerate() {
+  var promptEl = document.getElementById('ai-prompt');
+  var loadingEl = document.getElementById('ai-loading');
+  var resultEl = document.getElementById('ai-result');
+  var prompt = promptEl.value.trim();
+  if (!prompt) { alert('请输入你想写的内容描述哟～'); return; }
+
+  // 显示加载中
+  loadingEl.classList.add('show');
+  resultEl.classList.remove('show');
+
+  // 模拟AI生成（因为静态页面无法直接调用AI API）
+  setTimeout(function() {
+    loadingEl.classList.remove('show');
+    var generated = generateDoc(prompt);
+    resultEl.innerHTML = generated +
+      '<div class="ai-result-actions">' +
+      '<button class="btn" style="padding:8px 14px;font-size:12px;" onclick="copyToTextarea()">📋 填入编辑区</button>' +
+      '<button class="btn btn-ghost" style="padding:8px 14px;font-size:12px;" onclick="copyToClipboard()">复制</button>' +
+      '</div>';
+    resultEl.classList.add('show');
+    // 存储生成的文本
+    resultEl.setAttribute('data-text', generated);
+  }, 1500);
+}
+
+function generateDoc(prompt) {
+  // 根据用户输入的描述，生成结构化的文档模板
+  var now = new Date();
+  var dateStr = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
+
+  // 检测文档类型
+  var type = 'general';
+  if (/汇报|总结|报告/.test(prompt)) type = 'report';
+  else if (/会议|纪要/.test(prompt)) type = 'meeting';
+  else if (/演讲|发言|致辞/.test(prompt)) type = 'speech';
+  else if (/通知|公告/.test(prompt)) type = 'notice';
+  else if (/策划|方案|活动/.test(prompt)) type = 'plan';
+  else if (/文案|推文|公众号|小红书/.test(prompt)) type = 'wechat';
+
+  var templates = {
+    report: '【' + prompt + '】\n\n' + TEMPLATES.report.replace('【工作汇报】\n\n', ''),
+    meeting: '【' + prompt + '】\n\n' + TEMPLATES.meeting.replace('【会议纪要】\n\n', ''),
+    speech: '【' + prompt + '】\n\n' + TEMPLATES.speech.replace('【演讲稿】\n\n', ''),
+    notice: TEMPLATES.notice.replace('关于xxx的通知', '关于' + prompt + '的通知'),
+    plan: '【' + prompt + '】\n\n' + TEMPLATES.plan.replace('【活动策划方案】\n\n', ''),
+    wechat: '【' + prompt + '】\n\n' + TEMPLATES.wechat.replace('【微信推文文案】\n\n', ''),
+    general: '【' + prompt + '】\n\n生成日期：' + dateStr + '\n\n以下是关于「' + prompt + '」的内容框架，请根据实际情况补充完善：\n\n一、背景介绍\n\n二、主要内容\n1. \n2. \n3. \n\n三、分析总结\n\n四、建议与展望\n'
+  };
+
+  return templates[type] || templates.general;
+}
+
+function copyToTextarea() {
+  var resultEl = document.getElementById('ai-result');
+  var text = resultEl.getAttribute('data-text') || resultEl.textContent;
+  var ta = document.getElementById('writing-textarea');
+  if (ta) {
+    ta.value = text;
+    ta.focus();
+    ta.scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function copyToClipboard() {
+  var resultEl = document.getElementById('ai-result');
+  var text = resultEl.getAttribute('data-text') || resultEl.textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('✅ 已复制到剪贴板！');
+    }).catch(function() {
+      prompt('请手动复制：', text);
+    });
+  } else {
+    prompt('请手动复制：', text);
+  }
+}
+
+// ===== 抖音热点 =====
+var DOUYIN_HOT = [
+  {title:'夏日清凉穿搭分享', heat:'982.5万'},
+  {title:'高考成绩查询攻略', heat:'876.3万'},
+  {title:'居家收纳神器推荐', heat:'754.1万'},
+  {title:'夜市美食探店vlog', heat:'692.8万'},
+  {title:'职场新人成长指南', heat:'621.4万'},
+  {title:'宠物日常搞笑集锦', heat:'583.2万'},
+  {title:'短剧：都市甜宠系列', heat:'541.9万'},
+  {title:'健身减脂食谱分享', heat:'498.6万'},
+  {title:'旅行攻略：小众目的地', heat:'467.3万'},
+  {title:'手账排版灵感', heat:'421.7万'},
+  {title:'亲子互动游戏', heat:'389.5万'},
+  {title:'美妆教程：日常通勤妆', heat:'356.2万'},
+  {title:'副业赚钱经验分享', heat:'324.8万'},
+  {title:'家居改造前后对比', heat:'298.1万'},
+  {title:'读书分享：治愈系书单', heat:'276.4万'}
+];
+
+var DOUYIN_MUSIC = [
+  {title:'《起风了》- 买辣椒也用券', heat:'1024万'},
+  {title:'《孤勇者》- 陈奕迅', heat:'892万'},
+  {title:'《星辰大海》- 黄霄雲', heat:'768万'},
+  {title:'《错位时空》- 艾辰', heat:'654万'},
+  {title:'《白月光与朱砂痣》- 大籽', heat:'587万'},
+  {title:'《踏山河》- 是七叔呢', heat:'521万'},
+  {title:'《飞鸟和蝉》- 任然', heat:'478万'},
+  {title:'《芒种》- 音阙诗听', heat:'432万'},
+  {title:'《少年》- 梦然', heat:'398万'},
+  {title:'《你的答案》- 阿冗', heat:'365万'}
+];
+
+function loadDouyinHot() {
+  var list = document.getElementById('hot-list');
+  if (!list) return;
+  list.innerHTML = '';
+  DOUYIN_HOT.forEach(function(item, idx) {
+    var rank = idx + 1;
+    var rankClass = rank <= 3 ? 'r' + rank : 'r4';
+    var row = document.createElement('div');
+    row.className = 'hot-item';
+    row.onclick = function() { copyText(item.title); };
+    row.innerHTML =
+      '<div class="hot-rank ' + rankClass + '">' + rank + '</div>' +
+      '<div class="hot-title">' + item.title + '</div>' +
+      '<div class="hot-heat">🔥 ' + item.heat + '</div>';
+    list.appendChild(row);
+  });
+}
+
+function loadDouyinMusic() {
+  var list = document.getElementById('hot-list');
+  if (!list) return;
+  list.innerHTML = '';
+  DOUYIN_MUSIC.forEach(function(item, idx) {
+    var rank = idx + 1;
+    var rankClass = rank <= 3 ? 'r' + rank : 'r4';
+    var row = document.createElement('div');
+    row.className = 'hot-item';
+    row.onclick = function() { copyText(item.title); };
+    row.innerHTML =
+      '<div class="hot-rank ' + rankClass + '">' + rank + '</div>' +
+      '<div class="hot-title">🎵 ' + item.title + '</div>' +
+      '<div class="hot-heat">▶ ' + item.heat + '</div>';
+    list.appendChild(row);
+  });
+}
+
+function searchHot() {
+  var input = document.getElementById('hot-search-input');
+  var keyword = input.value.trim();
+  if (!keyword) { loadDouyinHot(); return; }
+  var list = document.getElementById('hot-list');
+  if (!list) return;
+  var filtered = DOUYIN_HOT.filter(function(item) {
+    return item.title.indexOf(keyword) >= 0;
+  });
+  if (filtered.length === 0) {
+    // 没找到，生成相关推荐
+    list.innerHTML = '<div class="crud-empty" style="padding:30px;">没有找到「' + keyword + '」相关热点<br>试试看看今日热榜吧 🔥</div>';
+    return;
+  }
+  list.innerHTML = '';
+  filtered.forEach(function(item, idx) {
+    var row = document.createElement('div');
+    row.className = 'hot-item';
+    row.onclick = function() { copyText(item.title); };
+    row.innerHTML =
+      '<div class="hot-rank r4">' + (idx+1) + '</div>' +
+      '<div class="hot-title">' + item.title + '</div>' +
+      '<div class="hot-heat">🔥 ' + item.heat + '</div>';
+    list.appendChild(row);
+  });
+}
+
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('已复制：' + text);
+    });
+  }
+}
+
+// ===== 理财AI分析 =====
+function analyzeMoney() {
+  var analysisEl = document.getElementById('money-analysis');
+  if (!analysisEl) return;
+
+  var income = moneyList.filter(function(m){return m.type==='in';}).reduce(function(s,m){return s+m.amount;},0);
+  var expense = moneyList.filter(function(m){return m.type==='out';}).reduce(function(s,m){return s+m.amount;},0);
+  var balance = income - expense;
+
+  // 按备注分类支出
+  var categories = {};
+  moneyList.filter(function(m){return m.type==='out';}).forEach(function(m) {
+    var cat = m.note || '其他';
+    if (!categories[cat]) categories[cat] = 0;
+    categories[cat] += m.amount;
+  });
+
+  // 找出最大支出类别
+  var maxCat = ''; var maxAmt = 0;
+  for (var cat in categories) {
+    if (categories[cat] > maxAmt) { maxAmt = categories[cat]; maxCat = cat; }
+  }
+
+  var savingsRate = income > 0 ? Math.round((balance / income) * 100) : 0;
+  var advice = '';
+
+  if (balance < 0) {
+    advice = '⚠️ 本月支出超过收入！建议控制消费，优先减少「' + maxCat + '」方面的支出。';
+  } else if (savingsRate < 10) {
+    advice = '💡 储蓄率偏低（' + savingsRate + '%），建议将储蓄率提升到20%以上。最大支出项是「' + maxCat + '」（¥' + maxAmt + '），可以适当优化。';
+  } else if (savingsRate < 30) {
+    advice = '✅ 储蓄率' + savingsRate + '%，表现不错！最大支出「' + maxCat + '」（¥' + maxAmt + '），继续保持～';
+  } else {
+    advice = '🎉 太棒了！储蓄率' + savingsRate + '%，是理财小能手！可以考虑将结余用于投资理财。';
+  }
+
+  var catList = '';
+  var sortedCats = Object.keys(categories).sort(function(a,b){return categories[b]-categories[a];});
+  sortedCats.forEach(function(cat) {
+    var pct = Math.round(categories[cat] / expense * 100);
+    catList += '• ' + cat + '：¥' + categories[cat] + '（' + pct + '%）\n';
+  });
+
+  analysisEl.innerHTML =
+    '📊 <b>消费分析报告</b>\n\n' +
+    '总收入：¥' + income + '\n' +
+    '总支出：¥' + expense + '\n' +
+    '结余：¥' + balance + '（储蓄率' + savingsRate + '%）\n\n' +
+    '<b>支出明细：</b>\n' + catList + '\n' +
+    '<b>AI 建议：</b>' + advice;
+  analysisEl.classList.add('show');
+}
+
 </script>
 </body>
 </html>
