@@ -49,6 +49,7 @@
   /* ===== 左侧导航 ===== */
   .sidebar {
     width: 88px;
+    min-width: 88px;
     flex-shrink: 0;
     background: linear-gradient(180deg, #fff5f7 0%, #fce4ec 50%, #f8bbd0 100%);
     border-right: 1px solid rgba(248, 187, 208, 0.18);
@@ -57,7 +58,12 @@
     align-items: center;
     padding: 24px 0 18px;
     overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     z-index: 10;
+    height: 100vh;
+    height: 100dvh;
   }
   .sidebar::-webkit-scrollbar { width: 0; }
 
@@ -112,9 +118,11 @@
   /* ===== 主内容 ===== */
   .main {
     flex: 1; overflow-y: auto;
+    overflow-x: hidden;
     padding: 22px 20px 90px;
     position: relative;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
   .main::-webkit-scrollbar { width: 0; }
 
