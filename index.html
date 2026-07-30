@@ -971,8 +971,22 @@
           <input class="form-input" id="set-location" placeholder="例如：陕西渭南华阴市" value="陕西渭南华阴市">
         </div>
         <div class="form-group">
-          <label class="form-label">🎂 生日（公历）</label>
-          <input class="form-input" id="set-birthday" type="date" value="">
+          <label class="form-label">🎂 农历生日 <span style="font-weight:400;font-size:10px;color:var(--text-3);">（过农历生日选这里）</span></label>
+          <div style="display:flex;gap:8px;">
+            <select class="form-input" id="set-lunar-month" style="flex:1;">
+              <option value="1">正月</option><option value="2">二月</option>
+              <option value="3">三月</option><option value="4" selected>四月</option>
+              <option value="5">五月</option><option value="6">六月</option>
+              <option value="7">七月</option><option value="8">八月</option>
+              <option value="9">九月</option><option value="10">十月</option>
+              <option value="11">冬月</option><option value="12">腊月</option>
+            </select>
+            <select class="form-input" id="set-lunar-day" style="flex:1;"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📅 出生年份</label>
+          <input class="form-input" id="set-birth-year" type="number" placeholder="如：1996" value="1996" min="1950" max="2020">
         </div>
         <button class="btn" style="width:100%;" onclick="saveSettings()">💾 保存设置</button>
       </div>
@@ -985,8 +999,7 @@
         </div>
         <div id="nav-editor-list" style="display:flex;flex-direction:column;gap:8px;"></div>
         <div style="display:flex;gap:8px;margin-top:12px;">
-          <input class="form-input" id="new-nav-name" placeholder="名称（如：追剧）" style="flex:1;">
-          <input class="form-input" id="new-nav-emoji" placeholder="图标" style="width:60px;text-align:center;" maxlength="2">
+          <input class="form-input" id="new-nav-name" placeholder="输入名称（如：追剧）" style="flex:1;">
           <button class="btn" style="padding:12px 16px;flex-shrink:0;" onclick="addNavItem()">➕ 添加</button>
         </div>
         <div style="margin-top:10px;display:flex;gap:8px;">
@@ -1016,25 +1029,57 @@ var BIRTH_LUNAR_DAY = 1;
 var SETTINGS_KEY = 'girl_workbench_settings';
 var NAV_KEY = 'girl_workbench_nav';
 
-// ===== 默认导航项（Hello Kitty 可爱风）=====
+// ===== 默认导航项（每个都有独特的蝴蝶结颜色）=====
 var DEFAULT_NAV = [
-  { id:'home', emoji:'🐱', name:'首页' },
-  { id:'money', emoji:'💗', name:'理财' },
-  { id:'douyin', emoji:'🎵', name:'抖音热点' },
-  { id:'writing', emoji:'✏️', name:'文稿写作' },
-  { id:'travel', emoji:'🎀', name:'旅游' },
-  { id:'drama', emoji:'📺', name:'追剧' },
-  { id:'reading', emoji:'📖', name:'阅读' },
-  { id:'health', emoji:'🍓', name:'养生' },
-  { id:'english', emoji:'🌸', name:'英语' },
-  { id:'settings', emoji:'⚙️', name:'设置' }
+  { id:'home', color:'#ec407a', name:'首页' },
+  { id:'money', color:'#ff9800', name:'理财' },
+  { id:'douyin', color:'#e91e63', name:'抖音热点' },
+  { id:'writing', color:'#9c27b0', name:'文稿写作' },
+  { id:'travel', color:'#2196f3', name:'旅游' },
+  { id:'drama', color:'#f44336', name:'追剧' },
+  { id:'reading', color:'#4caf50', name:'阅读' },
+  { id:'health', color:'#ff5722', name:'养生' },
+  { id:'english', color:'#00bcd4', name:'英语' },
+  { id:'settings', color:'#607d8b', name:'设置' }
 ];
+
+// Hello Kitty 迷你猫头 SVG（38x38，参数：蝴蝶结颜色）
+function kittyIconSVG(bowColor) {
+  return '<svg viewBox="0 0 100 100" width="34" height="34" xmlns="http://www.w3.org/2000/svg">' +
+    '<ellipse cx="50" cy="55" rx="42" ry="38" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
+    '<ellipse cx="22" cy="24" rx="16" ry="20" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
+    '<ellipse cx="22" cy="26" rx="8" ry="11" fill="#fce4ec"/>' +
+    '<ellipse cx="78" cy="24" rx="16" ry="20" fill="#fff" stroke="#f8bbd0" stroke-width="1.5"/>' +
+    '<ellipse cx="78" cy="26" rx="8" ry="11" fill="#fce4ec"/>' +
+    '<ellipse cx="38" cy="34" rx="9" ry="7" fill="' + bowColor + '"/>' +
+    '<ellipse cx="62" cy="34" rx="9" ry="7" fill="' + bowColor + '"/>' +
+    '<circle cx="50" cy="35" r="4" fill="' + bowColor + '" opacity="0.7"/>' +
+    '<ellipse cx="38" cy="52" rx="4" ry="5" fill="#333"/>' +
+    '<ellipse cx="62" cy="52" rx="4" ry="5" fill="#333"/>' +
+    '<circle cx="39" cy="50" r="1.2" fill="#fff"/>' +
+    '<circle cx="63" cy="50" r="1.2" fill="#fff"/>' +
+    '<ellipse cx="50" cy="60" rx="4" ry="3" fill="#f8bbd0"/>' +
+    '<line x1="28" y1="56" x2="42" y2="58" stroke="#eee" stroke-width="1"/>' +
+    '<line x1="28" y1="61" x2="42" y2="61" stroke="#eee" stroke-width="1"/>' +
+    '<line x1="28" y1="66" x2="42" y2="64" stroke="#eee" stroke-width="1"/>' +
+    '<line x1="72" y1="56" x2="58" y2="58" stroke="#eee" stroke-width="1"/>' +
+    '<line x1="72" y1="61" x2="58" y2="61" stroke="#eee" stroke-width="1"/>' +
+    '<line x1="72" y1="66" x2="58" y2="64" stroke="#eee" stroke-width="1"/>' +
+    '</svg>';
+}
 
 // ===== 用户设置 =====
 function loadSettings() {
   var raw = localStorage.getItem(SETTINGS_KEY);
-  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
-  return { name: '小甜甜', location: '陕西渭南华阴市', birthday: '' };
+  if (raw) {
+    try {
+      var s = JSON.parse(raw);
+      // 兼容旧数据
+      if (!s.lunarMonth) { s.lunarMonth = 4; s.lunarDay = 1; s.birthYear = 1996; }
+      return s;
+    } catch(e) {}
+  }
+  return { name: '小甜甜', location: '陕西渭南华阴市', lunarMonth: 4, lunarDay: 1, birthYear: 1996 };
 }
 
 function saveSettingsData(data) {
@@ -1059,14 +1104,11 @@ var navItems = loadNavItems();
 // ===== 渲染侧边栏 =====
 function renderSidebar() {
   var sidebar = document.querySelector('.sidebar');
-  // 清空（保留 avatar）
   var avatar = sidebar.querySelector('.avatar');
   sidebar.innerHTML = '';
   sidebar.appendChild(avatar);
 
   var activePage = '';
-  var currentActive = sidebar.querySelector('.nav-item.active');
-  // 找到当前活跃的页面
   document.querySelectorAll('.nav-item').forEach(function(n) {
     if (n.classList.contains('active')) activePage = n.getAttribute('data-page');
   });
@@ -1078,7 +1120,9 @@ function renderSidebar() {
     if (item.id === activePage || (!activePage && idx === 0)) {
       div.classList.add('active');
     }
-    div.innerHTML = '<div class="ic">' + item.emoji + '</div><div class="tx">' + item.name + '</div>';
+    // 用 SVG Kitty 猫头，蝴蝶结颜色用 item.color，没有则默认粉色
+    var bow = item.color || '#ec407a';
+    div.innerHTML = '<div class="ic">' + kittyIconSVG(bow) + '</div><div class="tx">' + item.name + '</div>';
     div.addEventListener('click', function() {
       document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
       this.classList.add('active');
@@ -1184,26 +1228,24 @@ function renderNavEditor() {
 
 function addNavItem() {
   var nameInput = document.getElementById('new-nav-name');
-  var emojiInput = document.getElementById('new-nav-emoji');
   var name = nameInput.value.trim();
-  var emoji = emojiInput.value.trim();
 
   if (!name) { alert('请输入名称哟～'); return; }
-  if (!emoji) { emoji = '📌'; }
 
-  // 生成唯一 id
+  // 随机一个可爱的蝴蝶结颜色
+  var colors = ['#ec407a','#ff9800','#e91e63','#9c27b0','#2196f3','#f44336','#4caf50','#ff5722','#00bcd4','#ff69b4'];
+  var color = colors[Math.floor(Math.random() * colors.length)];
+
   var id = 'custom_' + Date.now();
-  navItems.push({ id: id, emoji: emoji, name: name });
+  navItems.push({ id: id, color: color, name: name });
 
-  // 确保对应页面存在（如果不存在则创建空页面）
-  ensurePageExists(id, emoji, name);
+  ensurePageExists(id, color, name);
 
   nameInput.value = '';
-  emojiInput.value = '';
   renderNavEditor();
 }
 
-function ensurePageExists(id, emoji, name) {
+function ensurePageExists(id, color, name) {
   var existing = document.getElementById('page-' + id);
   if (existing) return;
 
@@ -1212,12 +1254,12 @@ function ensurePageExists(id, emoji, name) {
   page.className = 'page';
   page.id = 'page-' + id;
   page.innerHTML = '<div class="page-header">' +
-    '<div class="ph-title">' + emoji + ' ' + name + '</div>' +
+    '<div class="ph-title">🐱 ' + name + '</div>' +
     '<div class="ph-desc">自定义模块 · 自由发挥 ✨</div>' +
     '</div>' +
     '<div class="empty-note">' +
-    '<span class="big">' + emoji + '</span>' +
-    '这是你的「' + name + '」模块<br>可以在这里自由记录内容哟～' +
+    kittyIconSVG(color) +
+    '<br><br>这是你的「' + name + '」模块<br>可以在这里自由记录内容哟～' +
     '</div>';
   main.appendChild(page);
 }
@@ -1242,24 +1284,87 @@ function resetNavItems() {
 function loadSettingsToForm() {
   var nameEl = document.getElementById('set-name');
   var locEl = document.getElementById('set-location');
-  var bdayEl = document.getElementById('set-birthday');
   if (nameEl) nameEl.value = userSettings.name;
   if (locEl) locEl.value = userSettings.location;
-  if (bdayEl) bdayEl.value = userSettings.birthday;
+  // 农历生日
+  var lmEl = document.getElementById('set-lunar-month');
+  var ldEl = document.getElementById('set-lunar-day');
+  var byEl = document.getElementById('set-birth-year');
+  if (lmEl) lmEl.value = userSettings.lunarMonth || 4;
+  if (byEl) byEl.value = userSettings.birthYear || 1996;
+  // 填充日期选项
+  fillLunarDays();
+  if (ldEl) ldEl.value = userSettings.lunarDay || 1;
   // 渲染导航编辑器
   renderNavEditor();
+}
+
+// 根据月份填充农历日期
+function fillLunarDays() {
+  var monthEl = document.getElementById('set-lunar-month');
+  var dayEl = document.getElementById('set-lunar-day');
+  if (!monthEl || !dayEl) return;
+  var m = parseInt(monthEl.value);
+  var maxDay = (m === 2) ? 29 : 30; // 农历二月最多29天，其余30天
+  var currentVal = dayEl.value;
+  dayEl.innerHTML = '';
+  for (var d = 1; d <= maxDay; d++) {
+    var opt = document.createElement('option');
+    opt.value = d;
+    var prefix = '';
+    if (d === 1) prefix = '初一';
+    else if (d === 2) prefix = '初二';
+    else if (d === 3) prefix = '初三';
+    else if (d === 4) prefix = '初四';
+    else if (d === 5) prefix = '初五';
+    else if (d === 6) prefix = '初六';
+    else if (d === 7) prefix = '初七';
+    else if (d === 8) prefix = '初八';
+    else if (d === 9) prefix = '初九';
+    else if (d === 10) prefix = '初十';
+    else if (d === 11) prefix = '十一';
+    else if (d === 12) prefix = '十二';
+    else if (d === 13) prefix = '十三';
+    else if (d === 14) prefix = '十四';
+    else if (d === 15) prefix = '十五';
+    else if (d === 16) prefix = '十六';
+    else if (d === 17) prefix = '十七';
+    else if (d === 18) prefix = '十八';
+    else if (d === 19) prefix = '十九';
+    else if (d === 20) prefix = '二十';
+    else if (d === 21) prefix = '廿一';
+    else if (d === 22) prefix = '廿二';
+    else if (d === 23) prefix = '廿三';
+    else if (d === 24) prefix = '廿四';
+    else if (d === 25) prefix = '廿五';
+    else if (d === 26) prefix = '廿六';
+    else if (d === 27) prefix = '廿七';
+    else if (d === 28) prefix = '廿八';
+    else if (d === 29) prefix = '廿九';
+    else if (d === 30) prefix = '三十';
+    opt.textContent = prefix + '（' + d + '）';
+    dayEl.appendChild(opt);
+  }
+  if (currentVal && parseInt(currentVal) <= maxDay) {
+    dayEl.value = currentVal;
+  }
 }
 
 function saveSettings() {
   var name = document.getElementById('set-name').value.trim();
   var loc = document.getElementById('set-location').value.trim();
-  var bday = document.getElementById('set-birthday').value;
+  var lm = parseInt(document.getElementById('set-lunar-month').value);
+  var ld = parseInt(document.getElementById('set-lunar-day').value);
+  var by = parseInt(document.getElementById('set-birth-year').value);
 
   if (!name) { alert('请输入你的昵称哟～ 🌸'); return; }
+  if (!by || by < 1950) { alert('请输入正确的出生年份哟～'); return; }
 
   userSettings.name = name;
   userSettings.location = loc || '陕西渭南华阴市';
-  userSettings.birthday = bday;
+  userSettings.lunarMonth = lm;
+  userSettings.lunarDay = ld;
+  userSettings.birthYear = by;
   saveSettingsData(userSettings);
   updateGreeting();
   alert('✅ 设置已保存！');
@@ -1267,7 +1372,7 @@ function saveSettings() {
 
 function resetSettings() {
   if (confirm('确定恢复默认设置吗？')) {
-    userSettings = { name: '小甜甜', location: '陕西渭南华阴市', birthday: '' };
+    userSettings = { name: '小甜甜', location: '陕西渭南华阴市', lunarMonth: 4, lunarDay: 1, birthYear: 1996 };
     saveSettingsData(userSettings);
     updateGreeting();
     loadSettingsToForm();
