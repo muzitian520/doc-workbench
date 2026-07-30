@@ -1409,11 +1409,12 @@ function renderNavEditor() {
     emojiSpan.title = '点击修改图标';
     emojiSpan.onclick = function(e) {
       e.stopPropagation();
-      var newEmoji = prompt('请输入新图标（emoji）：', item.emoji);
-      if (newEmoji && newEmoji.trim()) {
-        navItems[idx].emoji = newEmoji.trim();
-        renderNavEditor();
-      }
+      iosPrompt('请输入新图标（emoji）', '可以输入 emoji 表情', item.emoji, function(newEmoji) {
+        if (newEmoji && newEmoji.trim()) {
+          navItems[idx].emoji = newEmoji.trim();
+          renderNavEditor();
+        }
+      });
     };
 
     // 可点击编辑的名称
@@ -1423,11 +1424,12 @@ function renderNavEditor() {
     nameSpan.title = '点击修改名称';
     nameSpan.onclick = function(e) {
       e.stopPropagation();
-      var newName = prompt('请输入新名称：', item.name);
-      if (newName && newName.trim()) {
-        navItems[idx].name = newName.trim();
-        renderNavEditor();
-      }
+      iosPrompt('请输入新名称', '改为你想要的名字', item.name, function(newName) {
+        if (newName && newName.trim()) {
+          navItems[idx].name = newName.trim();
+          renderNavEditor();
+        }
+      });
     };
 
     var upBtn = document.createElement('button');
@@ -2300,47 +2302,48 @@ function exportAll() {
     navigator.clipboard.writeText(code).then(function() {
       alert('✅ 备份代码已复制！\n\n发给新手机 → 点「导入备份」→ 粘贴即可恢复。\n\n包含：昵称、生日、任务栏、追剧、旅游、阅读、理财、养生、文稿');
     }).catch(function() {
-      prompt('请手动复制以下备份代码：', code);
+      iosPrompt('请手动复制以下备份代码', '长按或点击输入框，然后全选复制', code, function(){});
     });
   } else {
-    prompt('请手动复制以下备份代码：', code);
+    iosPrompt('请手动复制以下备份代码', '长按或点击输入框，然后全选复制', code, function(){});
   }
 }
 
 function importAll() {
-  var code = prompt('请粘贴备份代码：', '');
-  if (!code || !code.trim()) return;
-  try {
-    var backup = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
-    if (!backup.settings || !backup.nav) {
-      alert('❌ 备份代码无效，请检查是否完整复制。');
-      return;
+  iosPrompt('请粘贴备份代码', '把备份代码粘贴到这里', '', function(code) {
+    if (!code || !code.trim()) return;
+    try {
+      var backup = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+      if (!backup.settings || !backup.nav) {
+        alert('❌ 备份代码无效，请检查是否完整复制。');
+        return;
+      }
+      // 恢复设置
+      userSettings = backup.settings;
+      saveSettingsData(userSettings);
+      // 恢复导航
+      navItems = backup.nav;
+      saveNavData(navItems);
+      // 恢复各模块数据
+      if (backup.drama) { dramaList = backup.drama; saveDrama(dramaList); renderDrama(); }
+      if (backup.travel) { travelList = backup.travel; saveTravel(travelList); renderTravel(); }
+      if (backup.reading) { readingList = backup.reading; saveReading(readingList); renderReading(); }
+      if (backup.money) { moneyList = backup.money; saveMoney(moneyList); renderMoney(); }
+      if (backup.health) { healthData = backup.health; saveHealth(healthData); renderHealth(); }
+      if (backup.writing) { writingList = backup.writing; saveWriting(writingList); writingIdCounter = writingList.length > 0 ? Math.max.apply(null, writingList.map(function(w){return w.id;})) + 1 : 2; renderWriting(); }
+      if (backup.home) { homeData = backup.home; saveHomeData(homeData); renderHomeData(); }
+      if (backup.moneyManual) { saveMoneyManual(backup.moneyManual); }
+      if (backup.moneyMode) { localStorage.setItem('money_mode', backup.moneyMode); }
+      if (backup.aiChat) { aiChatMsgs = backup.aiChat; saveAIChat(aiChatMsgs); }
+      // 刷新界面
+      renderSidebar();
+      updateGreeting();
+      loadSettingsToForm();
+      alert('✅ 全部恢复成功！\n\n所有数据已恢复\n备份日期：' + (backup.date || '未知'));
+    } catch(e) {
+      alert('❌ 备份代码解析失败，请确保完整复制。');
     }
-    // 恢复设置
-    userSettings = backup.settings;
-    saveSettingsData(userSettings);
-    // 恢复导航
-    navItems = backup.nav;
-    saveNavData(navItems);
-    // 恢复各模块数据
-    if (backup.drama) { dramaList = backup.drama; saveDrama(dramaList); renderDrama(); }
-    if (backup.travel) { travelList = backup.travel; saveTravel(travelList); renderTravel(); }
-    if (backup.reading) { readingList = backup.reading; saveReading(readingList); renderReading(); }
-    if (backup.money) { moneyList = backup.money; saveMoney(moneyList); renderMoney(); }
-    if (backup.health) { healthData = backup.health; saveHealth(healthData); renderHealth(); }
-    if (backup.writing) { writingList = backup.writing; saveWriting(writingList); writingIdCounter = writingList.length > 0 ? Math.max.apply(null, writingList.map(function(w){return w.id;})) + 1 : 2; renderWriting(); }
-    if (backup.home) { homeData = backup.home; saveHomeData(homeData); renderHomeData(); }
-    if (backup.moneyManual) { saveMoneyManual(backup.moneyManual); }
-    if (backup.moneyMode) { localStorage.setItem('money_mode', backup.moneyMode); }
-    if (backup.aiChat) { aiChatMsgs = backup.aiChat; saveAIChat(aiChatMsgs); }
-    // 刷新界面
-    renderSidebar();
-    updateGreeting();
-    loadSettingsToForm();
-    alert('✅ 全部恢复成功！\n\n所有数据已恢复\n备份日期：' + (backup.date || '未知'));
-  } catch(e) {
-    alert('❌ 备份代码解析失败，请确保完整复制。');
-  }
+  });
 }
 // ===== AI 写作助手 =====
 var TEMPLATES = {
@@ -2432,10 +2435,10 @@ function copyToClipboard() {
     navigator.clipboard.writeText(text).then(function() {
       alert('✅ 已复制到剪贴板！');
     }).catch(function() {
-      prompt('请手动复制：', text);
+      iosPrompt('请手动复制', '长按输入框全选复制', text, function(){});
     });
   } else {
-    prompt('请手动复制：', text);
+    iosPrompt('请手动复制', '长按输入框全选复制', text, function(){});
   }
 }
 
@@ -2630,22 +2633,25 @@ function renderHomeData() {
 
 function editHomeStat(key, unit) {
   var current = homeData[key];
-  var val = prompt('请输入' + (unit ? '（单位：' + unit + '）' : '') + '：', String(current));
-  if (val === null) return;
-  val = val.trim();
-  if (!val) return;
-  homeData[key] = val;
-  saveHomeData(homeData);
-  renderHomeData();
+  var label = '请输入' + (unit ? '（单位：' + unit + '）' : '');
+  iosPrompt(label, '改成你自己的数字', String(current), function(val) {
+    if (val === null) return;
+    val = val.trim();
+    if (!val) return;
+    homeData[key] = val;
+    saveHomeData(homeData);
+    renderHomeData();
+  });
 }
 function editHomeText(key) {
-  var val = prompt('请输入新内容：', homeData[key]);
-  if (val === null) return;
-  val = val.trim();
-  if (!val) return;
-  homeData[key] = val;
-  saveHomeData(homeData);
-  renderHomeData();
+  iosPrompt('请输入新内容', '改成你自己的文字', homeData[key], function(val) {
+    if (val === null) return;
+    val = val.trim();
+    if (!val) return;
+    homeData[key] = val;
+    saveHomeData(homeData);
+    renderHomeData();
+  });
 }
 renderHomeData();
 
@@ -2672,17 +2678,18 @@ function editMoneyStat(field) {
     return;
   }
   var manual = getMoneyManual();
-  var val = prompt('请输入' + (field === 'income' ? '本月收入' : field === 'expense' ? '本月支出' : '本月结余') + '：', String(manual[field]));
-  if (val === null) return;
-  val = parseFloat(val.trim());
-  if (isNaN(val)) return;
-  manual[field] = val;
-  // auto-calc balance
-  if (field === 'income' || field === 'expense') {
-    manual.balance = manual.income - manual.expense;
-  }
-  saveMoneyManual(manual);
-  renderMoney();
+  var label = field === 'income' ? '本月收入' : field === 'expense' ? '本月支出' : '本月结余';
+  iosPrompt('请输入' + label, '把数字改成你自己的', String(manual[field]), function(val) {
+    if (val === null) return;
+    val = parseFloat(val.trim());
+    if (isNaN(val)) return;
+    manual[field] = val;
+    if (field === 'income' || field === 'expense') {
+      manual.balance = manual.income - manual.expense;
+    }
+    saveMoneyManual(manual);
+    renderMoney();
+  });
 }
 
 // Override renderMoney to support manual mode
@@ -2739,6 +2746,121 @@ function loadAIChat() {
 function saveAIChat(msgs) { localStorage.setItem(AI_CHAT_KEY, JSON.stringify(msgs.slice(-50))); }
 var aiChatMsgs = loadAIChat();
 
+
+// ===== iOS 自定义弹窗覆盖（替换原生 prompt/alert）=====
+(function iosDialogFix() {
+  // 创建弹窗 DOM
+  var styles = document.createElement('style');
+  styles.textContent = '.ios-dlg-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:none;justify-content:center;align-items:center;padding:20px;}' +
+    '.ios-dlg-box{background:#fff;border-radius:24px;width:100%;max-width:320px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;animation:iosDlgIn 0.2s ease;}' +
+    '.ios-dlg-title{font-size:16px;font-weight:700;color:#5d4037;margin-bottom:10px;}' +
+    '.ios-dlg-msg{font-size:14px;color:#8d6e63;margin-bottom:16px;line-height:1.6;}' +
+    '.ios-dlg-input{width:100%;padding:12px 14px;border:2px solid #f8bbd0;border-radius:14px;font-size:15px;margin-bottom:16px;outline:none;background:#fff0f3;font-family:inherit;}' +
+    '.ios-dlg-btns{display:flex;gap:10px;}' +
+    '.ios-dlg-btn{flex:1;padding:12px;border:none;border-radius:14px;font-size:15px;cursor:pointer;font-weight:600;}' +
+    '.ios-dlg-cancel{background:#f5f5f5;color:#8d6e63;}' +
+    '.ios-dlg-ok{background:linear-gradient(135deg,#f8bbd0,#f48fb1);color:#fff;}' +
+    '@keyframes iosDlgIn{from{opacity:0;transform:scale(0.92);}to{opacity:1;transform:scale(1);}}';
+  document.head.appendChild(styles);
+
+  var overlay = document.createElement('div');
+  overlay.className = 'ios-dlg-overlay';
+  overlay.id = 'ios-dlg-overlay';
+  overlay.innerHTML = '<div class="ios-dlg-box" id="ios-dlg-box" onclick="event.stopPropagation();">' +
+    '<div class="ios-dlg-title" id="ios-dlg-title">提示</div>' +
+    '<div class="ios-dlg-msg" id="ios-dlg-msg"></div>' +
+    '<input class="ios-dlg-input" id="ios-dlg-input" type="text">' +
+    '<div class="ios-dlg-btns">' +
+      '<button class="ios-dlg-btn ios-dlg-cancel" id="ios-dlg-cancel">取消</button>' +
+      '<button class="ios-dlg-btn ios-dlg-ok" id="ios-dlg-ok">好</button>' +
+    '</div>' +
+  '</div>';
+  document.body.appendChild(overlay);
+
+  var queue = [];
+  var currentCallback = null;
+  var isAlertMode = false;
+
+  function showNext() {
+    if (queue.length === 0) {
+      overlay.style.display = 'none';
+      currentCallback = null;
+      return;
+    }
+    var item = queue.shift();
+    currentCallback = item.cb;
+    isAlertMode = item.alert;
+    document.getElementById('ios-dlg-title').textContent = item.title || '提示';
+    document.getElementById('ios-dlg-msg').textContent = item.msg || '';
+    var input = document.getElementById('ios-dlg-input');
+    input.value = item.defaultVal || '';
+    input.style.display = isAlertMode ? 'none' : 'block';
+    document.getElementById('ios-dlg-cancel').style.display = isAlertMode ? 'none' : 'inline-block';
+    if (!isAlertMode) input.style.display = 'block';
+    document.getElementById('ios-dlg-ok').textContent = isAlertMode ? '确定' : '好';
+    overlay.style.display = 'flex';
+    if (!isAlertMode) {
+      setTimeout(function() { input.focus(); input.select(); }, 100);
+    }
+  }
+
+  function done(value) {
+    var cb = currentCallback;
+    overlay.style.display = 'none';
+    currentCallback = null;
+    if (cb) setTimeout(function() { cb(value); }, 50);
+    setTimeout(showNext, 60);
+  }
+
+  document.getElementById('ios-dlg-ok').addEventListener('click', function() {
+    if (isAlertMode) { done(undefined); }
+    else { done(document.getElementById('ios-dlg-input').value); }
+  });
+  document.getElementById('ios-dlg-ok').addEventListener('touchend', function(e) {
+    e.preventDefault();
+    if (isAlertMode) { done(undefined); }
+    else { done(document.getElementById('ios-dlg-input').value); }
+  });
+  document.getElementById('ios-dlg-cancel').addEventListener('click', function() { done(null); });
+  document.getElementById('ios-dlg-cancel').addEventListener('touchend', function(e) { e.preventDefault(); done(null); });
+  document.getElementById('ios-dlg-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') done(this.value);
+  });
+  overlay.addEventListener('click', function() { if (!isAlertMode) done(null); });
+
+  // 覆盖原生 prompt
+  window._nativePrompt = window.prompt;
+  window.prompt = function(msg, defaultVal) {
+    // 同步 prompt 无法真正同步，但为了兼容现有代码返回值，
+    // 我们改为异步并在回调中处理。现有代码检查返回值，
+    // 因此需要特殊处理：如果调用者使用 if (val === null) return 这种，
+    // 异步会失效。这里我们做一个 trick：直接返回空字符串，
+    // 真正的值通过替换调用位置来处理。
+    // 但为了不破坏现有逻辑，我们用队列存储并在用户点击时触发一个全局回调变量
+    // 最好的方式是直接返回 null，让调用者后续不处理，
+    // 同时把结果存到 window._iosPromptValue 并通过一个全局回调处理？
+    // 实际上不能这样，因为 prompt 是同步的。
+    // 妥协方案：显示弹窗，但返回一个 Promise 不兼容。现有代码需要改写。
+    // 这里我们只能做到：立刻返回旧值，不阻止默认行为？不行。
+    // 最终方案：对于 prompt，我们只能用自定义实现覆盖 alert，
+    // 而 prompt 调用点需要改为 asyncIosPrompt。因此这里不覆盖 prompt，
+    // 而是暴露一个 asyncIosPrompt 方法，然后把所有调用点替换掉。
+    return window._nativePrompt(msg, defaultVal);
+  };
+
+  // 覆盖原生 alert（这个可以异步）
+  window._nativeAlert = window.alert;
+  window.alert = function(msg) {
+    queue.push({ title: '提示', msg: String(msg), alert: true, cb: function(){} });
+    if (!currentCallback) showNext();
+  };
+
+  // 暴露异步 prompt 方法
+  window.iosPrompt = function(title, msg, defaultVal, callback) {
+    queue.push({ title: title, msg: msg, defaultVal: defaultVal || '', alert: false, cb: callback });
+    if (!currentCallback) showNext();
+  };
+})();
 
 // ===== 全局 iOS 兼容修复：将内联 onclick 转换为事件委托 =====
 (function iosClickFix() {
