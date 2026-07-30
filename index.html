@@ -1176,10 +1176,10 @@
 
 <!-- AI 助手 - 底部固定栏 -->
 <div id="ai-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;border-top:2px solid #f8bbd0;padding:6px 8px;padding-bottom:max(6px,env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;box-shadow:0 -4px 16px rgba(244,143,177,0.2);">
-  <button onclick="showQuickCmds()" style="width:36px;height:36px;border-radius:50%;border:none;background:#fce4ec;font-size:18px;flex-shrink:0;cursor:pointer;">⚡</button>
+  <button id="ai-quick-btn" style="width:36px;height:36px;border-radius:50%;border:none;background:#fce4ec;font-size:18px;flex-shrink:0;cursor:pointer;touch-action:manipulation;">⚡</button>
   <input id="ai-input" type="text" placeholder="输入指令，AI帮你干活..." style="flex:1;padding:10px 12px;border:2px solid #f8bbd0;border-radius:20px;font-size:14px;outline:none;background:#fff0f3;font-family:inherit;min-width:0;">
-  <button onclick="startVoice()" style="width:36px;height:36px;border-radius:50%;border:none;background:#fce4ec;font-size:18px;flex-shrink:0;cursor:pointer;">🎤</button>
-  <button id="ai-go-btn" style="width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,#f8bbd0,#f48fb1);color:#fff;font-size:20px;flex-shrink:0;cursor:pointer;">➤</button>
+  <button id="ai-voice-btn" style="width:36px;height:36px;border-radius:50%;border:none;background:#fce4ec;font-size:18px;flex-shrink:0;cursor:pointer;touch-action:manipulation;">🎤</button>
+  <button id="ai-go-btn" style="width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,#f8bbd0,#f48fb1);color:#fff;font-size:20px;flex-shrink:0;cursor:pointer;touch-action:manipulation;">➤</button>
 </div>
 <!-- AI 回复弹窗 -->
 <div id="ai-result-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:198;" onclick="this.style.display='none';document.getElementById('ai-result').style.display='none';"></div>
@@ -1730,11 +1730,18 @@ function loadAIChat() {
 function saveAIChat(data) { localStorage.setItem(AI_CHAT_KEY, JSON.stringify(data)); }
 aiChatMsgs = loadAIChat();
 
-// 发送按钮事件
-document.getElementById('ai-go-btn').addEventListener('click', doAISend);
-document.getElementById('ai-go-btn').addEventListener('touchend', function(e) {
-  e.preventDefault(); doAISend();
-});
+// AI底部栏 - 所有按钮统一用addEventListener绑定（iOS兼容）
+(function() {
+  var bindBtn = function(id, fn) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', fn);
+    el.addEventListener('touchend', function(e) { e.preventDefault(); fn(); });
+  };
+  bindBtn('ai-go-btn', doAISend);
+  bindBtn('ai-quick-btn', showQuickCmds);
+  bindBtn('ai-voice-btn', startVoice);
+})();
 // 回车发送
 document.getElementById('ai-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') { e.preventDefault(); doAISend(); }
@@ -1798,11 +1805,19 @@ function showQuickCmds() {
   var textEl = document.getElementById('ai-result-text');
   var html = '<div style="font-weight:700;margin-bottom:10px;">🐱 快捷指令（点击直接发送）</div>';
   quickCmds.forEach(function(cmd) {
-    html += '<div style="padding:10px 14px;margin-bottom:6px;background:#fce4ec;border-radius:14px;cursor:pointer;font-size:13px;" onclick="quickSend(this.innerText)">' + cmd + '</div>';
+    html += '<div class="quick-cmd-item" data-cmd="' + cmd.replace(/"/g, '&quot;') + '" style="padding:10px 14px;margin-bottom:6px;background:#fce4ec;border-radius:14px;cursor:pointer;font-size:13px;touch-action:manipulation;">' + cmd + '</div>';
   });
   textEl.innerHTML = html;
   overlay.style.display = 'block';
   result.style.display = 'block';
+  // 给快捷指令绑定事件
+  setTimeout(function() {
+    var items = textEl.querySelectorAll('.quick-cmd-item');
+    items.forEach(function(item) {
+      item.addEventListener('click', function() { quickSend(this.getAttribute('data-cmd')); });
+      item.addEventListener('touchend', function(e) { e.preventDefault(); quickSend(this.getAttribute('data-cmd')); });
+    });
+  }, 50);
 }
 
 function quickSend(text) {
