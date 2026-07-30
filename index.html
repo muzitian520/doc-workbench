@@ -333,6 +333,44 @@
   }
   .empty-note .big { font-size: 40px; display: block; margin-bottom: 10px; }
 
+  /* 设置表单 */
+  .form-card {
+    background: var(--white);
+    border: 1px solid rgba(180, 216, 240, 0.15);
+    border-radius: 26px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-group:last-child { margin-bottom: 0; }
+  .form-label { font-size: 12px; color: var(--text-2); margin-bottom: 6px; display: block; font-weight: 600; }
+  .form-input {
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid rgba(180, 216, 240, 0.3);
+    border-radius: 16px;
+    background: var(--bg);
+    font-size: 13px; color: var(--text-1);
+    font-family: inherit; outline: none;
+    transition: all 0.2s;
+  }
+  .form-input:focus { border-color: var(--sky-3); background: var(--white); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px 24px; border: none; border-radius: 18px;
+    background: linear-gradient(135deg, var(--sky-2), var(--sky-3));
+    color: white; font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(160, 204, 232, 0.35);
+    font-family: inherit; transition: transform 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: scale(0.96); }
+  .btn-ghost {
+    background: var(--bg); color: var(--sky-deep);
+    border: 1.5px solid rgba(180, 216, 240, 0.25); box-shadow: none;
+  }
+
   @media (max-width: 380px) {
     .sidebar { width: 76px; }
     .nav-item { width: 64px; }
@@ -354,6 +392,9 @@
     <div class="nav-item" data-page="douyin">
       <div class="ic">🔥</div><div class="tx">抖音热点</div>
     </div>
+    <div class="nav-item" data-page="travel">
+      <div class="ic">✈️</div><div class="tx">旅游</div>
+    </div>
     <div class="nav-item" data-page="health">
       <div class="ic">🍵</div><div class="tx">养生</div>
     </div>
@@ -362,6 +403,9 @@
     </div>
     <div class="nav-item" data-page="reading">
       <div class="ic">📚</div><div class="tx">读书</div>
+    </div>
+    <div class="nav-item" data-page="settings">
+      <div class="ic">⚙️</div><div class="tx">设置</div>
     </div>
   </aside>
 
@@ -385,7 +429,7 @@
           <div class="weather-main">
             <div class="wt">26°</div>
             <div class="wd">☀️ 晴朗 · 微风</div>
-            <div class="loc">📍 北京市朝阳区</div>
+            <div class="loc" id="weather-loc">📍 陕西渭南华阴市</div>
           </div>
           <div class="weather-stats">
             <div class="ws-item">
@@ -662,6 +706,94 @@
       </div>
     </div>
 
+    <!-- ========= 旅游 ========= -->
+    <div class="page" id="page-travel">
+      <div class="page-header">
+        <div class="ph-title">✈️ 旅行日记</div>
+        <div class="ph-desc">记录每一次说走就走的旅行 🌍</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card today">
+          <div class="ic-wrap">📍</div>
+          <div class="num">12<span class="unit">城</span></div>
+          <div class="lbl">已打卡城市</div>
+        </div>
+        <div class="stat-card pending">
+          <div class="ic-wrap">🗺️</div>
+          <div class="num">5<span class="unit">个</span></div>
+          <div class="lbl">心愿目的地</div>
+        </div>
+        <div class="stat-card done">
+          <div class="ic-wrap">📸</div>
+          <div class="num">368<span class="unit">张</span></div>
+          <div class="lbl">旅行照片</div>
+        </div>
+      </div>
+      <div class="func-list">
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--pink-1);">📋</div>
+          <div class="func-info">
+            <div class="func-title">旅行计划</div>
+            <div class="func-desc">规划下一次出行路线与预算</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--sky-1);">📍</div>
+          <div class="func-info">
+            <div class="func-title">打卡记录</div>
+            <div class="func-desc">记录去过的每一个地方</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--mint);">🏨</div>
+          <div class="func-info">
+            <div class="func-title">酒店收藏</div>
+            <div class="func-desc">心仪的民宿和酒店清单</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+        <div class="func-item">
+          <div class="func-ic" style="background:var(--butter);">🍜</div>
+          <div class="func-info">
+            <div class="func-title">美食攻略</div>
+            <div class="func-desc">各地必吃美食收藏夹</div>
+          </div>
+          <span class="func-go">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= 设置 ========= -->
+    <div class="page" id="page-settings">
+      <div class="page-header">
+        <div class="ph-title">⚙️ 个人设置</div>
+        <div class="ph-desc">自定义你的工作台 🌸</div>
+      </div>
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">👤 你的昵称</label>
+          <input class="form-input" id="set-name" placeholder="输入你的昵称" value="">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📍 当前位置</label>
+          <input class="form-input" id="set-location" placeholder="例如：陕西渭南华阴市" value="陕西渭南华阴市">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🎂 生日（公历）</label>
+          <input class="form-input" id="set-birthday" type="date" value="">
+        </div>
+        <button class="btn" style="width:100%;" onclick="saveSettings()">💾 保存设置</button>
+      </div>
+      <div style="height:12px;"></div>
+      <div class="form-card">
+        <div class="form-group">
+          <button class="btn btn-ghost" style="width:100%;" onclick="resetSettings()">🔄 恢复默认设置</button>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -671,6 +803,21 @@
 var BIRTH_LUNAR_YEAR = 1996;
 var BIRTH_LUNAR_MONTH = 4;
 var BIRTH_LUNAR_DAY = 1;
+
+// ===== 用户设置存储 =====
+var SETTINGS_KEY = 'girl_workbench_settings';
+
+function loadSettings() {
+  var raw = localStorage.getItem(SETTINGS_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return { name: '小甜甜', location: '陕西渭南华阴市', birthday: '' };
+}
+
+function saveSettingsData(data) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(data));
+}
+
+var userSettings = loadSettings();
 
 // 1996-2100 农历四月（闰四月则取第一个四月）对应的公历日期
 // 使用近似算法：农历四月初一通常在公历5月中旬
@@ -736,7 +883,8 @@ function updateGreeting() {
 
   // 日期
   document.getElementById('banner-date').textContent = '🌸 ' + year + '年' + month + '月' + day + '日 · 周' + wd;
-  document.getElementById('banner-greet').textContent = prefix + '，小甜甜 🌷';
+  document.getElementById('banner-greet').textContent = prefix + '，' + userSettings.name + ' 🌷';
+  document.getElementById('weather-loc').textContent = '📍 ' + userSettings.location;
 
   // 生日检测
   var birthday = getLunarBirthdaySolar(year);
@@ -778,8 +926,45 @@ document.querySelectorAll('.nav-item').forEach(function(item) {
     var page = this.getAttribute('data-page');
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('page-' + page).classList.add('active');
+    // 切换到设置页时加载当前设置
+    if (page === 'settings') loadSettingsToForm();
   });
 });
+
+// ===== 设置功能 =====
+function loadSettingsToForm() {
+  var nameEl = document.getElementById('set-name');
+  var locEl = document.getElementById('set-location');
+  var bdayEl = document.getElementById('set-birthday');
+  if (nameEl) nameEl.value = userSettings.name;
+  if (locEl) locEl.value = userSettings.location;
+  if (bdayEl) bdayEl.value = userSettings.birthday;
+}
+
+function saveSettings() {
+  var name = document.getElementById('set-name').value.trim();
+  var loc = document.getElementById('set-location').value.trim();
+  var bday = document.getElementById('set-birthday').value;
+
+  if (!name) { alert('请输入你的昵称哟～ 🌸'); return; }
+
+  userSettings.name = name;
+  userSettings.location = loc || '陕西渭南华阴市';
+  userSettings.birthday = bday;
+  saveSettingsData(userSettings);
+  updateGreeting();
+  alert('✅ 设置已保存！');
+}
+
+function resetSettings() {
+  if (confirm('确定恢复默认设置吗？')) {
+    userSettings = { name: '小甜甜', location: '陕西渭南华阴市', birthday: '' };
+    saveSettingsData(userSettings);
+    updateGreeting();
+    loadSettingsToForm();
+    alert('✅ 已恢复默认！');
+  }
+}
 </script>
 </body>
 </html>
