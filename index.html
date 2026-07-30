@@ -1011,6 +1011,20 @@
         </div>
       </div>
       <div style="height:12px;"></div>
+      <!-- 备份恢复 -->
+      <div class="form-card">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label class="form-label">💾 备份与恢复 <span style="font-weight:400;font-size:11px;color:var(--text-3);">（换手机必备！）</span></label>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <button class="btn btn-ghost" style="flex:1;" onclick="exportAll()">📤 导出备份</button>
+          <button class="btn btn-ghost" style="flex:1;" onclick="importAll()">📥 导入备份</button>
+        </div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.6;">
+          💡 换手机时：旧手机点「导出」复制代码 → 新手机点「导入」粘贴 → 全部恢复！
+        </div>
+      </div>
+      <div style="height:12px;"></div>
       <div class="form-card">
         <div class="form-group">
           <button class="btn btn-ghost" style="width:100%;" onclick="resetSettings()">🔄 恢复默认设置</button>
@@ -1545,6 +1559,52 @@ function updateGreeting() {
 renderSidebar();
 updateGreeting();
 setInterval(updateGreeting, 3600000);
+
+// ===== 备份与恢复 =====
+function exportAll() {
+  var backup = {
+    version: 1,
+    date: new Date().toISOString(),
+    settings: userSettings,
+    nav: navItems
+  };
+  var code = btoa(unescape(encodeURIComponent(JSON.stringify(backup))));
+  // 复制到剪贴板
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(function() {
+      alert('✅ 备份代码已复制！\n\n发给新手机 → 点「导入备份」→ 粘贴即可恢复。');
+    }).catch(function() {
+      prompt('请手动复制以下备份代码：', code);
+    });
+  } else {
+    prompt('请手动复制以下备份代码：', code);
+  }
+}
+
+function importAll() {
+  var code = prompt('请粘贴备份代码：', '');
+  if (!code || !code.trim()) return;
+  try {
+    var backup = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+    if (!backup.settings || !backup.nav) {
+      alert('❌ 备份代码无效，请检查是否完整复制。');
+      return;
+    }
+    // 恢复设置
+    userSettings = backup.settings;
+    saveSettingsData(userSettings);
+    // 恢复导航
+    navItems = backup.nav;
+    saveNavData(navItems);
+    // 刷新界面
+    renderSidebar();
+    updateGreeting();
+    loadSettingsToForm();
+    alert('✅ 全部恢复成功！\n\n昵称、生日、任务栏已恢复\n备份日期：' + (backup.date || '未知'));
+  } catch(e) {
+    alert('❌ 备份代码解析失败，请确保完整复制。');
+  }
+}
 </script>
 </body>
 </html>
