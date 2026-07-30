@@ -454,6 +454,83 @@
     color: var(--text-3); font-size: 12px;
   }
 
+  /* 文稿写作 */
+  .writing-textarea {
+    width: 100%; min-height: 120px; padding: 12px 14px;
+    border: 1.5px solid rgba(248, 187, 208, 0.3);
+    border-radius: 16px; background: var(--bg);
+    font-size: 13px; color: var(--text-1); font-family: inherit;
+    outline: none; resize: vertical; margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .writing-textarea:focus { border-color: var(--rose-3); background: var(--white); }
+  .draft-item {
+    background: var(--white); border: 1px solid rgba(248, 187, 208, 0.15);
+    border-radius: 18px; padding: 12px 14px; margin-bottom: 8px;
+    box-shadow: var(--shadow-soft);
+  }
+  .draft-item .draft-title { font-size: 13px; font-weight: 700; color: var(--text-1); margin-bottom: 4px; }
+  .draft-item .draft-preview { font-size: 11px; color: var(--text-3); margin-bottom: 8px; line-height: 1.4;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .draft-item .draft-actions { display: flex; gap: 6px; }
+  .draft-item .draft-actions button {
+    padding: 4px 10px; border-radius: 12px; border: none; font-size: 11px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .draft-btn-edit { background: var(--rose-1); color: var(--rose-deep); }
+  .draft-btn-del { background: #f5f5f5; color: #999; }
+  .draft-date { font-size: 10px; color: var(--text-3); margin-bottom: 6px; }
+
+  /* 理财交易 */
+  .txn-item {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--white); border: 1px solid rgba(248,187,208,0.12);
+    border-radius: 14px; padding: 10px 12px; margin-bottom: 6px;
+  }
+  .txn-badge {
+    padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; flex-shrink: 0;
+  }
+  .txn-badge.in { background: var(--mint); color: #4caf50; }
+  .txn-badge.out { background: var(--rose-1); color: var(--rose-deep); }
+  .txn-info { flex: 1; min-width: 0; }
+  .txn-info .txn-note { font-size: 12px; color: var(--text-1); }
+  .txn-info .txn-date { font-size: 10px; color: var(--text-3); }
+  .txn-amount { font-size: 14px; font-weight: 800; flex-shrink: 0; }
+  .txn-amount.in { color: #4caf50; }
+  .txn-amount.out { color: var(--rose-deep); }
+  .txn-del {
+    width: 24px; height: 24px; border-radius: 50%; border: none;
+    background: #f5f5f5; color: #ccc; font-size: 12px; cursor: pointer; flex-shrink: 0;
+  }
+
+  /* 养生打卡 */
+  .habit-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white); border: 1px solid rgba(248,187,208,0.12);
+    border-radius: 16px; padding: 12px 14px; margin-bottom: 8px;
+    box-shadow: var(--shadow-soft);
+  }
+  .habit-item .habit-ic { font-size: 22px; flex-shrink: 0; width: 36px; text-align: center; }
+  .habit-item .habit-info { flex: 1; }
+  .habit-item .habit-name { font-size: 13px; font-weight: 700; color: var(--text-1); }
+  .habit-item .habit-desc { font-size: 10px; color: var(--text-3); }
+  .habit-counter { display: flex; align-items: center; gap: 6px; }
+  .habit-counter button {
+    width: 28px; height: 28px; border-radius: 50%; border: none;
+    font-size: 16px; cursor: pointer; font-weight: 700; font-family: inherit;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .habit-minus { background: var(--rose-1); color: var(--rose-deep); }
+  .habit-plus { background: var(--mint); color: #4caf50; }
+  .habit-val { font-size: 16px; font-weight: 800; color: var(--text-1); min-width: 24px; text-align: center; }
+  .habit-check {
+    width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(248,187,208,0.4);
+    background: var(--white); font-size: 18px; cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .habit-check.done { background: var(--rose-3); border-color: var(--rose-3); color: #fff; }
+
   @media (max-width: 380px) {
     .sidebar { width: 76px; }
     .nav-item { width: 64px; }
@@ -670,23 +747,31 @@
       <div class="stats-grid">
         <div class="stat-card today">
           <div class="ic-wrap">💵</div>
-          <div class="num">¥3.2k<span class="unit"></span></div>
+          <div class="num" id="money-income">¥0<span class="unit"></span></div>
           <div class="lbl">本月收入</div>
         </div>
         <div class="stat-card pending">
           <div class="ic-wrap">🛒</div>
-          <div class="num">¥1.8k<span class="unit"></span></div>
+          <div class="num" id="money-expense">¥0<span class="unit"></span></div>
           <div class="lbl">本月支出</div>
         </div>
         <div class="stat-card done">
           <div class="ic-wrap">🐷</div>
-          <div class="num">¥1.4k<span class="unit"></span></div>
+          <div class="num" id="money-balance">¥0<span class="unit"></span></div>
           <div class="lbl">本月结余</div>
         </div>
       </div>
-      <div class="empty-note">
-        <span class="big">🐷</span>
-        记账功能开发中...<br>敬请期待哟～
+      <div class="form-card">
+        <div class="crud-add-row">
+          <input class="form-input" id="money-amount" type="number" placeholder="金额" style="width:80px;flex:none;">
+          <select class="form-input" id="money-type" style="width:80px;flex:none;padding:12px 8px;">
+            <option value="in">💰 收入</option>
+            <option value="out">💸 支出</option>
+          </select>
+          <input class="form-input" id="money-note" placeholder="备注（如：工资）" style="flex:1;" onkeypress="if(event.key==='Enter')addMoney()">
+          <button class="btn" onclick="addMoney()" style="padding:12px 16px;flex-shrink:0;">➕</button>
+        </div>
+        <div id="money-list"></div>
       </div>
     </div>
 
@@ -730,31 +815,9 @@
         <div class="ph-title">🍵 养生小站</div>
         <div class="ph-desc">照顾好自己，从每一天开始</div>
       </div>
-      <div class="func-list">
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--mint);">🍵</div>
-          <div class="func-info">
-            <div class="func-title">花茶推荐</div>
-            <div class="func-desc">按季节推荐养生茶饮配方</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--peach);">🧘</div>
-          <div class="func-info">
-            <div class="func-title">每日拉伸</div>
-            <div class="func-desc">5分钟办公室放松操</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--lavender);">😴</div>
-          <div class="func-info">
-            <div class="func-title">睡眠管理</div>
-            <div class="func-desc">记录睡眠质量，改善作息</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
+      <div class="form-card">
+        <div id="habit-list"></div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:10px;" onclick="resetHabits()">🔄 今日重置</button>
       </div>
     </div>
 
@@ -790,34 +853,32 @@
     <!-- ========= 读书 ========= -->
     <div class="page" id="page-reading">
       <div class="page-header">
-        <div class="ph-title">📚 读书笔记</div>
+        <div class="ph-title">📖 阅读书单</div>
         <div class="ph-desc">在书中遇见更好的自己</div>
       </div>
-      <div class="func-list">
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--pink-1);">📕</div>
-          <div class="func-info">
-            <div class="func-title">正在读：小王子</div>
-            <div class="func-desc">进度 78% · 已读 3 天</div>
-          </div>
-          <span class="func-go">›</span>
+      <div class="stats-grid">
+        <div class="stat-card today">
+          <div class="ic-wrap">📖</div>
+          <div class="num" id="reading-reading-count">0<span class="unit">本</span></div>
+          <div class="lbl">在读</div>
         </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--rose-1);">📗</div>
-          <div class="func-info">
-            <div class="func-title">本月书单</div>
-            <div class="func-desc">已读完 3 本，目标 5 本</div>
-          </div>
-          <span class="func-go">›</span>
+        <div class="stat-card pending">
+          <div class="ic-wrap">✅</div>
+          <div class="num" id="reading-done-count">0<span class="unit">本</span></div>
+          <div class="lbl">已读完</div>
         </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--mint);">✍️</div>
-          <div class="func-info">
-            <div class="func-title">读书笔记</div>
-            <div class="func-desc">收藏精彩摘录与感悟</div>
-          </div>
-          <span class="func-go">›</span>
+        <div class="stat-card done">
+          <div class="ic-wrap">📚</div>
+          <div class="num" id="reading-total-count">0<span class="unit">本</span></div>
+          <div class="lbl">总计</div>
         </div>
+      </div>
+      <div class="form-card">
+        <div class="crud-add-row">
+          <input class="form-input" id="reading-input" placeholder="输入书名，如：小王子" onkeypress="if(event.key==='Enter')addReading()">
+          <button class="btn" onclick="addReading()">➕ 添加</button>
+        </div>
+        <div class="crud-list" id="reading-list"></div>
       </div>
     </div>
 
@@ -862,62 +923,26 @@
       <div class="stats-grid">
         <div class="stat-card today">
           <div class="ic-wrap">📝</div>
-          <div class="num">12<span class="unit">篇</span></div>
-          <div class="lbl">本月完成</div>
+          <div class="num" id="writing-count">0<span class="unit">篇</span></div>
+          <div class="lbl">我的文稿</div>
         </div>
         <div class="stat-card pending">
-          <div class="ic-wrap">⏳</div>
-          <div class="num">3<span class="unit">篇</span></div>
-          <div class="lbl">进行中</div>
+          <div class="ic-wrap">📅</div>
+          <div class="num" id="writing-today">0<span class="unit">篇</span></div>
+          <div class="lbl">今日新建</div>
         </div>
         <div class="stat-card done">
-          <div class="ic-wrap">⭐</div>
-          <div class="num">4.8<span class="unit">分</span></div>
-          <div class="lbl">客户好评</div>
+          <div class="ic-wrap">📊</div>
+          <div class="num" id="writing-chars">0<span class="unit">字</span></div>
+          <div class="lbl">总字数</div>
         </div>
       </div>
-      <div class="func-list">
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--rose-1);">📋</div>
-          <div class="func-info">
-            <div class="func-title">公文写作</div>
-            <div class="func-desc">通知、报告、总结、汇报材料</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--lavender);">📊</div>
-          <div class="func-info">
-            <div class="func-title">PPT/演示文稿</div>
-            <div class="func-desc">精美幻灯片制作与排版</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--peach);">✉️</div>
-          <div class="func-info">
-            <div class="func-title">商务函件</div>
-            <div class="func-desc">邮件、邀请函、感谢信等</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--mint);">🎤</div>
-          <div class="func-info">
-            <div class="func-title">演讲稿/发言稿</div>
-            <div class="func-desc">会议发言、致辞、演讲</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
-        <div class="func-item">
-          <div class="func-ic" style="background:var(--butter);">📰</div>
-          <div class="func-info">
-            <div class="func-title">新媒体文案</div>
-            <div class="func-desc">公众号、小红书、抖音文案</div>
-          </div>
-          <span class="func-go">›</span>
-        </div>
+      <div class="form-card">
+        <textarea class="writing-textarea" id="writing-textarea" placeholder="在这里写点什么吧..."></textarea>
+        <button class="btn" style="width:100%;" onclick="saveWriting()">💾 保存文稿</button>
       </div>
+      <div style="height:12px;"></div>
+      <div id="draft-list"></div>
     </div>
 
     <!-- ========= 追剧 ========= -->
@@ -1682,21 +1707,297 @@ function delTravel(idx) {
 renderDrama();
 renderTravel();
 
+// ===== 阅读模块 =====
+var READING_KEY = 'reading_data';
+function loadReading() {
+  var raw = localStorage.getItem(READING_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [{name:'小王子', done:false}, {name:'活着', done:false}, {name:'三体', done:true}];
+}
+function saveReading(data) { localStorage.setItem(READING_KEY, JSON.stringify(data)); }
+var readingList = loadReading();
+
+function renderReading() {
+  var list = document.getElementById('reading-list');
+  if (!list) return;
+  list.innerHTML = '';
+  if (readingList.length === 0) {
+    list.innerHTML = '<div class="crud-empty">还没有添加书籍哟～<br>在上方输入框添加吧！</div>';
+  }
+  readingList.forEach(function(item, idx) {
+    var row = document.createElement('div');
+    row.className = 'crud-item' + (item.done ? ' done' : '');
+    row.innerHTML =
+      '<span class="crud-ic">📖</span>' +
+      '<span class="crud-name">' + item.name + '</span>' +
+      '<button class="crud-toggle" onclick="toggleReading(' + idx + ')">' + (item.done ? '✓ 已读完' : '在读') + '</button>' +
+      '<button class="crud-del" onclick="delReading(' + idx + ')">✕</button>';
+    list.appendChild(row);
+  });
+  var reading = readingList.filter(function(d){return !d.done;}).length;
+  var done = readingList.filter(function(d){return d.done;}).length;
+  var rEl = document.getElementById('reading-reading-count');
+  var dEl = document.getElementById('reading-done-count');
+  var tEl = document.getElementById('reading-total-count');
+  if (rEl) rEl.innerHTML = reading + '<span class="unit">本</span>';
+  if (dEl) dEl.innerHTML = done + '<span class="unit">本</span>';
+  if (tEl) tEl.innerHTML = readingList.length + '<span class="unit">本</span>';
+}
+function addReading() {
+  var input = document.getElementById('reading-input');
+  var name = input.value.trim();
+  if (!name) { alert('请输入书名哟～'); return; }
+  readingList.push({name: name, done: false});
+  saveReading(readingList);
+  input.value = '';
+  renderReading();
+}
+function toggleReading(idx) {
+  readingList[idx].done = !readingList[idx].done;
+  saveReading(readingList);
+  renderReading();
+}
+function delReading(idx) {
+  if (confirm('确定删除「' + readingList[idx].name + '」吗？')) {
+    readingList.splice(idx, 1);
+    saveReading(readingList);
+    renderReading();
+  }
+}
+renderReading();
+
+// ===== 理财模块 =====
+var MONEY_KEY = 'money_data';
+function loadMoney() {
+  var raw = localStorage.getItem(MONEY_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [
+    {type:'in', amount:3200, note:'工资', date:'2026-07-15'},
+    {type:'out', amount:380, note:'买衣服', date:'2026-07-18'},
+    {type:'out', amount:1200, note:'房租', date:'2026-07-01'},
+    {type:'in', amount:500, note:'稿费', date:'2026-07-22'}
+  ];
+}
+function saveMoney(data) { localStorage.setItem(MONEY_KEY, JSON.stringify(data)); }
+var moneyList = loadMoney();
+
+function renderMoney() {
+  var list = document.getElementById('money-list');
+  if (!list) return;
+  list.innerHTML = '';
+  if (moneyList.length === 0) {
+    list.innerHTML = '<div class="crud-empty" style="padding:20px;">还没有记账记录～<br>在上方添加一笔吧！</div>';
+  }
+  // show newest first
+  var reversed = moneyList.slice().reverse();
+  reversed.forEach(function(item, ridx) {
+    var idx = moneyList.length - 1 - ridx;
+    var row = document.createElement('div');
+    row.className = 'txn-item';
+    row.innerHTML =
+      '<span class="txn-badge ' + item.type + '">' + (item.type === 'in' ? '收入' : '支出') + '</span>' +
+      '<span class="txn-info"><div class="txn-note">' + item.note + '</div><div class="txn-date">' + item.date + '</div></span>' +
+      '<span class="txn-amount ' + item.type + '">' + (item.type === 'in' ? '+' : '-') + '¥' + item.amount + '</span>' +
+      '<button class="txn-del" onclick="delMoney(' + idx + ')">✕</button>';
+    list.appendChild(row);
+  });
+  // update stats
+  var income = moneyList.filter(function(m){return m.type==='in';}).reduce(function(s,m){return s+m.amount;},0);
+  var expense = moneyList.filter(function(m){return m.type==='out';}).reduce(function(s,m){return s+m.amount;},0);
+  var balance = income - expense;
+  var iEl = document.getElementById('money-income');
+  var eEl = document.getElementById('money-expense');
+  var bEl = document.getElementById('money-balance');
+  if (iEl) iEl.innerHTML = '¥' + income + '<span class="unit"></span>';
+  if (eEl) eEl.innerHTML = '¥' + expense + '<span class="unit"></span>';
+  if (bEl) bEl.innerHTML = '¥' + balance + '<span class="unit"></span>';
+}
+function addMoney() {
+  var amountEl = document.getElementById('money-amount');
+  var typeEl = document.getElementById('money-type');
+  var noteEl = document.getElementById('money-note');
+  var amount = parseFloat(amountEl.value);
+  var type = typeEl.value;
+  var note = noteEl.value.trim() || (type === 'in' ? '收入' : '支出');
+  if (!amount || amount <= 0) { alert('请输入金额哟～'); return; }
+  var today = new Date();
+  var dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  moneyList.push({type:type, amount:amount, note:note, date:dateStr});
+  saveMoney(moneyList);
+  amountEl.value = '';
+  noteEl.value = '';
+  renderMoney();
+}
+function delMoney(idx) {
+  moneyList.splice(idx, 1);
+  saveMoney(moneyList);
+  renderMoney();
+}
+renderMoney();
+
+// ===== 养生模块 =====
+var HEALTH_KEY = 'health_data';
+function loadHealth() {
+  var raw = localStorage.getItem(HEALTH_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return {
+    water: 0, exercise: 0, sleep: 0,
+    stretch: false, earlyBed: false,
+    date: new Date().toDateString()
+  };
+}
+function saveHealth(data) { localStorage.setItem(HEALTH_KEY, JSON.stringify(data)); }
+var healthData = loadHealth();
+// check if it's a new day
+var todayStr = new Date().toDateString();
+if (healthData.date !== todayStr) {
+  healthData = { water:0, exercise:0, sleep:0, stretch:false, earlyBed:false, date:todayStr };
+  saveHealth(healthData);
+}
+
+var habits = [
+  {key:'water', ic:'💧', name:'喝水打卡', desc:'目标8杯', unit:'杯', max:20},
+  {key:'exercise', ic:'🧘', name:'今日运动', desc:'目标30分钟', unit:'分钟', max:120, step:5},
+  {key:'sleep', ic:'😴', name:'睡眠时长', desc:'目标8小时', unit:'小时', max:12},
+  {key:'stretch', ic:'🤸', name:'拉伸放松', desc:'做了吗？', type:'check'},
+  {key:'earlyBed', ic:'🌙', name:'早睡打卡', desc:'23点前睡', type:'check'}
+];
+
+function renderHealth() {
+  var list = document.getElementById('habit-list');
+  if (!list) return;
+  list.innerHTML = '';
+  habits.forEach(function(h, idx) {
+    var row = document.createElement('div');
+    row.className = 'habit-item';
+    var val = healthData[h.key];
+    var rightHTML = '';
+    if (h.type === 'check') {
+      rightHTML = '<button class="habit-check' + (val ? ' done' : '') + '" onclick="toggleHabit(\'' + h.key + '\')">' + (val ? '✓' : '') + '</button>';
+    } else {
+      rightHTML = '<div class="habit-counter">' +
+        '<button class="habit-minus" onclick="changeHabit(\'' + h.key + '\', -' + (h.step||1) + ')">−</button>' +
+        '<span class="habit-val">' + val + '</span>' +
+        '<button class="habit-plus" onclick="changeHabit(\'' + h.key + '\', ' + (h.step||1) + ')">+</button>' +
+        '</div>';
+    }
+    row.innerHTML =
+      '<span class="habit-ic">' + h.ic + '</span>' +
+      '<span class="habit-info"><div class="habit-name">' + h.name + '</div><div class="habit-desc">' + h.desc + '</div></span>' +
+      rightHTML;
+    list.appendChild(row);
+  });
+}
+function changeHabit(key, delta) {
+  healthData[key] = Math.max(0, Math.min((healthData[key]||0) + delta, 99));
+  saveHealth(healthData);
+  renderHealth();
+}
+function toggleHabit(key) {
+  healthData[key] = !healthData[key];
+  saveHealth(healthData);
+  renderHealth();
+}
+function resetHabits() {
+  if (confirm('确定重置今日所有打卡数据吗？')) {
+    healthData = { water:0, exercise:0, sleep:0, stretch:false, earlyBed:false, date:todayStr };
+    saveHealth(healthData);
+    renderHealth();
+  }
+}
+renderHealth();
+
+// ===== 文稿模块 =====
+var WRITING_KEY = 'writing_data';
+function loadWriting() {
+  var raw = localStorage.getItem(WRITING_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [{title:'工作报告草稿', content:'本月工作进展顺利，完成了以下任务：\n1. 项目A已交付\n2. 项目B进入测试阶段\n3. 新需求评审完成', date:'2026-07-20', id:1}];
+}
+function saveWriting(data) { localStorage.setItem(WRITING_KEY, JSON.stringify(data)); }
+var writingList = loadWriting();
+var writingIdCounter = writingList.length > 0 ? Math.max.apply(null, writingList.map(function(w){return w.id;})) + 1 : 2;
+
+function renderWriting() {
+  var list = document.getElementById('draft-list');
+  if (!list) return;
+  list.innerHTML = '';
+  if (writingList.length === 0) {
+    list.innerHTML = '<div class="crud-empty">还没有文稿哟～<br>在上方写点东西保存吧！</div>';
+  }
+  writingList.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    div.className = 'draft-item';
+    div.innerHTML =
+      '<div class="draft-title">📄 ' + item.title + '</div>' +
+      '<div class="draft-date">' + item.date + '</div>' +
+      '<div class="draft-preview">' + item.content.replace(/\n/g, ' ') + '</div>' +
+      '<div class="draft-actions">' +
+      '<button class="draft-btn-edit" onclick="editWriting(' + idx + ')">✏️ 编辑</button>' +
+      '<button class="draft-btn-del" onclick="delWriting(' + idx + ')">🗑 删除</button>' +
+      '</div>';
+    list.appendChild(div);
+  });
+  // stats
+  var todayStr = new Date().getFullYear() + '-' + String(new Date().getMonth()+1).padStart(2,'0') + '-' + String(new Date().getDate()).padStart(2,'0');
+  var todayCount = writingList.filter(function(w){return w.date === todayStr;}).length;
+  var totalChars = writingList.reduce(function(s,w){return s + w.content.length;},0);
+  var cEl = document.getElementById('writing-count');
+  var tEl = document.getElementById('writing-today');
+  var chEl = document.getElementById('writing-chars');
+  if (cEl) cEl.innerHTML = writingList.length + '<span class="unit">篇</span>';
+  if (tEl) tEl.innerHTML = todayCount + '<span class="unit">篇</span>';
+  if (chEl) chEl.innerHTML = totalChars + '<span class="unit">字</span>';
+}
+function saveWriting() {
+  var ta = document.getElementById('writing-textarea');
+  var content = ta.value.trim();
+  if (!content) { alert('请输入内容哟～'); return; }
+  var title = content.split('\n')[0].substring(0, 30);
+  var today = new Date();
+  var dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  writingList.push({title:title, content:content, date:dateStr, id:writingIdCounter++});
+  saveWriting(writingList);
+  ta.value = '';
+  renderWriting();
+}
+function editWriting(idx) {
+  var item = writingList[idx];
+  var ta = document.getElementById('writing-textarea');
+  ta.value = item.content;
+  ta.scrollIntoView({behavior:'smooth'});
+  writingList.splice(idx, 1);
+  saveWriting(writingList);
+  renderWriting();
+}
+function delWriting(idx) {
+  if (confirm('确定删除「' + writingList[idx].title + '」吗？')) {
+    writingList.splice(idx, 1);
+    saveWriting(writingList);
+    renderWriting();
+  }
+}
+renderWriting();
+
 // ===== 备份与恢复 =====
 function exportAll() {
   var backup = {
-    version: 2,
+    version: 3,
     date: new Date().toISOString(),
     settings: userSettings,
     nav: navItems,
     drama: dramaList,
-    travel: travelList
+    travel: travelList,
+    reading: readingList,
+    money: moneyList,
+    health: healthData,
+    writing: writingList
   };
   var code = btoa(unescape(encodeURIComponent(JSON.stringify(backup))));
   // 复制到剪贴板
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(code).then(function() {
-      alert('✅ 备份代码已复制！\n\n发给新手机 → 点「导入备份」→ 粘贴即可恢复。\n\n包含：昵称、生日、任务栏、追剧、旅游数据');
+      alert('✅ 备份代码已复制！\n\n发给新手机 → 点「导入备份」→ 粘贴即可恢复。\n\n包含：昵称、生日、任务栏、追剧、旅游、阅读、理财、养生、文稿');
     }).catch(function() {
       prompt('请手动复制以下备份代码：', code);
     });
@@ -1720,15 +2021,18 @@ function importAll() {
     // 恢复导航
     navItems = backup.nav;
     saveNavData(navItems);
-    // 恢复追剧
+    // 恢复各模块数据
     if (backup.drama) { dramaList = backup.drama; saveDrama(dramaList); renderDrama(); }
-    // 恢复旅游
     if (backup.travel) { travelList = backup.travel; saveTravel(travelList); renderTravel(); }
+    if (backup.reading) { readingList = backup.reading; saveReading(readingList); renderReading(); }
+    if (backup.money) { moneyList = backup.money; saveMoney(moneyList); renderMoney(); }
+    if (backup.health) { healthData = backup.health; saveHealth(healthData); renderHealth(); }
+    if (backup.writing) { writingList = backup.writing; saveWriting(writingList); writingIdCounter = writingList.length > 0 ? Math.max.apply(null, writingList.map(function(w){return w.id;})) + 1 : 2; renderWriting(); }
     // 刷新界面
     renderSidebar();
     updateGreeting();
     loadSettingsToForm();
-    alert('✅ 全部恢复成功！\n\n昵称、生日、任务栏、追剧、旅游已恢复\n备份日期：' + (backup.date || '未知'));
+    alert('✅ 全部恢复成功！\n\n所有数据已恢复\n备份日期：' + (backup.date || '未知'));
   } catch(e) {
     alert('❌ 备份代码解析失败，请确保完整复制。');
   }
