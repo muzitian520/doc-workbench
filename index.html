@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>小甜工作台 · Hello Kitty</title>
+<title>木子甜工作台 · Hello Kitty</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="小甜工作台">
+<meta name="apple-mobile-web-app-title" content="木子甜工作台">
 <link rel="apple-touch-icon" sizes="180x180" href="icon.png?v=3">
 <link rel="icon" type="image/png" sizes="192x192" href="icon.png?v=3">
 <link rel="icon" type="image/png" sizes="512x512" href="icon.png?v=3">
@@ -484,7 +484,7 @@
       <!-- 日期问候卡 -->
       <div class="banner">
         <div class="banner-date" id="banner-date">🌸 2025年7月30日 · 周三</div>
-        <div class="banner-greet" id="banner-greet">下午好呀，小甜甜 🌷</div>
+        <div class="banner-greet" id="banner-greet">下午好呀，木子甜 🌷</div>
         <div class="banner-sub" id="banner-sub">今天也要元气满满哦～ ☁️✨</div>
         <div id="birthday-alert" style="margin-top:10px;position:relative;z-index:2;"></div>
       </div>
@@ -1161,7 +1161,7 @@ function loadSettings() {
       return s;
     } catch(e) {}
   }
-  return { name: '小甜甜', location: '陕西渭南华阴市', lunarMonth: 4, lunarDay: 1, birthYear: 1996 };
+  return { name: '木子甜', location: '陕西渭南华阴市', lunarMonth: 4, lunarDay: 1, birthYear: 1996 };
 }
 
 function saveSettingsData(data) {
@@ -1454,7 +1454,7 @@ function saveSettings() {
 
 function resetSettings() {
   if (confirm('确定恢复默认设置吗？')) {
-    userSettings = { name: '小甜甜', location: '陕西渭南华阴市', lunarMonth: 4, lunarDay: 1, birthYear: 1996 };
+    userSettings = { name: '木子甜', location: '陕西渭南华阴市', lunarMonth: 4, lunarDay: 1, birthYear: 1996 };
     saveSettingsData(userSettings);
     updateGreeting();
     loadSettingsToForm();
