@@ -850,6 +850,82 @@
       </div>
     </div>
 
+    <!-- ========= 美妆护肤 ========= -->
+    <div class="page" id="page-beauty">
+      <div class="page-header">
+        <div class="ph-title">💄 美妆护肤</div>
+        <div class="ph-desc">记录你的护肤品和化妆品，管理美美哒日常 ✨</div>
+      </div>
+      <!-- 今日护肤打卡 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">📋 今日护肤打卡</div>
+        <div id="beauty-checkin" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div>
+      <!-- 护肤品清单 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🧴 护肤品清单</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <input class="form-input" id="beauty-input" placeholder="添加产品名，如：雅诗兰黛小棕瓶" style="flex:1;">
+          <select id="beauty-type" style="padding:8px 10px;border:2px solid #f8bbd0;border-radius:12px;background:#fff0f3;font-size:12px;">
+            <option value="护肤">护肤</option>
+            <option value="彩妆">彩妆</option>
+            <option value="防晒">防晒</option>
+            <option value="面膜">面膜</option>
+            <option value="其他">其他</option>
+          </select>
+          <button class="btn" onclick="addBeauty()">➕</button>
+        </div>
+        <div id="beauty-list"></div>
+      </div>
+      <!-- 肤트 색상 추천 -->
+      <div class="form-card">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🎨 肤트记录</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <input class="form-input" id="beauty-mood-input" placeholder="今天用了什么色系？如：蜜桃色" style="flex:1;">
+          <button class="btn" onclick="addBeautyLook()">➕ 记录</button>
+        </div>
+        <div id="beauty-looks"></div>
+      </div>
+    </div>
+
+    <!-- ========= 穿搭 ========= -->
+    <div class="page" id="page-outfit">
+      <div class="page-header">
+        <div class="ph-title">👗 穿搭日记</div>
+        <div class="ph-desc">记录每日穿搭，打造你的专属衣橱 💕</div>
+      </div>
+      <!-- 今日穿搭 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">📸 今日穿搭</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <input class="form-input" id="outfit-input" placeholder="描述今日穿搭，如：白T+牛仔裙+帆布鞋" style="flex:1;">
+          <select id="outfit-occasion" style="padding:8px 10px;border:2px solid #f8bbd0;border-radius:12px;background:#fff0f3;font-size:12px;">
+            <option value="日常">日常</option>
+            <option value="上班">上班</option>
+            <option value="约会">约会</option>
+            <option value="运动">运动</option>
+            <option value="其他">其他</option>
+          </select>
+          <button class="btn" onclick="addOutfit()">➕</button>
+        </div>
+        <div id="outfit-list"></div>
+      </div>
+      <!-- 穿搭灵感 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">💡 穿搭灵感库</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <input class="form-input" id="outfit-inspire-input" placeholder="添加灵感，如：法式复古风" style="flex:1;">
+          <button class="btn" onclick="addOutfitInspire()">➕</button>
+        </div>
+        <div id="outfit-inspire-list"></div>
+      </div>
+      <!-- 衣橱统计 -->
+      <div class="form-card">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">📊 穿搭统计</div>
+        <div id="outfit-stats" style="font-size:12px;line-height:2;color:var(--text-2);"></div>
+      </div>
+    </div>
+
     <!-- ========= 理财 ========= -->
     <div class="page" id="page-money">
       <div class="page-header">
@@ -1215,6 +1291,8 @@ var NAV_KEY = 'girl_workbench_nav';
 // ===== 默认导航项（每个都有独特的蝴蝶结颜色）=====
 var DEFAULT_NAV = [
   { id:'home', color:'#ec407a', name:'首页' },
+  { id:'beauty', color:'#e91e63', name:'美妆护肤' },
+  { id:'outfit', color:'#ff6b9d', name:'穿搭' },
   { id:'money', color:'#ff9800', name:'理财' },
   { id:'douyin', color:'#e91e63', name:'抖音热点' },
   { id:'writing', color:'#9c27b0', name:'文稿写作' },
@@ -1223,6 +1301,7 @@ var DEFAULT_NAV = [
   { id:'reading', color:'#4caf50', name:'阅读' },
   { id:'health', color:'#ff5722', name:'养生' },
   { id:'english', color:'#00bcd4', name:'英语' },
+  { id:'earnings', color:'#ffd700', name:'变现中心' },
   { id:'settings', color:'#607d8b', name:'设置' }
 ];
 
@@ -1886,6 +1965,244 @@ function generateAIResponse(text) {
   return '🐱 收到！你可以试试这些指令：\n\n✍️ "帮我写工作汇报"\n📺 "推荐好看的电视剧"\n🎵 "写一段抖音文案"\n💰 "帮我分析理财"\n✈️ "推荐旅游目的地"\n📖 "推荐几本好书"\n\n或者直接告诉我你想做什么～';
 }
 
+// ===== 美妆护肤模块 =====
+var BEAUTY_KEY = 'beauty_data';
+var BEAUTY_CHECKIN_KEY = 'beauty_checkin';
+var BEAUTY_LOOKS_KEY = 'beauty_looks';
+function loadBeauty() {
+  var raw = localStorage.getItem(BEAUTY_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [
+    {name:'洁面乳', type:'护肤', done:false},
+    {name:'爽肤水', type:'护肤', done:false},
+    {name:'精华液', type:'护肤', done:false},
+    {name:'面霜', type:'护肤', done:false}
+  ];
+}
+function saveBeauty(d) { localStorage.setItem(BEAUTY_KEY, JSON.stringify(d)); }
+function loadBeautyCheckin() {
+  var raw = localStorage.getItem(BEAUTY_CHECKIN_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return ['洁面','水乳','精华','面霜','防晒','面膜'];
+}
+function saveBeautyCheckin(d) { localStorage.setItem(BEAUTY_CHECKIN_KEY, JSON.stringify(d)); }
+function loadBeautyLooks() {
+  var raw = localStorage.getItem(BEAUTY_LOOKS_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [];
+}
+function saveBeautyLooks(d) { localStorage.setItem(BEAUTY_LOOKS_KEY, JSON.stringify(d)); }
+var beautyList = loadBeauty();
+var beautyCheckin = loadBeautyCheckin();
+var beautyLooks = loadBeautyLooks();
+
+function renderBeautyCheckin() {
+  var el = document.getElementById('beauty-checkin');
+  if (!el) return;
+  var today = new Date().toDateString();
+  var savedDate = localStorage.getItem('beauty_checkin_date');
+  var isToday = savedDate === today;
+  el.innerHTML = '';
+  beautyCheckin.forEach(function(item, idx) {
+    var div = document.createElement('div');
+    var checked = isToday && localStorage.getItem('beauty_checkin_' + idx);
+    div.style.cssText = 'padding:8px 14px;border-radius:14px;font-size:12px;cursor:pointer;border:2px solid #f8bbd0;' + (checked ? 'background:#f8bbd0;color:#fff;' : 'background:#fff0f3;color:#5d4037;');
+    div.textContent = (checked ? '✅ ' : '⭕ ') + item;
+    div.setAttribute('data-idx', idx);
+    div.addEventListener('click', function() { toggleBeautyCheckin(idx); });
+    el.appendChild(div);
+  });
+}
+function toggleBeautyCheckin(idx) {
+  var today = new Date().toDateString();
+  var savedDate = localStorage.getItem('beauty_checkin_date');
+  if (savedDate !== today) {
+    for (var i = 0; i < beautyCheckin.length; i++) localStorage.removeItem('beauty_checkin_' + i);
+    localStorage.setItem('beauty_checkin_date', today);
+  }
+  var key = 'beauty_checkin_' + idx;
+  if (localStorage.getItem(key)) localStorage.removeItem(key);
+  else localStorage.setItem(key, '1');
+  renderBeautyCheckin();
+}
+function renderBeautyList() {
+  var el = document.getElementById('beauty-list');
+  if (!el) return;
+  el.innerHTML = '';
+  if (beautyList.length === 0) {
+    el.innerHTML = '<div class="crud-empty">还没有添加产品哟～</div>';
+    return;
+  }
+  beautyList.forEach(function(item, idx) {
+    var row = document.createElement('div');
+    row.className = 'crud-item';
+    row.innerHTML = '<span style="font-size:11px;background:#fce4ec;padding:2px 8px;border-radius:8px;color:#ec407a;">' + item.type + '</span>' +
+      '<span style="flex:1;">' + item.name + '</span>' +
+      '<button class="crud-del" data-idx="' + idx + '">✕</button>';
+    el.appendChild(row);
+  });
+  el.querySelectorAll('.crud-del').forEach(function(btn) {
+    btn.addEventListener('click', function() { delBeauty(parseInt(this.getAttribute('data-idx'))); });
+  });
+}
+function addBeauty() {
+  var input = document.getElementById('beauty-input');
+  var typeSel = document.getElementById('beauty-type');
+  var name = input.value.trim();
+  if (!name) return;
+  beautyList.push({name:name, type:typeSel.value, done:false});
+  saveBeauty(beautyList);
+  input.value = '';
+  renderBeautyList();
+}
+function delBeauty(idx) {
+  beautyList.splice(idx, 1);
+  saveBeauty(beautyList);
+  renderBeautyList();
+}
+function renderBeautyLooks() {
+  var el = document.getElementById('beauty-looks');
+  if (!el) return;
+  el.innerHTML = '';
+  if (beautyLooks.length === 0) {
+    el.innerHTML = '<div class="crud-empty">还没有记录妆容哟～</div>';
+    return;
+  }
+  beautyLooks.slice().reverse().forEach(function(item, idx) {
+    var realIdx = beautyLooks.length - 1 - idx;
+    var row = document.createElement('div');
+    row.className = 'crud-item';
+    row.innerHTML = '<span style="flex:1;">🎨 ' + item.text + ' <small style="color:#bcaaa4;">' + item.date + '</small></span>' +
+      '<button class="crud-del" data-idx="' + realIdx + '">✕</button>';
+    el.appendChild(row);
+  });
+  el.querySelectorAll('.crud-del').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      beautyLooks.splice(parseInt(this.getAttribute('data-idx')), 1);
+      saveBeautyLooks(beautyLooks);
+      renderBeautyLooks();
+    });
+  });
+}
+function addBeautyLook() {
+  var input = document.getElementById('beauty-mood-input');
+  var text = input.value.trim();
+  if (!text) return;
+  beautyLooks.push({text:text, date:new Date().toLocaleDateString('zh-CN')});
+  saveBeautyLooks(beautyLooks);
+  input.value = '';
+  renderBeautyLooks();
+}
+
+// ===== 穿搭模块 =====
+var OUTFIT_KEY = 'outfit_data';
+var OUTFIT_INSPIRE_KEY = 'outfit_inspire';
+function loadOutfit() {
+  var raw = localStorage.getItem(OUTFIT_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return [];
+}
+function saveOutfit(d) { localStorage.setItem(OUTFIT_KEY, JSON.stringify(d)); }
+function loadOutfitInspire() {
+  var raw = localStorage.getItem(OUTFIT_INSPIRE_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return ['法式复古风','日系甜美风','韩系简约风','运动休闲风'];
+}
+function saveOutfitInspire(d) { localStorage.setItem(OUTFIT_INSPIRE_KEY, JSON.stringify(d)); }
+var outfitList = loadOutfit();
+var outfitInspire = loadOutfitInspire();
+
+function renderOutfit() {
+  var el = document.getElementById('outfit-list');
+  if (!el) return;
+  el.innerHTML = '';
+  if (outfitList.length === 0) {
+    el.innerHTML = '<div class="crud-empty">还没有记录穿搭哟～</div>';
+    return;
+  }
+  outfitList.slice().reverse().forEach(function(item, idx) {
+    var realIdx = outfitList.length - 1 - idx;
+    var row = document.createElement('div');
+    row.className = 'crud-item';
+    row.innerHTML = '<span style="font-size:11px;background:#fce4ec;padding:2px 8px;border-radius:8px;color:#ec407a;">' + item.occasion + '</span>' +
+      '<span style="flex:1;">' + item.text + ' <small style="color:#bcaaa4;">' + item.date + '</small></span>' +
+      '<button class="crud-del" data-idx="' + realIdx + '">✕</button>';
+    el.appendChild(row);
+  });
+  el.querySelectorAll('.crud-del').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      outfitList.splice(parseInt(this.getAttribute('data-idx')), 1);
+      saveOutfit(outfitList);
+      renderOutfit();
+      renderOutfitStats();
+    });
+  });
+}
+function addOutfit() {
+  var input = document.getElementById('outfit-input');
+  var occ = document.getElementById('outfit-occasion');
+  var text = input.value.trim();
+  if (!text) return;
+  outfitList.push({text:text, occasion:occ.value, date:new Date().toLocaleDateString('zh-CN')});
+  saveOutfit(outfitList);
+  input.value = '';
+  renderOutfit();
+  renderOutfitStats();
+}
+function renderOutfitInspire() {
+  var el = document.getElementById('outfit-inspire-list');
+  if (!el) return;
+  el.innerHTML = '';
+  if (outfitInspire.length === 0) {
+    el.innerHTML = '<div class="crud-empty">还没有添加灵感哟～</div>';
+    return;
+  }
+  outfitInspire.forEach(function(item, idx) {
+    var row = document.createElement('div');
+    row.className = 'crud-item';
+    row.innerHTML = '<span style="flex:1;">💡 ' + item + '</span>' +
+      '<button class="crud-del" data-idx="' + idx + '">✕</button>';
+    el.appendChild(row);
+  });
+  el.querySelectorAll('.crud-del').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      outfitInspire.splice(parseInt(this.getAttribute('data-idx')), 1);
+      saveOutfitInspire(outfitInspire);
+      renderOutfitInspire();
+    });
+  });
+}
+function addOutfitInspire() {
+  var input = document.getElementById('outfit-inspire-input');
+  var text = input.value.trim();
+  if (!text) return;
+  outfitInspire.push(text);
+  saveOutfitInspire(outfitInspire);
+  input.value = '';
+  renderOutfitInspire();
+}
+function renderOutfitStats() {
+  var el = document.getElementById('outfit-stats');
+  if (!el) return;
+  var total = outfitList.length;
+  var occasions = {};
+  outfitList.forEach(function(o) { occasions[o.occasion] = (occasions[o.occasion]||0) + 1; });
+  var html = '📸 总记录：<b>' + total + '</b> 套<br>';
+  for (var k in occasions) {
+    html += '• ' + k + '：<b>' + occasions[k] + '</b> 套<br>';
+  }
+  if (total === 0) html = '还没有穿搭记录，快去记录今日穿搭吧～';
+  el.innerHTML = html;
+}
+
+// 初始化美妆和穿搭
+renderBeautyCheckin();
+renderBeautyList();
+renderBeautyLooks();
+renderOutfit();
+renderOutfitInspire();
+renderOutfitStats();
+
 // ===== 追剧模块 =====
 var DRAMA_KEY = 'drama_data';
 function loadDrama() {
@@ -2302,7 +2619,11 @@ function exportAll() {
     home: homeData,
     moneyManual: getMoneyManual(),
     moneyMode: getMoneyMode(),
-    aiChat: aiChatMsgs
+    aiChat: aiChatMsgs,
+    beauty: beautyList,
+    beautyLooks: beautyLooks,
+    outfit: outfitList,
+    outfitInspire: outfitInspire
   };
   var code = btoa(unescape(encodeURIComponent(JSON.stringify(backup))));
   // 复制到剪贴板
@@ -2343,6 +2664,10 @@ function importAll() {
       if (backup.moneyManual) { saveMoneyManual(backup.moneyManual); }
       if (backup.moneyMode) { localStorage.setItem('money_mode', backup.moneyMode); }
       if (backup.aiChat) { aiChatMsgs = backup.aiChat; saveAIChat(aiChatMsgs); }
+      if (backup.beauty) { beautyList = backup.beauty; saveBeauty(beautyList); renderBeautyList(); }
+      if (backup.beautyLooks) { beautyLooks = backup.beautyLooks; saveBeautyLooks(beautyLooks); renderBeautyLooks(); }
+      if (backup.outfit) { outfitList = backup.outfit; saveOutfit(outfitList); renderOutfit(); renderOutfitStats(); }
+      if (backup.outfitInspire) { outfitInspire = backup.outfitInspire; saveOutfitInspire(outfitInspire); renderOutfitInspire(); }
       // 刷新界面
       renderSidebar();
       updateGreeting();
