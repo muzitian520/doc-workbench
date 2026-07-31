@@ -1282,6 +1282,15 @@
 </div>
 
 <script>
+// ===== 强制刷新缓存（解决微信内置浏览器缓存问题）=====
+(function() {
+  var VERSION = '20260731a';
+  var currentV = new URLSearchParams(location.search).get('v');
+  if (currentV !== VERSION) {
+    var url = location.pathname + '?v=' + VERSION;
+    location.replace(url);
+  }
+})();
 // ===== 农历转公历（简化版，1996农历四月初一 ≈ 1996-05-17）=====
 var BIRTH_LUNAR_YEAR = 1996;
 var BIRTH_LUNAR_MONTH = 4;
