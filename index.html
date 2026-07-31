@@ -1011,26 +1011,47 @@
         <div class="ph-title">📖 英语学习</div>
         <div class="ph-desc">每天进步一点点 ✨</div>
       </div>
-      <div class="stats-grid">
-        <div class="stat-card today">
-          <div class="ic-wrap">📝</div>
-          <div class="num">12<span class="unit">天</span></div>
-          <div class="lbl">连续打卡</div>
-        </div>
-        <div class="stat-card pending">
-          <div class="ic-wrap">💬</div>
-          <div class="num">86<span class="unit">词</span></div>
-          <div class="lbl">今日单词</div>
-        </div>
-        <div class="stat-card done">
-          <div class="ic-wrap">🎯</div>
-          <div class="num">Lv.4<span class="unit"></span></div>
-          <div class="lbl">当前等级</div>
+      <!-- 每日单词 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">📝 每日单词（点一下看释义）</div>
+        <div id="english-words" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <!-- 每日一句 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">💬 每日一句</div>
+        <div id="english-quote" style="padding:14px;background:linear-gradient(135deg,#fce4ec,#fff0f3);border-radius:14px;font-size:14px;line-height:1.8;color:#5d4037;"></div>
+        <button class="btn" style="width:100%;margin-top:8px;" id="english-next-btn">🔄 换一批</button>
+      </div>
+      <!-- 学习方法推荐 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">💡 英语学习方法推荐</div>
+        <div style="font-size:12px;line-height:2;color:var(--text-2);">
+          <b>1. 📱 背单词APP推荐</b><br>
+          • 百词斩（图文并茂，适合入门）<br>
+          • 墨墨背单词（艾宾浩斯记忆曲线）<br>
+          • 扇贝单词（口语+听力结合）<br><br>
+          <b>2. 🎧 听力训练</b><br>
+          • 每日英语听力（新闻+故事）<br>
+          • BBC Learning English（免费）<br>
+          • 看美剧跟读：《老友记》《摩登家庭》<br><br>
+          <b>3. 🗣️ 口语练习</b><br>
+          • 流利说（AI评分纠正发音）<br>
+          • 每天大声朗读10分钟<br>
+          • 找语伴：HelloTalk、Tandem<br><br>
+          <b>4. ✍️ 写作训练</b><br>
+          • 每天用英语写3句日记<br>
+          • Grammarly检查语法<br>
+          • 从模仿好句子开始<br><br>
+          <b>5. 📖 阅读提升</b><br>
+          • 从简写版开始：《书虫》系列<br>
+          • 逐步过渡到原版<br>
+          • 推荐入门：《小王子》英文版
         </div>
       </div>
-      <div class="empty-note">
-        <span class="big">📖</span>
-        英语学习模块开发中...<br>敬请期待哟～
+      <!-- 学习计划打卡 -->
+      <div class="form-card">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">✅ 今日学习打卡</div>
+        <div id="english-checkin" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
       </div>
     </div>
 
@@ -1058,9 +1079,11 @@
         </div>
       </div>
       <div class="form-card">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">💡 推荐书单（点击 ➕ 一键添加到你的书单）</div>
+        <div id="reading-recommend" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
         <div class="crud-add-row">
-          <input class="form-input" id="reading-input" placeholder="输入书名，如：小王子" onkeypress="if(event.key==='Enter')addReading()">
-          <button class="btn" onclick="addReading()">➕ 添加</button>
+          <input class="form-input" id="reading-input" placeholder="或自己输入书名，如：小王子">
+          <button class="btn" id="reading-add-btn">➕ 添加</button>
         </div>
         <div class="crud-list" id="reading-list"></div>
       </div>
@@ -1090,9 +1113,11 @@
         </div>
       </div>
       <div class="form-card">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">💡 推荐目的地（点击 ➕ 一键添加）</div>
+        <div id="travel-recommend" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
         <div class="crud-add-row">
-          <input class="form-input" id="travel-input" placeholder="输入城市名，如：西安" onkeypress="if(event.key==='Enter')addTravel()">
-          <button class="btn" onclick="addTravel()">➕ 添加</button>
+          <input class="form-input" id="travel-input" placeholder="或自己输入城市名">
+          <button class="btn" id="travel-add-btn">➕ 添加</button>
         </div>
         <div class="crud-list" id="travel-list"></div>
       </div>
@@ -1175,9 +1200,11 @@
         </div>
       </div>
       <div class="form-card">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🔥 热门推荐（点击 ➕ 一键添加）</div>
+        <div id="drama-recommend" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
         <div class="crud-add-row">
-          <input class="form-input" id="drama-input" placeholder="输入剧名，如：苍兰诀" onkeypress="if(event.key==='Enter')addDrama()">
-          <button class="btn" onclick="addDrama()">➕ 添加</button>
+          <input class="form-input" id="drama-input" placeholder="或自己输入剧名">
+          <button class="btn" id="drama-add-btn">➕ 添加</button>
         </div>
         <div class="crud-list" id="drama-list"></div>
       </div>
@@ -2214,6 +2241,214 @@ renderOutfit();
 renderOutfitInspire();
 renderOutfitStats();
 
+// ===== 推荐 =====
+var DRAMA_RECOMMEND = [
+  {name:'苍兰诀', tag:'东方幻想·超甜', emoji:'🌙'},
+  {name:'长相思', tag:'古装神话·虐恋', emoji:'❄️'},
+  {name:'偷偷藏不住', tag:'青春暗恋·甜宠', emoji:'💘'},
+  {name:'莲花楼', tag:'武侠悬疑', emoji:'⚔️'},
+  {name:'繁花', tag:'王家卫·上海风情', emoji:'🌸'},
+  {name:'与凤行', tag:'古装仙侠', emoji:'🦋'},
+  {name:'玫瑰的故事', tag:'都市情感', emoji:'🌹'},
+  {name:'庆余年2', tag:'古装权谋', emoji:'♟️'}
+];
+var READING_RECOMMEND = [
+  {name:'小王子', tag:'童话·治愈', emoji:'⭐'},
+  {name:'活着', tag:'余华·生命的力量', emoji:'🌾'},
+  {name:'三体', tag:'刘慈欣·科幻巅峰', emoji:'🌌'},
+  {name:'人间值得', tag:'中村恒子·治愈系', emoji:'🌸'},
+  {name:'被讨厌的勇气', tag:'阿德勒心理学', emoji:'💪'},
+  {name:'百年孤独', tag:'马尔克斯·魔幻现实', emoji:'🦋'},
+  {name:'月亮与六便士', tag:'毛姆·追梦', emoji:'🌙'},
+  {name:'解忧杂货店', tag:'东野圭吾·温情', emoji:'📮'}
+];
+var TRAVEL_RECOMMEND = [
+  {name:'西安', tag:'大唐不夜城·华山', emoji:'🏛️'},
+  {name:'成都', tag:'美食·熊猫·太古里', emoji:'🐼'},
+  {name:'厦门', tag:'鼓浪屿·海边·文艺', emoji:'🌊'},
+  {name:'三亚', tag:'亚龙湾·度假', emoji:'🏖️'},
+  {name:'云南大理', tag:'洱海·古城·慢生活', emoji:'🏔️'},
+  {name:'重庆', tag:'洪崖洞·夜景·火锅', emoji:'🌃'},
+  {name:'杭州', tag:'西湖·宋城·茶园', emoji:'🍃'},
+  {name:'长沙', tag:'茶颜·美食·橘子洲', emoji:'🍵'}
+];
+var ENGLISH_WORDS = [
+  {word:'serendipity', trans:'意外的幸运', ex:'Meeting you was serendipity.'},
+  {word:'euphoria', trans:'极度愉快', ex:'She felt euphoria after winning.'},
+  {word:'nostalgia', trans:'怀旧', ex:'A wave of nostalgia hit me.'},
+  {word:'resilience', trans:'韧性·恢复力', ex:'Her resilience inspired everyone.'},
+  {word:'eloquent', trans:'雄辩的', ex:'He gave an eloquent speech.'},
+  {word:'tranquil', trans:'宁静的', ex:'A tranquil morning by the lake.'},
+  {word:'radiant', trans:'容光焕发的', ex:'She looked radiant in her dress.'},
+  {word:'whimsical', trans:'异想天开的', ex:'A whimsical idea came to her.'},
+  {word:'blossom', trans:'开花·成长', ex:'Her talent began to blossom.'},
+  {word:'cherish', trans:'珍惜', ex:'I cherish every moment with you.'}
+];
+var ENGLISH_QUOTES = [
+  {en:'The best way to predict the future is to create it.', zh:'预测未来最好的方式就是创造它。'},
+  {en:'Life is what happens when you\'re busy making other plans.', zh:'生活就是你忙着做别的计划时发生的事。'},
+  {en:'Be yourself; everyone else is already taken.', zh:'做你自己，其他角色都有人了。'},
+  {en:'The only way to do great work is to love what you do.', zh:'做好伟大工作的唯一方法就是热爱你所做的。'},
+  {en:'In the middle of difficulty lies opportunity.', zh:'困难之中蕴藏着机会。'},
+  {en:'Stay hungry, stay foolish.', zh:'求知若饥，虚心若愚。'},
+  {en:'Life is short, smile while you still have teeth.', zh:'人生苦短，趁还有牙多笑笑。'},
+  {en:'The journey of a thousand miles begins with a single step.', zh:'千里之行，始于足下。'}
+];
+var ENGLISH_CHECKIN = ['背单词20个','听力15分钟','口语朗读10分钟','英语日记3句','看1集美剧'];
+
+function renderDramaRecommend() {
+  var el = document.getElementById('drama-recommend');
+  if (!el) return;
+  el.innerHTML = '';
+  DRAMA_RECOMMEND.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'crud-item';
+    div.innerHTML = '<span style="font-size:16px;">' + item.emoji + '</span>' +
+      '<span style="flex:1;"><b>' + item.name + '</b> <small style="color:#bcaaa4;">' + item.tag + '</small></span>' +
+      '<button class="btn" style="padding:6px 12px;font-size:12px;" data-name="' + item.name + '">➕</button>';
+    el.appendChild(div);
+  });
+  el.querySelectorAll('button[data-name]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var name = this.getAttribute('data-name');
+      dramaList.push({name:name, done:false});
+      saveDrama(dramaList);
+      renderDrama();
+      this.textContent = '✅';
+      this.disabled = true;
+    });
+  });
+}
+function renderReadingRecommend() {
+  var el = document.getElementById('reading-recommend');
+  if (!el) return;
+  el.innerHTML = '';
+  READING_RECOMMEND.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'crud-item';
+    div.innerHTML = '<span style="font-size:16px;">' + item.emoji + '</span>' +
+      '<span style="flex:1;"><b>' + item.name + '</b> <small style="color:#bcaaa4;">' + item.tag + '</small></span>' +
+      '<button class="btn" style="padding:6px 12px;font-size:12px;" data-name="' + item.name + '">➕</button>';
+    el.appendChild(div);
+  });
+  el.querySelectorAll('button[data-name]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var name = this.getAttribute('data-name');
+      readingList.push({name:name, done:false});
+      saveReading(readingList);
+      renderReading();
+      this.textContent = '✅';
+      this.disabled = true;
+    });
+  });
+}
+function renderTravelRecommend() {
+  var el = document.getElementById('travel-recommend');
+  if (!el) return;
+  el.innerHTML = '';
+  TRAVEL_RECOMMEND.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'crud-item';
+    div.innerHTML = '<span style="font-size:16px;">' + item.emoji + '</span>' +
+      '<span style="flex:1;"><b>' + item.name + '</b> <small style="color:#bcaaa4;">' + item.tag + '</small></span>' +
+      '<button class="btn" style="padding:6px 12px;font-size:12px;" data-name="' + item.name + '">➕</button>';
+    el.appendChild(div);
+  });
+  el.querySelectorAll('button[data-name]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var name = this.getAttribute('data-name');
+      travelList.push({name:name, done:false});
+      saveTravel(travelList);
+      renderTravel();
+      this.textContent = '✅';
+      this.disabled = true;
+    });
+  });
+}
+
+// 英语模块
+var ENGLISH_CHECKIN_KEY = 'english_checkin';
+function loadEnglishCheckin() {
+  var raw = localStorage.getItem(ENGLISH_CHECKIN_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return ENGLISH_CHECKIN;
+}
+function saveEnglishCheckin(d) { localStorage.setItem(ENGLISH_CHECKIN_KEY, JSON.stringify(d)); }
+var englishCheckin = loadEnglishCheckin();
+var wordIdx = Math.floor(Math.random() * ENGLISH_WORDS.length);
+var quoteIdx = Math.floor(Math.random() * ENGLISH_QUOTES.length);
+
+function renderEnglishWords() {
+  var el = document.getElementById('english-words');
+  if (!el) return;
+  el.innerHTML = '';
+  for (var i = 0; i < 4; i++) {
+    var idx = (wordIdx + i) % ENGLISH_WORDS.length;
+    var w = ENGLISH_WORDS[idx];
+    (function(word) {
+      var div = document.createElement('div');
+      div.style.cssText = 'padding:12px 14px;background:#fff0f3;border-radius:14px;font-size:13px;line-height:1.8;cursor:pointer;';
+      div.innerHTML = '<b style="color:#ec407a;font-size:15px;">' + word.word + '</b><br><span style="color:#8d6e63;">' + word.trans + '</span><br><small style="color:#bcaaa4;font-style:italic;">' + word.ex + '</small>';
+      el.appendChild(div);
+    })(w);
+  }
+}
+function renderEnglishQuote() {
+  var el = document.getElementById('english-quote');
+  if (!el) return;
+  var q = ENGLISH_QUOTES[quoteIdx];
+  el.innerHTML = '💬 <i>' + q.en + '</i><br><br>👉 ' + q.zh;
+}
+function renderEnglishCheckin() {
+  var el = document.getElementById('english-checkin');
+  if (!el) return;
+  var today = new Date().toDateString();
+  el.innerHTML = '';
+  englishCheckin.forEach(function(item, idx) {
+    var key = 'english_done_' + idx;
+    var done = localStorage.getItem('english_date') === today && localStorage.getItem(key);
+    var div = document.createElement('div');
+    div.style.cssText = 'padding:8px 14px;border-radius:14px;font-size:12px;cursor:pointer;border:2px solid #f8bbd0;' + (done ? 'background:#f8bbd0;color:#fff;' : 'background:#fff0f3;color:#5d4037;');
+    div.textContent = (done ? '✅ ' : '⭕ ') + item;
+    div.setAttribute('data-idx', idx);
+    div.addEventListener('click', function() {
+      if (localStorage.getItem('english_date') !== today) {
+        for (var i = 0; i < englishCheckin.length; i++) localStorage.removeItem('english_done_' + i);
+        localStorage.setItem('english_date', today);
+      }
+      var k = 'english_done_' + idx;
+      if (localStorage.getItem(k)) localStorage.removeItem(k);
+      else localStorage.setItem(k, '1');
+      renderEnglishCheckin();
+    });
+    el.appendChild(div);
+  });
+}
+
+// 绑定英语换一批
+(function() {
+  function nextBatch() {
+    wordIdx = (wordIdx + 4) % ENGLISH_WORDS.length;
+    quoteIdx = (quoteIdx + 1) % ENGLISH_QUOTES.length;
+    renderEnglishWords();
+    renderEnglishQuote();
+  }
+  setTimeout(function() {
+    var btn = document.getElementById('english-next-btn');
+    if (btn) {
+      btn.addEventListener('click', nextBatch);
+      btn.addEventListener('touchend', function(e) { e.preventDefault(); nextBatch(); });
+    }
+  }, 100);
+})();
+
+renderDramaRecommend();
+renderReadingRecommend();
+renderTravelRecommend();
+renderEnglishWords();
+renderEnglishQuote();
+renderEnglishCheckin();
+
 // ===== 追剧模块 =====
 var DRAMA_KEY = 'drama_data';
 function loadDrama() {
@@ -3089,6 +3324,20 @@ function loadAIChat() {
 }
 function saveAIChat(msgs) { localStorage.setItem(AI_CHAT_KEY, JSON.stringify(msgs.slice(-50))); }
 var aiChatMsgs = loadAIChat();
+
+// 绑定追剧/阅读/旅游添加按钮
+setTimeout(function() {
+  var dramaBtn = document.getElementById('drama-add-btn');
+  if (dramaBtn) { dramaBtn.addEventListener('click', addDrama); dramaBtn.addEventListener('touchend', function(e){e.preventDefault();addDrama();}); }
+  var readingBtn = document.getElementById('reading-add-btn');
+  if (readingBtn) { readingBtn.addEventListener('click', addReading); readingBtn.addEventListener('touchend', function(e){e.preventDefault();addReading();}); }
+  var travelBtn = document.getElementById('travel-add-btn');
+  if (travelBtn) { travelBtn.addEventListener('click', addTravel); travelBtn.addEventListener('touchend', function(e){e.preventDefault();addTravel();}); }
+  ['drama-input','reading-input','travel-input'].forEach(function(id) {
+    var inp = document.getElementById(id);
+    if (inp) inp.addEventListener('keydown', function(e) { if (e.key==='Enter') { e.preventDefault(); if (id==='drama-input') addDrama(); else if (id==='reading-input') addReading(); else addTravel(); } });
+  });
+}, 200);
 
 
 // ===== iOS 自定义弹窗覆盖（替换原生 prompt/alert）=====
