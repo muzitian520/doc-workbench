@@ -857,7 +857,18 @@
     <div class="page" id="page-beauty">
       <div class="page-header">
         <div class="ph-title">💄 美妆护肤</div>
-        <div class="ph-desc">记录你的护肤品和化妆品，管理美美哒日常 ✨</div>
+        <div class="ph-desc">记录你的护肤品，管理美美哒日常 ✨</div>
+      </div>
+      <!-- 肤质选择 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🔍 选择你的肤质（查看专属攻略）</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn" id="skin-oily" style="font-size:12px;flex:1;min-width:70px;" onclick="showSkinGuide('oily')">油痘肌</button>
+          <button class="btn" id="skin-sensitive" style="font-size:12px;flex:1;min-width:70px;" onclick="showSkinGuide('sensitive')">油敏肌</button>
+          <button class="btn" id="skin-dry" style="font-size:12px;flex:1;min-width:70px;" onclick="showSkinGuide('dry')">干皮</button>
+          <button class="btn" id="skin-normal" style="font-size:12px;flex:1;min-width:70px;" onclick="showSkinGuide('normal')">中性皮</button>
+        </div>
+        <div id="skin-guide" style="margin-top:12px;font-size:12px;line-height:2;color:var(--text-2);"></div>
       </div>
       <!-- 今日护肤打卡 -->
       <div class="form-card" style="margin-bottom:14px;">
@@ -880,9 +891,9 @@
         </div>
         <div id="beauty-list"></div>
       </div>
-      <!-- 肤트 색상 추천 -->
+      <!-- 妆容记录 -->
       <div class="form-card">
-        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🎨 肤트记录</div>
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🎨 妆容记录</div>
         <div style="display:flex;gap:8px;margin-bottom:10px;">
           <input class="form-input" id="beauty-mood-input" placeholder="今天用了什么色系？如：蜜桃色" style="flex:1;">
           <button class="btn" onclick="addBeautyLook()">➕ 记录</button>
@@ -896,6 +907,19 @@
       <div class="page-header">
         <div class="ph-title">👗 穿搭日记</div>
         <div class="ph-desc">记录每日穿搭，打造你的专属衣橱 💕</div>
+      </div>
+      <!-- 穿搭攻略 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">👗 穿搭攻略大全</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn" style="font-size:11px;flex:1;min-width:55px;" onclick="showOutfitGuide('hot')">🌶️ 辣妹风</button>
+          <button class="btn" style="font-size:11px;flex:1;min-width:55px;" onclick="showOutfitGuide('sweet')">🎀 甜美少女</button>
+          <button class="btn" style="font-size:11px;flex:1;min-width:55px;" onclick="showOutfitGuide('casual')">🍃 休闲风</button>
+          <button class="btn" style="font-size:11px;flex:1;min-width:55px;" onclick="showOutfitGuide('travel')">✈️ 旅游穿搭</button>
+          <button class="btn" style="font-size:11px;flex:1;min-width:55px;" onclick="showOutfitGuide('work')">💼 通勤风</button>
+          <button class="btn" style="font-size:11px;flex:1;min-width:55px;" onclick="showOutfitGuide('date')">💕 约会风</button>
+        </div>
+        <div id="outfit-guide" style="font-size:12px;line-height:2;color:var(--text-2);"></div>
       </div>
       <!-- 今日穿搭 -->
       <div class="form-card" style="margin-bottom:14px;">
@@ -921,6 +945,35 @@
           <button class="btn" onclick="addOutfitInspire()">➕</button>
         </div>
         <div id="outfit-inspire-list"></div>
+      </div>
+      <!-- 🤖 AI穿搭灵感 -->
+      <div class="form-card" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px;">🤖 AI穿搭灵感生成器</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+          <select id="outfit-ai-style" style="padding:8px 10px;border:2px solid #f8bbd0;border-radius:12px;background:#fff0f3;font-size:12px;flex:1;min-width:90px;">
+            <option value="辣妹风">辣妹风</option>
+            <option value="甜美少女">甜美少女</option>
+            <option value="休闲风">休闲风</option>
+            <option value="旅游穿搭">旅游穿搭</option>
+            <option value="上班通勤">上班通勤</option>
+            <option value="法式复古">法式复古</option>
+            <option value="韩系简约">韩系简约</option>
+            <option value="显瘦穿搭">显瘦穿搭</option>
+          </select>
+          <select id="outfit-ai-season" style="padding:8px 10px;border:2px solid #f8bbd0;border-radius:12px;background:#fff0f3;font-size:12px;flex:1;min-width:90px;">
+            <option value="夏季">夏季</option>
+            <option value="春秋">春秋</option>
+            <option value="冬季">冬季</option>
+          </select>
+          <button class="btn" id="outfit-ai-btn" style="background:linear-gradient(135deg,#f8bbd0,#f48fb1);color:#fff;font-weight:bold;">✨ 生成穿搭</button>
+        </div>
+        <div id="outfit-ai-result" style="display:none;padding:14px;background:#fff0f3;border-radius:14px;font-size:13px;line-height:2;color:#5d4037;position:relative;">
+          <div id="outfit-ai-content"></div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn" id="outfit-ai-copy" style="flex:1;font-size:12px;">📋 复制发小红书</button>
+            <button class="btn" id="outfit-ai-retry" style="flex:1;font-size:12px;">🔄 换一套</button>
+          </div>
+        </div>
       </div>
       <!-- 衣橱统计 -->
       <div class="form-card">
@@ -2240,6 +2293,251 @@ renderBeautyLooks();
 renderOutfit();
 renderOutfitInspire();
 renderOutfitStats();
+
+// ===== AI穿搭灵感生成 =====
+var OUTFIT_AI_POOL = [
+  // 甜美约会
+  {style:'甜美约会', season:'夏季', top:'泡泡袖短上衣(粉色)', bottom:'A字短裙(白色)', shoes:'玛丽珍鞋(米色)', bag:'链条小方包', tip:'搭配珍珠耳钉+蝴蝶结发饰，甜美度拉满！💕', tags:'#甜美穿搭 #约会穿搭 #夏日穿搭'},
+  {style:'甜美约会', season:'夏季', top:'碎花吊带衫', bottom:'高腰阔腿裤(米色)', shoes:'细带凉鞋', bag:'草编包', tip:'碎花+阔腿裤=浪漫又有气质，适合咖啡馆约会🌸', tags:'#碎花穿搭 #法式穿搭 #约会OOTD'},
+  {style:'甜美约会', season:'春秋', top:'针织开衫(奶白色)', bottom:'百褶半身裙(粉色)', shoes:'小白鞋', bag:'毛绒小包', tip:'温柔奶白+粉色百褶裙=初恋感穿搭，直男杀手！', tags:'#温柔穿搭 #初春穿搭 #约会必备'},
+  {style:'甜美约会', season:'冬季', top:'牛角扣大衣(米色)', bottom:'针织长裙(驼色)', shoes:'短靴(棕色)', bag:'托特包', tip:'米色大衣配驼色针织裙，韩剧女主角既视感', tags:'#冬季穿搭 #韩系穿搭 #大衣穿搭'},
+  // 上班通勤
+  {style:'上班通勤', season:'夏季', top:'真丝衬衫(白色)', bottom:'烟管裤(黑色)', shoes:'尖头平底鞋', bag:'通勤托特包', tip:'白衬衫+黑烟管裤=永远不会出错的职场搭配', tags:'#通勤穿搭 #职场穿搭 #极简风'},
+  {style:'上班通勤', season:'夏季', top:'条纹衬衫(蓝白)', bottom:'阔腿西裤(卡其)', shoes:'乐福鞋', bag:'手提公文包', tip:'条纹衬衫增加层次感，卡其色比黑色更显年轻', tags:'#上班穿搭 #衬衫穿搭 #夏日通勤'},
+  {style:'上班通勤', season:'春秋', top:'小西装(燕麦色)', bottom:'直筒西裤(同色)', shoes:'尖头小猫跟', bag:'链条腋下包', tip:'燕麦色西装套装=温柔又有气场，开会必备', tags:'#西装穿搭 #气质穿搭 #通勤OOTD'},
+  {style:'上班通勤', season:'冬季', top:'高领打底衫(黑)', bottom:'毛呢半裙(格纹)', shoes:'长靴', bag:'单肩大包', tip:'高领打底+格纹半裙=复古英伦职场风', tags:'#冬季通勤 #格纹穿搭 #职场女生'},
+  // 休闲日常
+  {style:'休闲日常', season:'夏季', top:'宽松白T恤', bottom:'牛仔短裤(浅蓝)', shoes:'厚底运动鞋', bag:'帆布袋', tip:'白T+牛仔=夏天最舒服的搭配，配棒球帽更时髦🧢', tags:'#日常穿搭 #休闲穿搭 #夏日清爽'},
+  {style:'休闲日常', season:'夏季', top:'吊带背心(牛油果绿)', bottom:'棉麻阔腿裤(白)', shoes:'人字拖/凉拖', bag:'编织网兜包', tip:'牛油果绿+白色=清爽降温5度，慵懒又好看', tags:'#清爽穿搭 #牛油果绿 #夏日OOTD'},
+  {style:'休闲日常', season:'春秋', top:'卫衣(灰色)', bottom:'鲨鱼裤(黑)', shoes:'老爹鞋', bag:'斜挎胸包', tip:'卫衣+鲨鱼裤=超模出街既视感，显高显瘦', tags:'#卫衣穿搭 #鲨鱼裤 #休闲风'},
+  {style:'休闲日常', season:'冬季', top:'摇粒绒外套(奶油色)', bottom:'直筒牛仔裤', shoes:'雪地靴', bag:'帆布大包', tip:'摇粒绒=冬天的安全感，温暖又可爱🐑', tags:'#冬季穿搭 #摇粒绒 #保暖穿搭'},
+  // 运动活力
+  {style:'运动活力', season:'夏季', top:'运动背心(白)', bottom:'瑜伽裤(灰)', shoes:'跑鞋(粉)', bag:'腰包', tip:'运动背心+瑜伽裤=活力满满，去健身房也要美美的🏃‍♀️', tags:'#运动穿搭 #健身穿搭 #瑜伽裤'},
+  {style:'运动活力', season:'春秋', top:'连帽卫衣(拼色)', bottom:'运动短裤(黑)', shoes:'篮球鞋', bag:'双肩运动包', tip:'拼色卫衣=运动场上的焦点，配长袜更有feel', tags:'#运动风 #卫衣穿搭 #活力穿搭'},
+  // 法式复古
+  {style:'法式复古', season:'夏季', top:'方领泡泡袖(白)', bottom:'牛仔微喇裤', shoes:'猫跟凉鞋', bag:'丝巾包', tip:'方领+泡泡袖=经典法式元素，配红唇绝美💋', tags:'#法式穿搭 #复古穿搭 #法式女孩'},
+  {style:'法式复古', season:'春秋', top:'条纹海魂衫', bottom:'高腰直筒裤(深蓝)', shoes:'芭蕾平底鞋', bag:'菜篮子包', tip:'条纹衫+高腰裤=巴黎街头的时髦精', tags:'#法式复古 #条纹穿搭 #巴黎风'},
+  // 韩系简约
+  {style:'韩系简约', season:'夏季', top:'针织短袖(奶白)', bottom:'百慕大短裤(灰)', shoes:'拖鞋款凉鞋', bag:'腋下包(黑)', tip:'针织短袖+百慕大短裤=韩国小姐姐最爱的夏日公式', tags:'#韩系穿搭 #简约风 #夏日韩系'},
+  {style:'韩系简约', season:'春秋', top:'廓形衬衫(浅蓝)', bottom:'拖地牛仔裤', shoes:'帆布鞋', bag:'帆布托特包', tip:'廓形衬衫+拖地牛仔裤=慵懒韩系，不费力就好看', tags:'#韩系简约 #衬衫穿搭 #慵懒风'},
+  // 日系可爱
+  {style:'日系可爱', season:'夏季', top:'娃娃领衬衫(白)', bottom:'半身伞裙(格纹)', shoes:'圆头乐福鞋', bag:'双肩小包', tip:'娃娃领+伞裙=日系元气少女，减龄10岁！', tags:'#日系穿搭 #可爱穿搭 #元气少女'},
+  // 显瘦穿搭
+  {style:'显瘦穿搭', season:'夏季', top:'V领衬衫(黑)', bottom:'高腰阔腿裤(垂感)', shoes:'尖头平底鞋', bag:'链条包', tip:'V领拉长脖子+阔腿裤遮胯=视觉显瘦10斤', tags:'#显瘦穿搭 #微胖穿搭 #遮肉穿搭'},
+  {style:'显瘦穿搭', season:'春秋', top:'收腰西装外套', bottom:'A字半裙(深色)', shoes:'尖头短靴', bag:'手拿包', tip:'收腰西装=A4腰既视感，A字裙遮大腿和小肚子', tags:'#显瘦 #梨形穿搭 #西装显瘦'}
+];
+
+function generateOutfitAI() {
+  var style = document.getElementById('outfit-ai-style').value;
+  var season = document.getElementById('outfit-ai-season').value;
+  var matches = OUTFIT_AI_POOL.filter(function(o) { return o.style === style && o.season === season; });
+  if (matches.length === 0) {
+    matches = OUTFIT_AI_POOL.filter(function(o) { return o.style === style; });
+  }
+  if (matches.length === 0) {
+    matches = OUTFIT_AI_POOL;
+  }
+  var pick = matches[Math.floor(Math.random() * matches.length)];
+  var content = document.getElementById('outfit-ai-content');
+  var resultBox = document.getElementById('outfit-ai-result');
+  content.innerHTML =
+    '<div style="font-weight:700;color:#ec407a;margin-bottom:8px;">🎀 ' + pick.style + ' | ' + pick.season + '</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:4px 16px;margin-bottom:8px;">' +
+      '<div>👕 上装：<b>' + pick.top + '</b></div>' +
+      '<div>👖 下装：<b>' + pick.bottom + '</b></div>' +
+      '<div>👟 鞋子：<b>' + pick.shoes + '</b></div>' +
+      '<div>👜 包包：<b>' + pick.bag + '</b></div>' +
+    '</div>' +
+    '<div style="background:#fff;padding:10px 12px;border-radius:10px;margin-top:6px;">' +
+      '<div style="margin-bottom:6px;"><b>💡 搭配建议：</b>' + pick.tip + '</div>' +
+      '<div style="color:#8d6e63;font-size:11px;">' + pick.tags + '</div>' +
+    '</div>' +
+    '<div style="margin-top:8px;font-size:11px;color:#bcaaa4;">📢 小红书发帖格式：<br>' +
+      '标题：' + pick.style + '穿搭 | ' + pick.season + '氛围感满满 ✨<br>' +
+      '正文：今日OOTD！' + pick.top + ' + ' + pick.bottom + '，搭配' + pick.shoes + '，背上' + pick.bag + '，整体' + pick.style + '风～' + pick.tip + '</div>';
+  resultBox.style.display = 'block';
+}
+
+function copyOutfitAI() {
+  var text = document.getElementById('outfit-ai-content').innerText;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      alert('✅ 穿搭方案已复制！\n\n打开小红书 → 发笔记 → 粘贴 → 配图 → 发布！');
+    }).catch(function() {
+      iosPrompt('穿搭方案', '长按全选复制', text, function(){});
+    });
+  } else {
+    iosPrompt('穿搭方案', '长按全选复制', text, function(){});
+  }
+}
+
+// 绑定AI穿搭按钮
+setTimeout(function() {
+  var genBtn = document.getElementById('outfit-ai-btn');
+  if (genBtn) { genBtn.addEventListener('click', generateOutfitAI); genBtn.addEventListener('touchend', function(e){e.preventDefault();generateOutfitAI();}); }
+  var copyBtn = document.getElementById('outfit-ai-copy');
+  if (copyBtn) { copyBtn.addEventListener('click', copyOutfitAI); copyBtn.addEventListener('touchend', function(e){e.preventDefault();copyOutfitAI();}); }
+  var retryBtn = document.getElementById('outfit-ai-retry');
+  if (retryBtn) { retryBtn.addEventListener('click', generateOutfitAI); retryBtn.addEventListener('touchend', function(e){e.preventDefault();generateOutfitAI();}); }
+}, 200);
+
+// ===== 护肤攻略 =====
+var SKIN_GUIDES = {
+  oily: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🔍 油痘肌 · 完整护肤攻略</b><br><br>' +
+    '<b>📌 什么是油痘肌？</b><br>皮脂分泌旺盛，毛孔粗大，容易长痘痘和黑头。T区（额头+鼻子）特别油。<br><br>' +
+    '<b>🧴 护肤步骤（早晚各一次）：</b><br>' +
+    '1️⃣ <b>洁面</b>：氨基酸洁面（温和不刺激），早晚各一次。❌ 不要用皂基洁面！<br>' +
+    '2️⃣ <b>爽肤水</b>：含水杨酸或茶树成分，控油+消炎。<br>' +
+    '3️⃣ <b>精华</b>：烟酰胺（控油）+ 积雪草（修复痘印）。<br>' +
+    '4️⃣ <b>乳液/面霜</b>：啫喱质地（清爽型），❌ 不要厚重面霜！<br>' +
+    '5️⃣ <b>防晒</b>：白天必涂！选清爽不油腻的防晒，痘痘肌不防晒痘印会变黑！<br><br>' +
+    '<b>💊 推荐成分：</b>水杨酸、烟酰胺、茶树精油、积雪草、壬二酸<br>' +
+    '<b>❌ 避开成分：</b>矿物油、羊毛脂、酒精浓度高的产品<br><br>' +
+    '<b>🥗 饮食注意：</b><br>' +
+    '✅ 多吃：西兰花、番茄、蓝莓（抗氧化）、三文鱼（Omega-3）、喝水2000ml/天<br>' +
+    '❌ 少吃：奶茶/甜品（糖致痘！）、牛奶/奶酪、油炸食品、辛辣食物<br><br>' +
+    '<b>🏷️ 推荐产品：</b><br>' +
+    '• 洁面：芙丽芳丝氨基酸洁面 / CeraVe水杨酸洁面<br>' +
+    '• 精华：The Ordinary烟酰胺 / 修丽可色修精华<br>' +
+    '• 面霜：理肤泉B5（局部点涂痘印）/ 薇诺娜特护霜<br>' +
+    '• 防晒：EltaMD防晒 / 安耐晒粉金瓶<br>' +
+    '</div>',
+  sensitive: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🔍 油敏肌 · 完整护肤攻略</b><br><br>' +
+    '<b>📌 什么是油敏肌？</b><br>又油又敏感，T区出油但脸颊泛红、刺痛、容易过敏。是最难护理的肤质！<br><br>' +
+    '<b>🧴 护肤步骤（精简为王！）：</b><br>' +
+    '1️⃣ <b>洁面</b>：氨基酸洁面，温水（不要热水！），早上可以只用清水。<br>' +
+    '2️⃣ <b>喷雾</b>：雅漾/理肤泉活泉水喷雾，舒缓镇定。<br>' +
+    '3️⃣ <b>修护精华</b>：神经酰胺/角鲨烷/泛醇（B5）成分，修复皮肤屏障。<br>' +
+    '4️⃣ <b>修护霜</b>：轻薄修护霜，锁住水分。<br>' +
+    '5️⃣ <b>防晒</b>：物理防晒（氧化锌/二氧化钛），温和不刺激。<br><br>' +
+    '<b>💊 推荐成分：</b>神经酰胺、角鲨烷、泛醇(B5)、积雪草、尿囊素<br>' +
+    '<b>❌ 绝对避开：</b>酒精、香精、水杨酸/果酸（刺激！）、高浓度VC、精油类<br><br>' +
+    '<b>🥗 饮食注意：</b><br>' +
+    '✅ 多吃：燕麦、山药（修复黏膜）、蓝莓、菠菜、南瓜籽（锌）<br>' +
+    '❌ 绝对避开：辣椒、酒精、海鲜（易过敏）、芒果/菠萝（易过敏水果）<br><br>' +
+    '<b>🏷️ 推荐产品：</b><br>' +
+    '• 洁面：珂润氨基酸洁面 / 丝塔芙洁面<br>' +
+    '• 修护：理肤泉B5修复霜 / 玉泽屏障修护乳<br>' +
+    '• 精华：修丽可B5精华 / 薇诺娜舒敏精华<br>' +
+    '• 防晒：Fancl物理防晒 / Dr.G绿色防晒<br><br>' +
+    '<b>⚠️ 重要提醒：</b>油敏肌护肤核心是"修复屏障"而不是"控油"！先修护，再谈其他。停用所有功能性产品（美白/去角质），用最简单的修护产品至少1个月。<br>' +
+    '</div>',
+  dry: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🔍 干皮 · 护肤攻略</b><br><br>' +
+    '<b>📌 干皮特点：</b>全脸干燥、紧绷、容易起皮，缺乏光泽。<br><br>' +
+    '<b>🧴 护肤步骤：</b><br>' +
+    '1️⃣ 洁面：氨基酸/APG洁面，早上清水即可<br>2️⃣ 保湿水：含玻尿酸/甘油成分<br>3️⃣ 精华油：角鲨烷油/玫瑰果油<br>4️⃣ 面霜：厚重保湿型<br>5️⃣ 防晒：滋润型防晒<br><br>' +
+    '<b>💊 推荐成分：</b>玻尿酸、角鲨烷、神经酰胺、甘油、乳木果油<br>' +
+    '<b>🥗 饮食：</b>多吃牛油果、坚果、三文鱼、橄榄油，多喝水<br>' +
+    '</div>',
+  normal: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🔍 中性皮 · 护肤攻略</b><br><br>' +
+    '<b>📌 中性皮特点：</b>水油平衡，不干不油，最理想的肤质！恭喜你～<br><br>' +
+    '<b>🧴 护肤重点：</b>维持现状，做好基础清洁+保湿+防晒即可，不要过度护肤破坏平衡。<br>' +
+    '早晚：洁面 → 保湿水 → 精华 → 乳液 → 防晒(白天)<br>' +
+    '每周1-2次面膜即可。<br>' +
+    '</div>'
+};
+
+function showSkinGuide(type) {
+  var el = document.getElementById('skin-guide');
+  if (!el) return;
+  el.innerHTML = SKIN_GUIDES[type] || '';
+  el.scrollIntoView({behavior:'smooth'});
+  // 高亮选中按钮
+  ['oily','sensitive','dry','normal'].forEach(function(t) {
+    var btn = document.getElementById('skin-' + t);
+    if (btn) btn.style.background = t === type ? 'linear-gradient(135deg,#f8bbd0,#f48fb1)' : '';
+    if (btn) btn.style.color = t === type ? '#fff' : '';
+  });
+}
+
+// ===== 穿搭攻略 =====
+var OUTFIT_GUIDES = {
+  hot: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🌶️ 辣妹风 · 穿搭攻略</b><br><br>' +
+    '<b>📌 风格特点：</b>性感、自信、修身，展现身材曲线。<br><br>' +
+    '<b>👕 核心单品：</b><br>' +
+    '• 上装：短款紧身上衣/吊带背心/一字领/V领修身T恤<br>' +
+    '• 下装：高腰短裙/工装裤/微喇牛仔裤/骑行裤<br>' +
+    '• 外套：短款牛仔夹克/皮衣/oversized西装<br>' +
+    '• 鞋子：厚底马丁靴/尖头高跟鞋/老爹鞋<br>' +
+    '• 配饰：choker项链/金属大耳环/腰带/墨镜<br><br>' +
+    '<b>🎨 配色推荐：</b>黑+红、全黑、黑+粉、白+牛仔蓝<br>' +
+    '<b>❌ 避雷：</b>不要全身紧绷，上紧下松或上松下紧选一个<br>' +
+    '</div>',
+  sweet: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🎀 甜美少女风 · 穿搭攻略</b><br><br>' +
+    '<b>📌 风格特点：</b>可爱、温柔、减龄，像韩剧女主角。<br><br>' +
+    '<b>👕 核心单品：</b><br>' +
+    '• 上装：泡泡袖/娃娃领/荷叶边上衣、针织开衫、宽松卫衣<br>' +
+    '• 下装：A字短裙/百褶裙/纱裙/直筒牛仔裤<br>' +
+    '• 外套：牛角扣大衣/针织开衫/小香风外套<br>' +
+    '• 鞋子：玛丽珍鞋/圆头芭蕾鞋/小白鞋<br>' +
+    '• 配饰：蝴蝶结发饰/珍珠耳钉/毛绒包包<br><br>' +
+    '<b>🎨 配色推荐：</b>粉+白、奶白+驼色、浅紫+白、baby蓝+白<br>' +
+    '<b>💡 关键：</b>颜色要柔、饱和度要低，粉嫩色系是灵魂<br>' +
+    '</div>',
+  casual: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">🍃 休闲风 · 穿搭攻略</b><br><br>' +
+    '<b>📌 风格特点：</b>舒服、自在、不费力就好看。<br><br>' +
+    '<b>👕 核心单品：</b><br>' +
+    '• 上装：宽松T恤/卫衣/条纹衫/针织衫<br>' +
+    '• 下装：阔腿裤/直筒牛仔裤/运动裤/鲨鱼裤<br>' +
+    '• 外套：牛仔外套/风衣/棒球服<br>' +
+    '• 鞋子：帆布鞋/运动鞋/勃肯鞋<br>' +
+    '• 配饰：棒球帽/帆布包/帆布袋<br><br>' +
+    '<b>🎨 配色：</b>白+牛仔蓝、灰+白、燕麦色+白、黑+灰<br>' +
+    '<b>💡 诀窍：</b>一身不超过3个颜色，基础款+1个亮点单品<br>' +
+    '</div>',
+  travel: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">✈️ 旅游穿搭 · 攻略</b><br><br>' +
+    '<b>📌 原则：</b>好看+舒服+出片+行李不超重！<br><br>' +
+    '<b>🎒 3天旅行打包公式：</b><br>' +
+    '• 上装×3：白T+条纹衫+碎花衫（互搭不重复）<br>' +
+    '• 下装×2：牛仔裤+半身裙<br>' +
+    '• 外套×1：牛仔外套/风衣（百搭）<br>' +
+    '• 鞋子×2：小白鞋+一双拍照鞋<br>' +
+    '• 配饰：墨镜+丝巾+帆布袋<br><br>' +
+    '<b>📸 拍照穿搭秘诀：</b><br>' +
+    '• 亮色衣服更上镜（红/黄/橙）<br>' +
+    '• 飘逸裙摆拍照好看<br>' +
+    '• 同色系搭配显高级<br>' +
+    '• 戴帽子=不用弄发型<br><br>' +
+    '<b>🏖️ 海边穿搭：</b>连衣裙+草帽+凉拖+防晒衫<br>' +
+    '<b>🏔️ 爬山穿搭：</b>运动套装+防晒衣+登山鞋+双肩包<br>' +
+    '<b>🏙️ 城市游：</b>衬衫+阔腿裤+平底鞋+斜挎包<br>' +
+    '</div>',
+  work: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">💼 通勤风 · 穿搭攻略</b><br><br>' +
+    '<b>👕 核心单品：</b><br>' +
+    '• 衬衫：白/浅蓝/条纹，必备3件<br>' +
+    '• 下装：烟管裤/阔腿西裤/A字半裙<br>' +
+    '• 外套：小西装/针织开衫/风衣<br>' +
+    '• 鞋子：尖头平底/乐福鞋/小猫跟<br><br>' +
+    '<b>🎨 配色：</b>黑白灰+燕麦色/卡其色/藏蓝<br>' +
+    '<b>💡 穿得高级：</b>同色系穿搭+好质感面料+简约配饰<br>' +
+    '</div>',
+  date: '<div style="background:#fff;padding:12px;border-radius:12px;line-height:2.2;">' +
+    '<b style="color:#ec407a;font-size:14px;">💕 约会风 · 穿搭攻略</b><br><br>' +
+    '<b>👕 核心单品：</b><br>' +
+    '• 连衣裙：碎花/针织/吊带裙（最不容易出错的约会单品！）<br>' +
+    '• 上装：V领针织/泡泡袖上衣/蕾丝衫<br>' +
+    '• 下装：A字短裙/鱼尾裙/微喇牛仔裤<br>' +
+    '• 鞋子：尖头平底/细带凉鞋/玛丽珍<br><br>' +
+    '<b>🎨 配色：</b>粉色系/白色系/碎花<br>' +
+    '<b>💡 小心机：</b>露锁骨/露脚踝二选一，若隐若现最撩人<br>' +
+    '</div>'
+};
+
+function showOutfitGuide(type) {
+  var el = document.getElementById('outfit-guide');
+  if (!el) return;
+  el.innerHTML = OUTFIT_GUIDES[type] || '';
+  el.scrollIntoView({behavior:'smooth'});
+}
 
 // ===== 推荐 =====
 var DRAMA_RECOMMEND = [
